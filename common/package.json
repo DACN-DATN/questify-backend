@@ -1,6 +1,6 @@
 {
-  "name": "@datn242/common",
-  "version": "8.8.15",
+  "name": "@datn242/questifycommon",
+  "version": "1.0.0",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
