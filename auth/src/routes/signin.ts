@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 import { Password } from '../services/password';
 import { User } from '../models/user';
-import { validateRequest, BadRequestError } from '@datn242/common';
+import { validateRequest, BadRequestError } from '@datn242/questify-common';
 
 const router = express.Router();
 

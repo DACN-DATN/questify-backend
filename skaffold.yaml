@@ -7,7 +7,7 @@ build:
   local:
     push: false
   artifacts:
-    - image: datn/auth
+    - image: huytrn/questify_auth
       context: auth
       docker:
         dockerfile: Dockerfile

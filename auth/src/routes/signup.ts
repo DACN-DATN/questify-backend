@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
-import { validateRequest, BadRequestError } from '@datn242/common';
+import { validateRequest, BadRequestError } from '@datn242/questify-common';
 import { User } from '../models/user';
 
 const router = express.Router();

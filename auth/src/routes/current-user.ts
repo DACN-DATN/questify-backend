@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { currentUser } from '@datn242/common';
+import { currentUser } from '@datn242/questify-common';
 
 const router = express.Router();
 
