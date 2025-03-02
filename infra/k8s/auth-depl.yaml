@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
         - name: auth
-          image: huytrn/auth
+          image: questify/auth
           env:
             - name: MONGO_URI
-              value: 'mongodb://questify-auth-mongo-srv:27017/auth'
+              value: 'mongodb://auth-mongo-srv:27017/auth'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
