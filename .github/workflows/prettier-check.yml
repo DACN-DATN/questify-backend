@@ -10,23 +10,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - name: Install dependencies
         run: |
           npm install prettier
-          
+
       - name: Check formatting with Prettier
         run: |
           echo "Checking code formatting with Prettier..."
           # Run prettier in check mode to verify formatting without changing files
           # The command will exit with error code if any files need formatting
           npx prettier --config .prettierrc --check "**/*.{js,jsx,ts,tsx,json,css,scss,md}"
-          
+
       - name: Provide instructions if check fails
         if: ${{ failure() }}
         run: |
