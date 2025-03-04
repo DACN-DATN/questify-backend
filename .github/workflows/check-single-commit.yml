@@ -1,0 +1,36 @@
+name: Check Single Commit
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-commit-count:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Count commits in PR
+        id: count-commits
+        run: |
+          # Get the base and head of the PR
+          BASE_SHA=${{ github.event.pull_request.base.sha }}
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          
+          # Count commits between base and head
+          COMMIT_COUNT=$(git rev-list --count $BASE_SHA..$HEAD_SHA)
+          echo "COMMIT_COUNT=$COMMIT_COUNT" >> $GITHUB_ENV
+          echo "Number of commits in this PR: $COMMIT_COUNT"
+      
+      - name: Check if only one commit
+        run: |
+          if [ $COMMIT_COUNT -eq 1 ]; then
+            echo "✅ PR has exactly one commit. Good to go!"
+            exit 0
+          else
+            echo "❌ PR has multiple commits ($COMMIT_COUNT). Please squash your commits before merging."
+            exit 1
+          fi
