@@ -1,11 +1,16 @@
 import mongoose from 'mongoose';
 import { Password } from '../services/password';
+import { UserRole } from '@datn242/questify-common';
 
 // An TS interfact that describes the properties
 // that are required to create a new User
 interface UserAttrs {
+  firstName?: string;
+  lastName?: string;
+  userName: string;
   email: string;
   password: string;
+  role: UserRole;
 }
 
 // An interface that describes the properties
@@ -17,12 +22,28 @@ interface UserModel extends mongoose.Model<UserDoc> {
 // An interface that describes the properties
 // that a User Document has
 interface UserDoc extends mongoose.Document {
+  firstName?: string;
+  lastName?: string;
+  userName: string;
   email: string;
   password: string;
+  role: UserRole;
 }
 
 const userSchema = new mongoose.Schema(
   {
+    firstName: {
+      type: String,
+      required: false,
+    },
+    lastName: {
+      type: String,
+      required: false,
+    },
+    userName: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -30,6 +51,12 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    role: {
+      type: String,
+      required: true,
+      enum: Object.values(UserRole),
+      default: UserRole.Student,
     },
   },
   {

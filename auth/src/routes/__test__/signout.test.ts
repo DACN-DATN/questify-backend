@@ -1,12 +1,15 @@
 import request from 'supertest';
 import { app } from '../../app';
+import { UserRole } from '@datn242/questify-common';
 
 it('clears the cookie after signing out', async () => {
   await request(app)
     .post('/api/users/signup')
     .send({
+      userName: 'test',
       email: 'test@test.com',
       password: 'password',
+      role: UserRole.Student,
     })
     .expect(201);
 

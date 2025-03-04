@@ -2,6 +2,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../app';
+import { UserRole } from '@datn242/questify-common';
 
 declare global {
   var signin: () => Promise<string[]>;
@@ -33,14 +34,18 @@ afterAll(async () => {
 });
 
 global.signin = async () => {
+  const userName = 'test';
   const email = 'test@test.com';
   const password = 'password';
+  const role = UserRole.Student;
 
   const response = await request(app)
     .post('/api/users/signup')
     .send({
+      userName,
       email,
       password,
+      role,
     })
     .expect(201);
 

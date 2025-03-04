@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { app } from '../../app';
+import { UserRole } from '@datn242/questify-common';
 
 it('fails when an email that does not exist is supplied', async () => {
   await request(app)
@@ -15,15 +16,17 @@ it('fails when an incorrect password is supplied', async () => {
   await request(app)
     .post('/api/users/signup')
     .send({
-      email: 'test@tesst.com',
+      userName: 'test',
+      email: 'test@test.com',
       password: 'password',
+      role: UserRole.Student,
     })
     .expect(201);
 
   await request(app)
     .post('/api/users/signin')
     .send({
-      email: 'test@tesst.com',
+      email: 'test@test.com',
       password: 'password1',
     })
     .expect(400);
@@ -33,15 +36,17 @@ it('responds with a cookie when given valid credentials', async () => {
   await request(app)
     .post('/api/users/signup')
     .send({
-      email: 'test@tesst.com',
+      userName: 'test',
+      email: 'test@test.com',
       password: 'password',
+      role: UserRole.Student,
     })
     .expect(201);
 
   const response = await request(app)
     .post('/api/users/signin')
     .send({
-      email: 'test@tesst.com',
+      email: 'test@test.com',
       password: 'password',
     })
     .expect(200);
