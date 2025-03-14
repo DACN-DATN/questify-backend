@@ -1,34 +1,18 @@
-// import mongoose from 'mongoose';
-import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
-dotenv.config();
-
 import { app } from './app';
+import { connectDb, closeDbConnection } from './config/db';
 
 const start = async () => {
-  // if (!process.env.JWT_KEY) {
-  //   throw new Error('JWT_KEY must be defined');
-  // }
-  if (!process.env.POSTGRES_URI) {
-    throw new Error('POSTGRES_URI must be defined');
-  }
-  const sequelize = new Sequelize(process.env.POSTGRES_URI);
-  try {
-    await sequelize.authenticate();
-    console.log('Connected to Postgres');
-  } catch (err) {
-    console.error(err);
-  }
+  await connectDb();
 
   process.on('SIGINT', async () => {
     console.log('Gracefully shutting down...');
-    await sequelize.close();
+    await closeDbConnection();
     process.exit(0);
   });
 
   process.on('SIGTERM', async () => {
     console.log('Shutting down due to SIGTERM...');
-    await sequelize.close();
+    await closeDbConnection();
     process.exit(0);
   });
 };
