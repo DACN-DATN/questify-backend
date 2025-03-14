@@ -1,74 +1,76 @@
-import { DataTypes, Model } from 'sequelize';
+import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { UserRole } from '@datn242/questify-common';
 
-class User extends Model {
+const UserDefinition = {
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+  },
+  gmail: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    unique: true,
+  },
+  hashedPassword: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
+  phoneNumber: {
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
+  firstName: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
+  lastName: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
+  role: {
+    allowNull: false,
+    type: DataTypes.ENUM(UserRole.Student, UserRole.Teacher, UserRole.Admin),
+  },
+};
+
+interface UserAttributes {
+  id: string;
+  gmail: string;
+  hashedPassword: string;
+  phoneNumber?: string;
+  firstName: string;
+  lastName: string;
+  role: UserRole;
+}
+
+interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
+
+class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: string;
   public gmail!: string;
   public hashedPassword!: string;
-  public phoneNumber!: string;
+  public phoneNumber?: string;
   public firstName!: string;
   public lastName!: string;
-  public userType!: UserRole;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public role!: UserRole;
+
+  static readonly scopes: ModelScopeOptions = {};
+
+  static readonly validations: ModelValidateOptions = {};
 }
 
-User.init(
-  {
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-    },
-    gmail: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-      },
-    },
-    hashedPassword: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [6, 128],
-      },
-    },
-    phoneNumber: {
-      type: DataTypes.STRING,
-      validate: {
-        is: /^[0-9]{10,15}$/,
-      },
-    },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isAlpha: true,
-      },
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isAlpha: true,
-      },
-    },
-    role: {
-      type: DataTypes.ENUM(UserRole.Student, UserRole.Teacher, UserRole.Admin),
-      allowNull: false,
-      validate: {
-        isIn: [Object.values(UserRole)],
-      },
-    },
-  },
-  {
-    sequelize,
-    modelName: 'User',
-    tableName: 'users',
-  },
-);
+User.init(UserDefinition, {
+  sequelize,
+  tableName: 'users',
+  underscored: true,
+  createdAt: true,
+  updatedAt: true,
+  scopes: User.scopes,
+  validate: User.validations,
+});
 
 export { User };
