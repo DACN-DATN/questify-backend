@@ -9,7 +9,7 @@ class User extends Model {
   public phoneNumber!: string;
   public firstName!: string;
   public lastName!: string;
-  public role!: UserRole;
+  public userType!: UserRole;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -25,23 +25,43 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     hashedPassword: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: [6, 128],
+      },
     },
     phoneNumber: {
       type: DataTypes.STRING,
+      validate: {
+        is: /^[0-9]{10,15}$/,
+      },
     },
     firstName: {
       type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isAlpha: true,
+      },
     },
     lastName: {
       type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isAlpha: true,
+      },
     },
     role: {
-      type: DataTypes.ENUM('admin', 'teacher', 'student'),
+      type: DataTypes.ENUM(UserRole.Student, UserRole.Teacher, UserRole.Admin),
       allowNull: false,
+      validate: {
+        isIn: [Object.values(UserRole)],
+      },
     },
   },
   {
