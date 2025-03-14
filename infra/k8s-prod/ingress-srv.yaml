@@ -17,6 +17,13 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
+          - path: /api/course-mgmt/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: course-mgmt-srv
+                port:
+                  number: 3000
           - path: /?(.*)
             pathType: ImplementationSpecific
             backend:
@@ -31,7 +38,7 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
-    service.beta.kubernetes.io/do-loadbalancer-hostname: 'www.questify.site'
+    service.beta.kubernetes.io/do-loadbalancer-hostname: ${DOMAIN_NAME}
   labels:
     helm.sh/chart: ingress-nginx-2.0.3
     app.kubernetes.io/name: ingress-nginx
