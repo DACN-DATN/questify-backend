@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: cm
-          image: cm
+          image: questify/cm
           env:
             - name: POSTGRES_URI
               value: 'postgresql://ps_user:SecurePassword@cm-postgres-srv:5432/ps_db'
