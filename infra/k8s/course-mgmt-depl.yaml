@@ -1,48 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cm-depl
+  name: course-mgmt-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cm
+      app: course-mgmt
   template:
     metadata:
       labels:
-        app: cm
+        app: course-mgmt
     spec:
       containers:
-        - name: cm
-          image: questify/cm
+        - name: course-mgmt
+          image: questify/course-mgmt
           env:
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
-                  name: cm-postgres-secret
+                  name: course-mgmt-postgres-secret
                   key: POSTGRES_DB
             - name: POSTGRES_USER
               valueFrom:
                 configMapKeyRef:
-                  name: cm-postgres-secret
+                  name: course-mgmt-postgres-secret
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 configMapKeyRef:
-                  name: cm-postgres-secret
+                  name: course-mgmt-postgres-secret
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_URI
-              value: 'postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@cm-postgres-srv:5432/$(POSTGRES_DB)'
+              value: 'postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@course-mgmt-postgres-srv:5432/$(POSTGRES_DB)'
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cm-srv
+  name: course-mgmt-srv
 spec:
   selector:
-    app: cm
+    app: course-mgmt
   ports:
-    - name: cm
+    - name: course-mgmt
       protocol: TCP
       port: 3000
       targetPort: 3000

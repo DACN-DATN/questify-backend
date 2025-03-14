@@ -17,7 +17,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: questify/cm
+    - image: questify/course-mgmt
       context: course_management
       docker:
         dockerfile: Dockerfile

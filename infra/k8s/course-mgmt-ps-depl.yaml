@@ -1,40 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cm-postgres
+  name: course-mgmt-postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cm-postgres
+      app: course-mgmt-postgres
   template:
     metadata:
       labels:
-        app: cm-postgres
+        app: course-mgmt-postgres
     spec:
       containers:
-        - name: cm-postgres
+        - name: course-mgmt-postgres
           image: 'postgres:17'
           ports:
             - containerPort: 5432
           envFrom:
             - configMapRef:
-                name: cm-postgres-secret
+                name: course-mgmt-postgres-secret
           volumeMounts:
-            - mountPath: /var/lib/cm-postgresql/data
-              name: cm-postgresdata
+            - mountPath: /var/lib/course-mgmt-postgresql/data
+              name: course-mgmt-postgresdata
       volumes:
-        - name: cm-postgresdata
+        - name: course-mgmt-postgresdata
           persistentVolumeClaim:
-            claimName: cm-postgres-volume-claim
+            claimName: course-mgmt-postgres-volume-claim
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cm-postgres-srv
+  name: course-mgmt-postgres-srv
 spec:
   selector:
-    app: cm-postgres
+    app: course-mgmt-postgres
   ports:
     - name: db
       protocol: TCP

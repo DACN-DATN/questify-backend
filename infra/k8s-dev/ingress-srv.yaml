@@ -17,11 +17,11 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-          - path: /api/cm/?(.*)
+          - path: /api/course-mgmt/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: cms-srv
+                name: course-mgmt-srv
                 port:
                   number: 3000
           - path: /?(.*)

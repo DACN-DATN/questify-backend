@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cm-postgres-secret
+  name: course-mgmt-postgres-secret
   labels:
-    app: cm-postgres
+    app: course-mgmt-postgres
 data:
   POSTGRES_DB: ps_db
   POSTGRES_USER: ps_user
