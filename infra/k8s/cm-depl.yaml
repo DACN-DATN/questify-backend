@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cm-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cm
+  template:
+    metadata:
+      labels:
+        app: cm
+    spec:
+      containers:
+        - name: cm
+          image: cm
+          env:
+            - name: POSTGRES_URI
+              value: 'postgresql://ps_user:SecurePassword@cm-postgres-srv:5432/ps_db'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cm-srv
+spec:
+  selector:
+    app: cm
+  ports:
+    - name: cm
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cm-postgres
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cm-postgres
+  template:
+    metadata:
+      labels:
+        app: cm-postgres
+    spec:
+      containers:
+        - name: cm-postgres
+          image: 'postgres:17'
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: cm-postgres-secret
+          volumeMounts:
+            - mountPath: /var/lib/cm-postgresql/data
+              name: cm-postgresdata
+      volumes:
+        - name: cm-postgresdata
+          persistentVolumeClaim:
+            claimName: cm-postgres-volume-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cm-postgres-srv
+spec:
+  selector:
+    app: cm-postgres
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
