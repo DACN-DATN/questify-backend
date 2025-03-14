@@ -16,8 +16,23 @@ spec:
         - name: cm
           image: questify/cm
           env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-postgres-secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-postgres-secret
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_URI
-              value: 'postgresql://ps_user:SecurePassword@cm-postgres-srv:5432/ps_db'
+              value: 'postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@cm-postgres-srv:5432/$(POSTGRES_DB)'
 ---
 apiVersion: v1
 kind: Service

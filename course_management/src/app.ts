@@ -1,8 +1,8 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
-import { errorHandler, NotFoundError } from '@datn242/questify-common';
+import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
 // import { currentUserRouter } from './routes/current-user';
 // import { signinRouter } from './routes/signin';
@@ -18,6 +18,7 @@ app.use(
     secure: false, // disable https
   }),
 );
+app.use(currentUser);
 
 // app.use(currentUserRouter);
 // app.use(signinRouter);
@@ -28,6 +29,8 @@ app.all('*', async (req, res) => {
   throw new NotFoundError();
 });
 
-app.use(errorHandler);
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  errorHandler(err, req, res, next);
+});
 
 export { app };
