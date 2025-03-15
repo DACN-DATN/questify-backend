@@ -4,10 +4,10 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
-// import { currentUserRouter } from './routes/current-user';
-// import { signinRouter } from './routes/signin';
-// import { signupRouter } from './routes/signup';
-// import { signoutRouter } from './routes/signout';
+import { indexCourseRouter } from './routes/course/index';
+import { showCourseRouter } from './routes/course/show';
+import { createCourseRouter } from './routes/course/new';
+import { updateCourseRouter } from './routes/course/update';
 
 const app = express();
 app.set('trust proxy', true);
@@ -20,10 +20,10 @@ app.use(
 );
 app.use(currentUser);
 
-// app.use(currentUserRouter);
-// app.use(signinRouter);
-// app.use(signupRouter);
-// app.use(signoutRouter);
+app.use(indexCourseRouter);
+app.use(showCourseRouter);
+app.use(createCourseRouter);
+app.use(updateCourseRouter);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
