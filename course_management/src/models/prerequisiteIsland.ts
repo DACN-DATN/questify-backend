@@ -10,6 +10,9 @@ const PrerequisiteIslandDefinition = {
       model: Island,
       key: 'id',
     },
+    validate: {
+      isUUID: 4,
+    },
   },
   prerequisiteIslandId: {
     type: DataTypes.UUID,
@@ -17,6 +20,9 @@ const PrerequisiteIslandDefinition = {
     references: {
       model: Island,
       key: 'id',
+    },
+    validate: {
+      isUUID: 4,
     },
   },
 };

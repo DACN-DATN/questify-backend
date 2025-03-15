@@ -14,6 +14,9 @@ const UserDefinition = {
     allowNull: false,
     type: DataTypes.STRING,
     unique: true,
+    validate: {
+      isEmail: true,
+    },
   },
   hashedPassword: {
     allowNull: false,
@@ -22,28 +25,40 @@ const UserDefinition = {
   phoneNumber: {
     allowNull: true,
     type: DataTypes.STRING,
+    validate: {
+      is: /^[0-9]{10,15}$/,
+    },
   },
   firstName: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.STRING,
+    validate: {
+      isAlpha: true,
+    },
   },
   lastName: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.STRING,
+    validate: {
+      isAlpha: true,
+    },
   },
   role: {
     allowNull: false,
-    type: DataTypes.ENUM(UserRole.Student, UserRole.Teacher, UserRole.Admin),
+    type: DataTypes.STRING,
+    validate: {
+      isIn: [[UserRole.Student, UserRole.Teacher, UserRole.Admin]],
+    },
   },
 };
 
 interface UserAttributes {
   id: string;
-  gmail: string;
+  gmail?: string;
   hashedPassword: string;
   phoneNumber?: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   role: UserRole;
 }
 
@@ -51,11 +66,11 @@ interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: string;
-  public gmail!: string;
+  public gmail?: string;
   public hashedPassword!: string;
   public phoneNumber?: string;
-  public firstName!: string;
-  public lastName!: string;
+  public firstName?: string;
+  public lastName?: string;
   public role!: UserRole;
 
   static readonly scopes: ModelScopeOptions = {};

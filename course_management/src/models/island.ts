@@ -13,6 +13,9 @@ const IslandDefinition = {
   name: {
     allowNull: false,
     type: DataTypes.STRING,
+    validate: {
+      notEmpty: true,
+    },
   },
   description: {
     allowNull: true,
@@ -32,6 +35,9 @@ const IslandDefinition = {
     references: {
       model: Course,
       key: 'id',
+    },
+    validate: {
+      isUUID: 4,
     },
   },
 };

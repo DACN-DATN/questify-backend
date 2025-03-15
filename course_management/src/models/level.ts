@@ -13,6 +13,9 @@ const LevelDefinition = {
   name: {
     allowNull: false,
     type: DataTypes.STRING,
+    validate: {
+      notEmpty: true,
+    },
   },
   description: {
     allowNull: true,
@@ -28,6 +31,9 @@ const LevelDefinition = {
     references: {
       model: Island,
       key: 'id',
+    },
+    validate: {
+      isUUID: 4,
     },
   },
 };

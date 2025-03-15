@@ -13,6 +13,9 @@ const CourseDefinition = {
   name: {
     allowNull: false,
     type: DataTypes.STRING,
+    validate: {
+      notEmpty: true,
+    },
   },
   description: {
     allowNull: true,
@@ -21,10 +24,13 @@ const CourseDefinition = {
   uploadDate: {
     allowNull: false,
     type: DataTypes.DATE,
+    validate: {
+      isDate: true,
+    },
   },
   backgroundImage: {
     allowNull: true,
-    type: DataTypes.STRING,
+    type: DataTypes.STRING, // may change this later
   },
   teacherId: {
     allowNull: false,
@@ -32,6 +38,9 @@ const CourseDefinition = {
     references: {
       model: User,
       key: 'id',
+    },
+    validate: {
+      isUUID: 4,
     },
   },
 };
