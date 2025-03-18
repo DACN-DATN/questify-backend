@@ -15,7 +15,7 @@ router.post(
       .withMessage('Upload date must be a valid date')
       .notEmpty()
       .withMessage('Upload date is required'),
-    body('teacherId').isUUID(4).withMessage('Teacher ID must be a valid UUID'),
+    body('teacherId').isNumeric().withMessage('Teacher ID must be a valid number'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {

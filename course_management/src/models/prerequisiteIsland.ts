@@ -4,32 +4,32 @@ import { Island } from './island';
 
 const PrerequisiteIslandDefinition = {
   islandId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     references: {
       model: Island,
       key: 'id',
     },
     validate: {
-      isUUID: 4,
+      isInt: true,
     },
   },
   prerequisiteIslandId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     references: {
       model: Island,
       key: 'id',
     },
     validate: {
-      isUUID: 4,
+      isInt: true,
     },
   },
 };
 
 interface PrerequisiteIslandAttributes {
-  islandId: string;
-  prerequisiteIslandId: string;
+  islandId: number;
+  prerequisiteIslandId: number;
 }
 
 interface PrerequisiteIslandCreationAttributes
@@ -39,8 +39,8 @@ class PrerequisiteIsland
   extends Model<PrerequisiteIslandAttributes, PrerequisiteIslandCreationAttributes>
   implements PrerequisiteIslandAttributes
 {
-  public islandId!: string;
-  public prerequisiteIslandId!: string;
+  public islandId!: number;
+  public prerequisiteIslandId!: number;
 
   static readonly scopes = {};
   static readonly validations = {};
@@ -57,21 +57,9 @@ PrerequisiteIsland.init(PrerequisiteIslandDefinition, {
   indexes: [
     {
       unique: true,
-      fields: ['islandId', 'prerequisiteIslandId'],
+      fields: ['island_id', 'prerequisite_island_id'],
     },
   ],
-});
-
-PrerequisiteIsland.belongsTo(Island, {
-  foreignKey: 'islandId',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
-});
-
-PrerequisiteIsland.belongsTo(Island, {
-  foreignKey: 'prerequisiteIslandId',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
 });
 
 export { PrerequisiteIsland };

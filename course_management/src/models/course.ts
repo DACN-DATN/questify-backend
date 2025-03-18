@@ -1,15 +1,13 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
-import { Island } from './island';
 
 const CourseDefinition = {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
   },
   name: {
     allowNull: false,
@@ -35,13 +33,13 @@ const CourseDefinition = {
   },
   teacherId: {
     allowNull: false,
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     references: {
       model: User,
       key: 'id',
     },
     validate: {
-      isUUID: 4,
+      isInt: true,
     },
   },
   isDeleted: {
@@ -56,7 +54,7 @@ const CourseDefinition = {
 };
 
 interface CourseAttributes {
-  id: string;
+  id: number;
   name: string;
   description?: string;
   uploadDate: Date;
@@ -70,7 +68,7 @@ interface CourseCreationAttributes
   extends Optional<CourseAttributes, 'id' | 'isDeleted' | 'deletedAt'> {}
 
 class Course extends Model<CourseAttributes, CourseCreationAttributes> implements CourseAttributes {
-  public id!: string;
+  public id!: number;
   public name!: string;
   public description?: string;
   public uploadDate!: Date;
@@ -84,7 +82,6 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   static readonly validations: ModelValidateOptions = {};
 }
 
-// Initialization
 Course.init(CourseDefinition, {
   sequelize,
   tableName: 'courses',
@@ -94,13 +91,5 @@ Course.init(CourseDefinition, {
   scopes: Course.scopes,
   validate: Course.validations,
 });
-
-Course.belongsTo(User, {
-  foreignKey: 'teacherId',
-  constraints: true,
-  scope: { role: 'teacher' },
-});
-
-Course.hasMany(Island, { foreignKey: 'courseId' });
 
 export { Course };

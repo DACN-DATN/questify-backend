@@ -16,7 +16,7 @@ router.post(
       .withMessage('Course postion is required')
       .isInt()
       .withMessage('Position must be an integer'),
-    body('islandId').isUUID(4).withMessage('Island ID must be a valid UUID'),
+    body('islandId').isNumeric().withMessage('Island ID must be a valid number'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -32,7 +32,7 @@ router.post(
       name,
       description,
       position,
-      islandId: island.id,
+      islandId: island.id.toString(),
     });
 
     await level.save();

@@ -13,8 +13,8 @@ router.post(
     body('name').notEmpty().withMessage('Island name is required').trim(),
     body('position').notEmpty().withMessage('Postion is required'),
     body('courseId')
-      .isUUID(4)
-      .withMessage('Course ID must be a valid UUID')
+      .isNumeric()
+      .withMessage('Course ID must be a valid number')
       .notEmpty()
       .withMessage('Course ID is required'),
   ],
@@ -32,7 +32,7 @@ router.post(
       description,
       position,
       backgroundImage,
-      courseId: course.id,
+      courseId: course.id.toString(),
     });
 
     await island.save();

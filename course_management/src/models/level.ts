@@ -7,8 +7,7 @@ const LevelDefinition = {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
   },
   name: {
     allowNull: false,
@@ -27,19 +26,19 @@ const LevelDefinition = {
   },
   islandId: {
     allowNull: false,
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     references: {
       model: Island,
       key: 'id',
     },
     validate: {
-      isUUID: 4,
+      isInt: true,
     },
   },
 };
 
 interface LevelAttributes {
-  id: string;
+  id: number;
   name: string;
   description?: string;
   position: number;
@@ -49,7 +48,7 @@ interface LevelAttributes {
 interface LevelCreationAttributes extends Optional<LevelAttributes, 'id'> {}
 
 class Level extends Model<LevelAttributes, LevelCreationAttributes> implements LevelAttributes {
-  public id!: string;
+  public id!: number;
   public name!: string;
   public description?: string;
   public position!: number;
@@ -69,7 +68,5 @@ Level.init(LevelDefinition, {
   scopes: Level.scopes,
   validate: Level.validations,
 });
-
-Level.belongsTo(Island, { foreignKey: 'islandId' });
 
 export { Level };

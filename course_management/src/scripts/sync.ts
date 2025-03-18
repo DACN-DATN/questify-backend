@@ -1,5 +1,6 @@
 import { sequelize } from '../config/db';
 import { EnvStage } from '@datn242/questify-common';
+import '../models/associations';
 
 const syncModels = async () => {
   if (process.env.NODE_ENV === EnvStage.Dev) {

@@ -1,15 +1,13 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { UserRole } from '@datn242/questify-common';
-import { Course } from './course';
 
 const UserDefinition = {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
   },
   gmail: {
     allowNull: false,
@@ -54,7 +52,7 @@ const UserDefinition = {
 };
 
 interface UserAttributes {
-  id: string;
+  id: number;
   gmail?: string;
   hashedPassword: string;
   phoneNumber?: string;
@@ -66,7 +64,7 @@ interface UserAttributes {
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  public id!: string;
+  public id!: number;
   public gmail?: string;
   public hashedPassword!: string;
   public phoneNumber?: string;
@@ -88,7 +86,5 @@ User.init(UserDefinition, {
   scopes: User.scopes,
   validate: User.validations,
 });
-
-User.hasMany(Course, { foreignKey: 'userId' });
 
 export { User };
