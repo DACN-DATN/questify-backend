@@ -1,6 +1,5 @@
 export enum EnvStage {
-    Production = 'prod',
-    Development = 'dev',
-    Testing = 'test',
-  }
-  
+  Prod = 'production',
+  Dev = 'development',
+  Test = 'test',
+}
