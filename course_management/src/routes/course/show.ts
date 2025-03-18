@@ -4,8 +4,8 @@ import { Course } from '../../models/course';
 
 const router = express.Router();
 
-router.get('/api/course-mgmt/:id', async (req: Request, res: Response) => {
-  const course = await Course.findByPk(req.params.id);
+router.get('/api/course-mgmt/:course_id', async (req: Request, res: Response) => {
+  const course = await Course.findByPk(req.params.course_id);
 
   if (!course) {
     throw new NotFoundError();

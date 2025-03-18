@@ -44,6 +44,15 @@ const CourseDefinition = {
       isUUID: 4,
     },
   },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  deletedAt: {
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
 };
 
 interface CourseAttributes {
@@ -53,9 +62,12 @@ interface CourseAttributes {
   uploadDate: Date;
   backgroundImage?: string;
   teacherId: string;
+  isDeleted: boolean;
+  deletedAt?: Date;
 }
 
-interface CourseCreationAttributes extends Optional<CourseAttributes, 'id'> {}
+interface CourseCreationAttributes
+  extends Optional<CourseAttributes, 'id' | 'isDeleted' | 'deletedAt'> {}
 
 class Course extends Model<CourseAttributes, CourseCreationAttributes> implements CourseAttributes {
   public id!: string;
@@ -64,6 +76,8 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public uploadDate!: Date;
   public backgroundImage?: string;
   public teacherId!: string;
+  public isDeleted!: boolean;
+  public deletedAt?: Date;
 
   static readonly scopes: ModelScopeOptions = {};
 

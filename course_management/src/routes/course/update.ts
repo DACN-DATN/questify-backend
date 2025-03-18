@@ -5,8 +5,8 @@ import { NotFoundError } from '@datn242/questify-common';
 
 const router = express.Router();
 
-router.put('/api/course-mgmt/:id', validateRequest, async (req: Request, res: Response) => {
-  const course = await Course.findByPk(req.params.id);
+router.put('/api/course-mgmt/:course_id', validateRequest, async (req: Request, res: Response) => {
+  const course = await Course.findByPk(req.params.course_id);
 
   if (!course) {
     throw new NotFoundError();
