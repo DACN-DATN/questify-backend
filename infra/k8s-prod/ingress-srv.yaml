@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: ${DOMAIN_NAME}
+    - host: www.questify.site
       http:
         paths:
           - path: /api/users/?(.*)

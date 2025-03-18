@@ -1,4 +1,5 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import { Sequelize } from 'sequelize';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../app';
@@ -9,11 +10,20 @@ declare global {
 }
 
 let mongo: any;
+let sequelize: Sequelize;
+
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfdsa';
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
   await mongoose.connect(mongoUri, {});
+
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: ':memory:', // SQLite in-memory database
+    logging: false, // Disable SQL logging
+  });
+  await sequelize.sync();
 });
 
 beforeEach(async () => {
@@ -24,6 +34,9 @@ beforeEach(async () => {
       await collection.deleteMany({});
     }
   }
+
+  await sequelize.drop();
+  await sequelize.sync();
 });
 
 afterAll(async () => {
@@ -31,6 +44,8 @@ afterAll(async () => {
     await mongo.stop();
   }
   await mongoose.connection.close();
+
+  await sequelize.close();
 });
 
 global.signin = async () => {

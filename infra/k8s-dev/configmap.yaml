@@ -4,5 +4,4 @@ metadata:
   name: app-config
 data:
   NODE_ENV: 'development'
-  DOMAIN_NAME: 'questify.dev'
   # DATABASE_NAME: "questify_dev_db"
