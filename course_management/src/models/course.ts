@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
+import { Island } from './island';
 
 const CourseDefinition = {
   id: {
@@ -85,5 +86,7 @@ Course.belongsTo(User, {
   constraints: true,
   scope: { role: 'teacher' },
 });
+
+Course.hasMany(Island, { foreignKey: 'courseId' });
 
 export { Course };

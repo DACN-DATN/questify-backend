@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { UserRole } from '@datn242/questify-common';
+import { Course } from './course';
 
 const UserDefinition = {
   id: {
@@ -87,5 +88,7 @@ User.init(UserDefinition, {
   scopes: User.scopes,
   validate: User.validations,
 });
+
+User.hasMany(Course, { foreignKey: 'userId' });
 
 export { User };

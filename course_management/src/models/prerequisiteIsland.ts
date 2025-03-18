@@ -54,9 +54,24 @@ PrerequisiteIsland.init(PrerequisiteIslandDefinition, {
   updatedAt: false,
   scopes: PrerequisiteIsland.scopes,
   validate: PrerequisiteIsland.validations,
+  indexes: [
+    {
+      unique: true,
+      fields: ['islandId', 'prerequisiteIslandId'],
+    },
+  ],
 });
 
-PrerequisiteIsland.belongsTo(Island, { foreignKey: 'islandId' });
-PrerequisiteIsland.belongsTo(Island, { foreignKey: 'prerequisiteIslandId' });
+PrerequisiteIsland.belongsTo(Island, {
+  foreignKey: 'islandId',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
+
+PrerequisiteIsland.belongsTo(Island, {
+  foreignKey: 'prerequisiteIslandId',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
 
 export { PrerequisiteIsland };
