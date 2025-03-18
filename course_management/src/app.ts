@@ -8,6 +8,13 @@ import { indexCourseRouter } from './routes/course/index';
 import { showCourseRouter } from './routes/course/show';
 import { createCourseRouter } from './routes/course/new';
 import { updateCourseRouter } from './routes/course/update';
+import { deleteCourseRouter } from './routes/course/delete';
+
+import { createIslandRouter } from './routes/island/new';
+import { showIslandRouter } from './routes/island/show';
+import { updateIslandRouter } from './routes/island/update';
+
+import { createLevelRouter } from './routes/level/new';
 
 const app = express();
 app.set('trust proxy', true);
@@ -24,6 +31,13 @@ app.use(indexCourseRouter);
 app.use(showCourseRouter);
 app.use(createCourseRouter);
 app.use(updateCourseRouter);
+app.use(deleteCourseRouter);
+
+app.use(createIslandRouter);
+app.use(showIslandRouter);
+app.use(updateIslandRouter);
+
+app.use(createLevelRouter);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
