@@ -1,12 +1,23 @@
 import express, { Request, Response } from 'express';
+import { body } from 'express-validator';
 import { Course } from '../../models/course';
 import { Island } from '../../models/island';
-import { validateRequest } from '@datn242/questify-common';
+import { validateRequest, requireAuth } from '@datn242/questify-common';
 
 const router = express.Router();
 
 router.post(
   '/api/course-mgmt/:course_id/islands',
+  requireAuth,
+  [
+    body('name').notEmpty().withMessage('Island name is required').trim(),
+    body('position').notEmpty().withMessage('Postion is required'),
+    body('courseId')
+      .isUUID(4)
+      .withMessage('Course ID must be a valid UUID')
+      .notEmpty()
+      .withMessage('Course ID is required'),
+  ],
   validateRequest,
   async (req: Request, res: Response) => {
     const course = await Course.findByPk(req.params.course_id);

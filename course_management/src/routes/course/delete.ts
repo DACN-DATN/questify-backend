@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
 import { Course } from '../../models/course';
-import { NotAuthorizedError, validateRequest } from '@datn242/questify-common';
+import { NotAuthorizedError, requireAuth, validateRequest } from '@datn242/questify-common';
 import { NotFoundError, BadRequestError } from '@datn242/questify-common';
 
 const router = express.Router();
 
-router.put('/api/course-mgmt/:course_id', validateRequest, async (req: Request, res: Response) => {
+router.put('/api/course-mgmt/:course_id', requireAuth, async (req: Request, res: Response) => {
   const courseId = req.params.course_id;
 
   const course = await Course.findByPk(courseId);

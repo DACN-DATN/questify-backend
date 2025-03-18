@@ -1,13 +1,23 @@
 import express, { Request, Response } from 'express';
-import { Course } from '../../models/course';
+import { body } from 'express-validator';
 import { Island } from '../../models/island';
 import { Level } from '../../models/level';
-import { validateRequest } from '@datn242/questify-common';
+import { validateRequest, requireAuth } from '@datn242/questify-common';
 
 const router = express.Router();
 
 router.post(
   '/api/course-mgmt/islands/:island_id/level',
+  requireAuth,
+  [
+    body('name').notEmpty().withMessage('Course name is required').trim(),
+    body('postion')
+      .notEmpty()
+      .withMessage('Course postion is required')
+      .isInt()
+      .withMessage('Position must be an integer'),
+    body('islandId').isUUID(4).withMessage('Island ID must be a valid UUID'),
+  ],
   validateRequest,
   async (req: Request, res: Response) => {
     const { island_id } = req.params;

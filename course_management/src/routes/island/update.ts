@@ -1,14 +1,19 @@
 import express, { Request, Response } from 'express';
+import { body } from 'express-validator';
 import { Course } from '../../models/course';
-import { NotAuthorizedError, validateRequest } from '@datn242/questify-common';
-import { NotFoundError } from '@datn242/questify-common';
+import {
+  NotAuthorizedError,
+  NotFoundError,
+  requireAuth,
+  validateRequest,
+} from '@datn242/questify-common';
 import { Island } from '../../models/island';
 
 const router = express.Router();
 
 router.put(
   '/api/course-mgmt/:course_id/islands/:island_id',
-  validateRequest,
+  requireAuth,
   async (req: Request, res: Response) => {
     const { course_id, island_id } = req.params;
     const course = await Course.findByPk(course_id);
