@@ -16,6 +16,11 @@ spec:
         - name: course-mgmt
           image: questify/course-mgmt
           env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: NODE_ENV
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:

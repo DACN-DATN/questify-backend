@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  NODE_ENV: 'production'
+  DOMAIN_NAME: 'www.questify.site'
+  # DATABASE_NAME: "questify_prod_db"
