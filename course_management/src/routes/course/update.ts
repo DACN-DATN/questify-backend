@@ -13,7 +13,7 @@ const router = express.Router();
 router.put(
   '/api/course-mgmt/:course_id',
   requireAuth,
-  [body('name').notEmpty().withMessage('Course name is required')],
+  [body('name').optional().notEmpty().withMessage('Course name is required')],
   validateRequest,
   async (req: Request, res: Response) => {
     const course = await Course.findByPk(req.params.course_id);
@@ -26,12 +26,12 @@ router.put(
       throw new NotAuthorizedError();
     }
 
+    const updateFields: Record<string, any> = {};
     const { name, description, backgroundImage } = req.body;
-    course.set({
-      name,
-      description,
-      backgroundImage,
-    });
+    if (name !== undefined) updateFields['name'] = name;
+    if (description !== undefined) updateFields['description'] = description;
+    if (backgroundImage !== undefined) updateFields['backgroundImage'] = backgroundImage;
+    course.set(updateFields);
 
     await course.save();
     res.send(course);

@@ -20,7 +20,7 @@ it('returns a 404 if the provided id does not exist', async () => {
     .expect(NotFoundError.statusCode);
 });
 
-it('returns a 401 if the user is not authenticated', async () => {
+it('returns a 401 if the user is not authorized', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
     .put(`/api/course-mgmt/${id}`)
@@ -59,12 +59,6 @@ it('returns a RequestValidationError if the user provides an invalid name', asyn
     .send({
       name: '',
     })
-    .expect(RequestValidationError.statusCode);
-
-  await request(app)
-    .put(`/api/course-mgmt/${response.body.id}`)
-    .set('Cookie', cookie)
-    .send({})
     .expect(RequestValidationError.statusCode);
 });
 

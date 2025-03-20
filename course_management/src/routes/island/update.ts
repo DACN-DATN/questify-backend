@@ -14,6 +14,16 @@ const router = express.Router();
 router.put(
   '/api/course-mgmt/:course_id/islands/:island_id',
   requireAuth,
+  [
+    body('name').optional().notEmpty().withMessage('Island name is required'),
+    body('position')
+      .optional()
+      .notEmpty()
+      .withMessage('Postion is required')
+      .isNumeric()
+      .withMessage('Position must be a number'),
+  ],
+  validateRequest,
   async (req: Request, res: Response) => {
     const { course_id, island_id } = req.params;
     const course = await Course.findByPk(course_id);
@@ -37,13 +47,14 @@ router.put(
       throw new NotFoundError();
     }
 
+    const updateFields: Record<string, any> = {};
     const { name, description, position, backgroundImage } = req.body;
-    island.set({
-      name,
-      description,
-      position,
-      backgroundImage,
-    });
+
+    if (name !== undefined) updateFields['name'] = name;
+    if (description !== undefined) updateFields['description'] = description;
+    if (position !== undefined) updateFields['position'] = position;
+    if (backgroundImage !== undefined) updateFields['backgroundImage'] = backgroundImage;
+    island.set(updateFields);
 
     await island.save();
     res.send(island);
