@@ -1,10 +1,26 @@
 import { Sequelize } from 'sequelize';
+import { EnvStage } from '@datn242/questify-common';
 
-if (!process.env.POSTGRES_URI) {
-  throw new Error('POSTGRES_URI must be defined');
+let sequelize: Sequelize;
+
+if (process.env.NODE_ENV === EnvStage.Prod || process.env.NODE_ENV === EnvStage.Dev) {
+  if (!process.env.POSTGRES_URI) {
+    throw new Error('POSTGRES_URI must be defined');
+  }
+  sequelize = new Sequelize(process.env.POSTGRES_URI, {
+    logging: false,
+  });
+} else if (process.env.NODE_ENV === EnvStage.Test) {
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: ':memory:',
+    logging: false,
+  });
+} else {
+  throw new Error(
+    `Invalid or undefined NODE_ENV: "${process.env.NODE_ENV}". Expected one of: ${Object.values(EnvStage).join(', ')}`,
+  );
 }
-
-const sequelize = new Sequelize(process.env.POSTGRES_URI);
 
 const connectDb = async () => {
   try {

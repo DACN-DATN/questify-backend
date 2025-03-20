@@ -1,16 +1,19 @@
+import { UserRole, EnvStage } from '@datn242/questify-common';
+process.env.POSTGRES_URI = 'sqlite::memory:';
+process.env.NODE_ENV = EnvStage.Test;
+
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Sequelize } from 'sequelize';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../app';
-import { UserRole } from '@datn242/questify-common';
-
+import { sequelize } from '../config/db';
 declare global {
   var signin: () => Promise<string[]>;
 }
 
 let mongo: any;
-let sequelize: Sequelize;
+// let sequelize: Sequelize;
 
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfdsa';
@@ -18,12 +21,12 @@ beforeAll(async () => {
   const mongoUri = mongo.getUri();
   await mongoose.connect(mongoUri, {});
 
-  sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: ':memory:', // SQLite in-memory database
-    logging: false, // Disable SQL logging
-  });
-  await sequelize.sync();
+  // sequelize = new Sequelize({
+  //   dialect: 'sqlite',
+  //   storage: ':memory:', // SQLite in-memory database
+  //   logging: false, // Disable SQL logging
+  // });
+  // await sequelize.sync();
 });
 
 beforeEach(async () => {
