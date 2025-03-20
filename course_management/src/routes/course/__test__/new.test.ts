@@ -18,71 +18,45 @@ it('can only be accessed if the user is signed in', async () => {
 });
 
 it(`returns a status other than ${NotAuthorizedError.statusCode} if the user is signed in`, async () => {
-  const cookie = await global.signin();
+  const cookie = await global.getAuthCookie();
   const response = await request(app).post('/api/course-mgmt').set('Cookie', cookie).send({});
 
   expect(response.status).not.toEqual(NotAuthorizedError.statusCode);
 });
 
 it('returns an error if an invalid name is provided', async () => {
-  const cookie = await global.signin();
+  const cookie = await global.getAuthCookie();
   await request(app)
     .post('/api/course-mgmt')
     .set('Cookie', cookie)
     .send({
       name: '',
-      uploadDate: new Date(),
     })
     .expect(RequestValidationError.statusCode);
 
   await request(app)
     .post('/api/course-mgmt')
     .set('Cookie', cookie)
-    .send({
-      uploadDate: new Date(),
-    })
-    .expect(RequestValidationError.statusCode);
-});
-
-it('returns an error if an invalid name is provided', async () => {
-  const cookie = await global.signin();
-  await request(app)
-    .post('/api/course-mgmt')
-    .set('Cookie', cookie)
-    .send({
-      name: 'DSA',
-      uploadDate: '1/2/2025',
-    })
-    .expect(RequestValidationError.statusCode);
-
-  await request(app)
-    .post('/api/course-mgmt')
-    .set('Cookie', cookie)
-    .send({
-      name: 'DSA',
-    })
+    .send({})
     .expect(RequestValidationError.statusCode);
 });
 
 it('creates a Course with valid inputs', async () => {
-  const cookie = await global.signin();
+  const cookie = await global.getAuthCookie();
   let Courses = await Course.findAll();
   expect(Courses.length).toEqual(0);
 
   const name = 'DSA';
-  const uploadDate = new Date().toISOString();
 
   await request(app)
     .post('/api/course-mgmt')
     .set('Cookie', cookie)
     .send({
       name: name,
-      uploadDate: uploadDate,
     })
     .expect(201);
 
   Courses = await Course.findAll();
   expect(Courses.length).toEqual(1);
   expect(Courses[0].name).toEqual(name);
-  expect(Courses[0].uploadDate.toISOString()).toEqual(uploadDate);
 });

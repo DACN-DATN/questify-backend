@@ -21,13 +21,6 @@ const CourseDefinition = {
     allowNull: true,
     type: DataTypes.STRING,
   },
-  uploadDate: {
-    allowNull: false,
-    type: DataTypes.DATE,
-    validate: {
-      isDate: true,
-    },
-  },
   backgroundImage: {
     allowNull: true,
     type: DataTypes.STRING, // may change this later
@@ -55,7 +48,6 @@ interface CourseAttributes {
   id: string;
   name: string;
   description?: string;
-  uploadDate: Date;
   backgroundImage?: string;
   teacherId: string;
   isDeleted: boolean;
@@ -69,7 +61,6 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public id!: string;
   public name!: string;
   public description?: string;
-  public uploadDate!: Date;
   public backgroundImage?: string;
   public teacherId!: string;
   public isDeleted!: boolean;

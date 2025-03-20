@@ -13,13 +13,7 @@ const router = express.Router();
 router.put(
   '/api/course-mgmt/:course_id',
   requireAuth,
-  [
-    body('name').notEmpty().withMessage('Course name is required').trim(),
-    body('uploadDate')
-      .optional({ nullable: true })
-      .isDate()
-      .withMessage('Upload date must be a valid date'),
-  ],
+  [body('name').notEmpty().withMessage('Course name is required')],
   validateRequest,
   async (req: Request, res: Response) => {
     const course = await Course.findByPk(req.params.course_id);
@@ -32,11 +26,10 @@ router.put(
       throw new NotAuthorizedError();
     }
 
-    const { name, description, uploadDate, backgroundImage } = req.body;
+    const { name, description, backgroundImage } = req.body;
     course.set({
       name,
       description,
-      uploadDate,
       backgroundImage,
     });
 

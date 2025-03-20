@@ -12,24 +12,16 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
 
 declare global {
-  var signin: () => Promise<string[]>;
+  var getAuthCookie: (gmail?: string) => Promise<string[]>;
 }
 
 let mongo: any;
-// let sequelize: Sequelize;
 
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfdsa';
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
   await mongoose.connect(mongoUri, {});
-
-  // sequelize = new Sequelize({
-  //   dialect: 'sqlite',
-  //   storage: ':memory:', // SQLite in-memory database
-  //   logging: false, // Disable SQL logging
-  // });
-  // await sequelize.sync();
 });
 
 beforeEach(async () => {
@@ -54,10 +46,10 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-global.signin = async () => {
+global.getAuthCookie = async (gmail: string = 'test@test.com') => {
   // Create a user in the database with this ID
   const user = await User.create({
-    gmail: 'test@test.com',
+    gmail: gmail,
     hashedPassword: 'hashed_password',
     role: UserRole.Teacher,
   });
