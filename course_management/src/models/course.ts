@@ -1,13 +1,14 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
+import { v4 as uuidv4 } from 'uuid';
 
 const CourseDefinition = {
   id: {
     allowNull: false,
-    autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
+    defaultValue: () => uuidv4(),
   },
   name: {
     allowNull: false,
@@ -33,13 +34,10 @@ const CourseDefinition = {
   },
   teacherId: {
     allowNull: false,
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     references: {
       model: User,
       key: 'id',
-    },
-    validate: {
-      isInt: true,
     },
   },
   isDeleted: {
@@ -54,7 +52,7 @@ const CourseDefinition = {
 };
 
 interface CourseAttributes {
-  id: number;
+  id: string;
   name: string;
   description?: string;
   uploadDate: Date;
@@ -68,7 +66,7 @@ interface CourseCreationAttributes
   extends Optional<CourseAttributes, 'id' | 'isDeleted' | 'deletedAt'> {}
 
 class Course extends Model<CourseAttributes, CourseCreationAttributes> implements CourseAttributes {
-  public id!: number;
+  public id!: string;
   public name!: string;
   public description?: string;
   public uploadDate!: Date;

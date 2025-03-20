@@ -1,35 +1,30 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Island } from './island';
+import { v4 as uuidv4 } from 'uuid';
 
 const PrerequisiteIslandDefinition = {
   islandId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     primaryKey: true,
     references: {
       model: Island,
       key: 'id',
-    },
-    validate: {
-      isInt: true,
     },
   },
   prerequisiteIslandId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     primaryKey: true,
     references: {
       model: Island,
       key: 'id',
-    },
-    validate: {
-      isInt: true,
     },
   },
 };
 
 interface PrerequisiteIslandAttributes {
-  islandId: number;
-  prerequisiteIslandId: number;
+  islandId: string;
+  prerequisiteIslandId: string;
 }
 
 interface PrerequisiteIslandCreationAttributes
@@ -39,8 +34,8 @@ class PrerequisiteIsland
   extends Model<PrerequisiteIslandAttributes, PrerequisiteIslandCreationAttributes>
   implements PrerequisiteIslandAttributes
 {
-  public islandId!: number;
-  public prerequisiteIslandId!: number;
+  public islandId!: string;
+  public prerequisiteIslandId!: string;
 
   static readonly scopes = {};
   static readonly validations = {};

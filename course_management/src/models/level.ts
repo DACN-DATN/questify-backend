@@ -1,13 +1,14 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Island } from './island';
+import { v4 as uuidv4 } from 'uuid';
 
 const LevelDefinition = {
   id: {
     allowNull: false,
-    autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
+    defaultValue: () => uuidv4(),
   },
   name: {
     allowNull: false,
@@ -26,19 +27,16 @@ const LevelDefinition = {
   },
   islandId: {
     allowNull: false,
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     references: {
       model: Island,
       key: 'id',
-    },
-    validate: {
-      isInt: true,
     },
   },
 };
 
 interface LevelAttributes {
-  id: number;
+  id: string;
   name: string;
   description?: string;
   position: number;
@@ -48,7 +46,7 @@ interface LevelAttributes {
 interface LevelCreationAttributes extends Optional<LevelAttributes, 'id'> {}
 
 class Level extends Model<LevelAttributes, LevelCreationAttributes> implements LevelAttributes {
-  public id!: number;
+  public id!: string;
   public name!: string;
   public description?: string;
   public position!: number;

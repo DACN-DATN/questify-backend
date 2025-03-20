@@ -1,13 +1,14 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { UserRole } from '@datn242/questify-common';
+import { v4 as uuidv4 } from 'uuid';
 
 const UserDefinition = {
   id: {
     allowNull: false,
-    autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
+    defaultValue: () => uuidv4(),
   },
   gmail: {
     allowNull: false,
@@ -52,7 +53,7 @@ const UserDefinition = {
 };
 
 interface UserAttributes {
-  id: number;
+  id: string;
   gmail?: string;
   hashedPassword: string;
   phoneNumber?: string;
@@ -64,7 +65,7 @@ interface UserAttributes {
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  public id!: number;
+  public id!: string;
   public gmail?: string;
   public hashedPassword!: string;
   public phoneNumber?: string;
