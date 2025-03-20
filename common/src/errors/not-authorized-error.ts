@@ -1,6 +1,7 @@
 import { CustomError } from './custom-error';
 
 export class NotAuthorizedError extends CustomError {
+  static statusCode = 401;
   statusCode = 401;
 
   constructor() {
