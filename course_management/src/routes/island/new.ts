@@ -13,8 +13,8 @@ router.post(
     body('name').notEmpty().withMessage('Island name is required').trim(),
     body('position').notEmpty().withMessage('Postion is required'),
     body('courseId')
-      .isNumeric()
-      .withMessage('Course ID must be a valid number')
+      .isUUID()
+      .withMessage('Course ID must be a valid UUID')
       .notEmpty()
       .withMessage('Course ID is required'),
   ],

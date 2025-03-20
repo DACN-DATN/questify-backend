@@ -8,6 +8,9 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../app';
 import { sequelize } from '../config/db';
+import jwt from 'jsonwebtoken';
+import { User } from '../models/user';
+
 declare global {
   var signin: () => Promise<string[]>;
 }
@@ -52,26 +55,20 @@ afterAll(async () => {
 });
 
 global.signin = async () => {
-  const userName = 'test';
-  const email = 'test@test.com';
-  const password = 'password';
-  const role = UserRole.Student;
-
-  const response = await request(app)
-    .post('/api/users/signup')
-    .send({
-      userName,
-      email,
-      password,
-      role,
-    })
-    .expect(201);
-
-  const cookie = response.get('Set-Cookie');
-
-  if (!cookie) {
-    throw new Error('Failed to get cookie from response');
-  }
-
-  return cookie;
+  // Create a user in the database with this ID
+  const user = await User.create({
+    gmail: 'test@test.com',
+    hashedPassword: 'hashed_password',
+    role: UserRole.Teacher,
+  });
+  const payload = {
+    id: user.id,
+    gmail: user.gmail,
+    role: user.role,
+  };
+  const token = jwt.sign(payload, process.env.JWT_KEY!);
+  const session = { jwt: token };
+  const sessionJSON = JSON.stringify(session);
+  const base64 = Buffer.from(sessionJSON).toString('base64');
+  return [`session=${base64}`];
 };

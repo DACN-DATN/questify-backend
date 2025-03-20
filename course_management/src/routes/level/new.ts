@@ -16,7 +16,7 @@ router.post(
       .withMessage('Course postion is required')
       .isInt()
       .withMessage('Position must be an integer'),
-    body('islandId').isNumeric().withMessage('Island ID must be a valid number'),
+    body('islandId').isUUID().withMessage('Island ID must be a valid UUID'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
