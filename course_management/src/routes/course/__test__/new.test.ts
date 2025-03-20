@@ -24,67 +24,65 @@ it(`returns a status other than ${NotAuthorizedError.statusCode} if the user is 
   expect(response.status).not.toEqual(NotAuthorizedError.statusCode);
 });
 
-// it('returns an error if an invalid name is provided', async () => {
-//   const cookie = await global.signin();
-//   await request(app)
-//     .post('/api/course-mgmt')
-//     .set('Cookie', cookie)
-//     .send({
-//       title: '',
-//       price: 10,
-//     })
-//     .expect(RequestValidationError.statusCode);
-
-//   const cookie2 = await global.signin();
-//   await request(app)
-//     .post('/api/course-mgmt')
-//     .set('Cookie', cookie2)
-//     .send({
-//       price: 10,
-//     })
-//     .expect(RequestValidationError.statusCode);
-// });
-
-// it('returns an error if an invalid price is provided', async () => {
-//   const cookie = await global.signin();
-//   await request(app)
-//     .post('/api/course-mgmt')
-//     .set('Cookie', cookie)
-//     .send({
-//       title: 'asldkjf',
-//       price: -10,
-//     })
-//     .expect(RequestValidationError.statusCode);
-
-//   const cookie2 = await global.signin();
-//   await request(app)
-//     .post('/api/course-mgmt')
-//     .set('Cookie', cookie2)
-//     .send({
-//       title: 'laskdfj',
-//     })
-//     .expect(RequestValidationError.statusCode);
-// });
-
-it('creates a Course with valid inputs', async () => {
+it('returns an error if an invalid name is provided', async () => {
   const cookie = await global.signin();
-  let Courses = await Course.findAll();
-  expect(Courses.length).toEqual(0);
+  await request(app)
+    .post('/api/course-mgmt')
+    .set('Cookie', cookie)
+    .send({
+      name: '',
+      uploadDate: new Date(),
+    })
+    .expect(RequestValidationError.statusCode);
 
-  // const name = 'DSA';
-  // const uploadDate = new Date().toISOString();
+  await request(app)
+    .post('/api/course-mgmt')
+    .set('Cookie', cookie)
+    .send({
+      uploadDate: new Date(),
+    })
+    .expect(RequestValidationError.statusCode);
+});
+
+it('returns an error if an invalid name is provided', async () => {
+  const cookie = await global.signin();
+  await request(app)
+    .post('/api/course-mgmt')
+    .set('Cookie', cookie)
+    .send({
+      name: 'DSA',
+      uploadDate: '1/2/2025',
+    })
+    .expect(RequestValidationError.statusCode);
 
   await request(app)
     .post('/api/course-mgmt')
     .set('Cookie', cookie)
     .send({
       name: 'DSA',
-      uploadDate: new Date(),
+    })
+    .expect(RequestValidationError.statusCode);
+});
+
+it('creates a Course with valid inputs', async () => {
+  const cookie = await global.signin();
+  let Courses = await Course.findAll();
+  expect(Courses.length).toEqual(0);
+
+  const name = 'DSA';
+  const uploadDate = new Date().toISOString();
+
+  await request(app)
+    .post('/api/course-mgmt')
+    .set('Cookie', cookie)
+    .send({
+      name: name,
+      uploadDate: uploadDate,
     })
     .expect(201);
 
   Courses = await Course.findAll();
   expect(Courses.length).toEqual(1);
-  // expect(Courses[0].price).toEqual(20);
-  // expect(Courses[0].title).toEqual(title);
+  expect(Courses[0].name).toEqual(name);
+  expect(Courses[0].uploadDate.toISOString()).toEqual(uploadDate);
 });
