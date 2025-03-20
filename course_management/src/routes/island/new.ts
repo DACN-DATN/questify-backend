@@ -10,13 +10,12 @@ router.post(
   '/api/course-mgmt/:course_id/islands',
   requireAuth,
   [
-    body('name').notEmpty().withMessage('Island name is required').trim(),
-    body('position').notEmpty().withMessage('Postion is required'),
-    body('courseId')
-      .isUUID()
-      .withMessage('Course ID must be a valid UUID')
+    body('name').notEmpty().withMessage('Island name is required'),
+    body('position')
       .notEmpty()
-      .withMessage('Course ID is required'),
+      .withMessage('Postion is required')
+      .isNumeric()
+      .withMessage('Position must be a number'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
