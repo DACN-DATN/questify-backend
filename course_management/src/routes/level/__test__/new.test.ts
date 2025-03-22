@@ -1,14 +1,7 @@
 import request from 'supertest';
 import { app } from '../../../app';
-import { Course } from '../../../models/course';
-import { Island } from '../../../models/island';
 import { Level } from '../../../models/level';
-import {
-  NotAuthorizedError,
-  RequestValidationError,
-  NotFoundError,
-  BadRequestError,
-} from '@datn242/questify-common';
+import { NotAuthorizedError, NotFoundError, BadRequestError } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 
 it('has a route handler listening to /api/course-mgmt/islands/:island_id/level for post requests', async () => {
@@ -52,7 +45,7 @@ it('return BadRequestError if island not found', async () => {
 
 it('returns an error if an invalid name or position is provided', async () => {
   const cookie = await global.getAuthCookie();
-  let levels = await Level.findAll();
+  const levels = await Level.findAll();
   expect(levels.length).toEqual(0);
 
   const course_res = await request(app)

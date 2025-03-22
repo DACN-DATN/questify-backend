@@ -39,7 +39,7 @@ app.use(updateIslandRouter);
 
 app.use(createLevelRouter);
 
-app.all('*', async (req, res) => {
+app.all('*', async () => {
   throw new NotFoundError();
 });
 

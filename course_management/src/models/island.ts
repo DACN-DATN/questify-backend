@@ -48,8 +48,7 @@ interface IslandAttributes {
   courseId: string;
 }
 
-interface IslandCreationAttributes extends Optional<IslandAttributes, 'id'> {}
-
+type IslandCreationAttributes = Optional<IslandAttributes, 'id'>;
 class Island extends Model<IslandAttributes, IslandCreationAttributes> implements IslandAttributes {
   public id!: string;
   public name!: string;

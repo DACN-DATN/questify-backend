@@ -26,7 +26,7 @@ router.put(
       throw new NotAuthorizedError();
     }
 
-    const updateFields: Record<string, any> = {};
+    const updateFields: Partial<Course> = {};
     const { name, description, backgroundImage } = req.body;
     if (name !== undefined) updateFields['name'] = name;
     if (description !== undefined) updateFields['description'] = description;

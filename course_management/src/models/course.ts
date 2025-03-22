@@ -54,8 +54,7 @@ interface CourseAttributes {
   deletedAt?: Date;
 }
 
-interface CourseCreationAttributes
-  extends Optional<CourseAttributes, 'id' | 'isDeleted' | 'deletedAt'> {}
+type CourseCreationAttributes = Optional<CourseAttributes, 'id' | 'isDeleted' | 'deletedAt'>;
 
 class Course extends Model<CourseAttributes, CourseCreationAttributes> implements CourseAttributes {
   public id!: string;
