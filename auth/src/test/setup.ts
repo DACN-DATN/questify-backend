@@ -4,11 +4,12 @@ import request from 'supertest';
 import { app } from '../app';
 import { UserRole } from '@datn242/questify-common';
 
+/* eslint-disable no-var */
 declare global {
   var signin: () => Promise<string[]>;
 }
 
-let mongo: any;
+let mongo: MongoMemoryServer;
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfdsa';
   mongo = await MongoMemoryServer.create();
@@ -20,7 +21,7 @@ beforeEach(async () => {
   if (mongoose.connection.db) {
     const collections = await mongoose.connection.db.collections();
 
-    for (let collection of collections) {
+    for (const collection of collections) {
       await collection.deleteMany({});
     }
   }

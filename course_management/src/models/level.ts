@@ -43,7 +43,7 @@ interface LevelAttributes {
   islandId: string;
 }
 
-interface LevelCreationAttributes extends Optional<LevelAttributes, 'id'> {}
+type LevelCreationAttributes = Optional<LevelAttributes, 'id'>;
 
 class Level extends Model<LevelAttributes, LevelCreationAttributes> implements LevelAttributes {
   public id!: string;

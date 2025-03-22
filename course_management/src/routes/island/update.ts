@@ -47,7 +47,7 @@ router.put(
       throw new NotFoundError();
     }
 
-    const updateFields: Record<string, any> = {};
+    const updateFields: Partial<Island> = {};
     const { name, description, position, backgroundImage } = req.body;
 
     if (name !== undefined) updateFields['name'] = name;

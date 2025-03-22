@@ -24,7 +24,7 @@ app.use(signinRouter);
 app.use(signupRouter);
 app.use(signoutRouter);
 
-app.all('*', async (req, res) => {
+app.all('*', async () => {
   throw new NotFoundError();
 });
 

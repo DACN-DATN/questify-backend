@@ -1,7 +1,6 @@
 import { app } from './app';
 import { connectDb, closeDbConnection } from './config/db';
 import { syncModels } from './scripts/sync';
-import { EnvStage } from '@datn242/questify-common';
 
 const start = async () => {
   await connectDb();

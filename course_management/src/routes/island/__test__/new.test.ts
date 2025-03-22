@@ -1,13 +1,7 @@
 import request from 'supertest';
 import { app } from '../../../app';
-import { Course } from '../../../models/course';
 import { Island } from '../../../models/island';
-import {
-  NotAuthorizedError,
-  RequestValidationError,
-  NotFoundError,
-  BadRequestError,
-} from '@datn242/questify-common';
+import { NotAuthorizedError, NotFoundError, BadRequestError } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 
 it('has a route handler listening to /api/course-mgmt/:course_id/islands for post requests', async () => {

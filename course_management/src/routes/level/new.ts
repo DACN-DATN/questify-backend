@@ -26,7 +26,7 @@ router.post(
       throw new Error('Island not found');
     }
 
-    const { name, description, position, backgroundImage } = req.body;
+    const { name, description, position } = req.body;
     const level = Level.build({
       name,
       description,

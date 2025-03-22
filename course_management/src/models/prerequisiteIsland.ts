@@ -1,7 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Island } from './island';
-import { v4 as uuidv4 } from 'uuid';
 
 const PrerequisiteIslandDefinition = {
   islandId: {
@@ -27,8 +26,10 @@ interface PrerequisiteIslandAttributes {
   prerequisiteIslandId: string;
 }
 
-interface PrerequisiteIslandCreationAttributes
-  extends Optional<PrerequisiteIslandAttributes, 'islandId' | 'prerequisiteIslandId'> {}
+type PrerequisiteIslandCreationAttributes = Optional<
+  PrerequisiteIslandAttributes,
+  'islandId' | 'prerequisiteIslandId'
+>;
 
 class PrerequisiteIsland
   extends Model<PrerequisiteIslandAttributes, PrerequisiteIslandCreationAttributes>
