@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Password } from '../services/password';
 import { UserRole } from '@datn242/questify-common';
+import { v4 as uuidv4 } from 'uuid';
 
 // An TS interfact that describes the properties
 // that are required to create a new User
@@ -32,6 +33,10 @@ interface UserDoc extends mongoose.Document {
 
 const userSchema = new mongoose.Schema(
   {
+    _id: {
+      type: String,
+      default: () => uuidv4(),
+    },
     firstName: {
       type: String,
       required: false,
