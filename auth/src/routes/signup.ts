@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { UserRole } from '@datn242/questify-common';
-import { validateRequest, BadRequestError } from '@datn242/questify-common';
+import { validateRequest, BadRequestError, NotFoundError } from '@datn242/questify-common';
 import { User } from '../models/user';
 
 const router = express.Router();
@@ -49,28 +49,30 @@ router.post(
   [
     body('password')
       .trim()
-      .isLength({ min: 4, max: 20 })
-      .withMessage('Password must be between 4 and 20 characters'),
+      .isLength({ min: 8, max: 20 })
+      .withMessage('Password must be between 8 and 20 characters'),
     body('confirmedPassword')
       .trim()
-      .isLength({ min: 4, max: 20 })
-      .withMessage('Password must be between 4 and 20 characters'),
+      .isLength({ min: 8, max: 20 })
+      .withMessage('Password must be between 8 and 20 characters'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
     const { password, confirmedPassword } = req.body;
+
     if (!req.session?.pendingSignup) {
-      throw new BadRequestError('You must validate your email and username first');
+      throw new NotFoundError();
     }
+
     const { userName, email } = req.session.pendingSignup;
 
     const existingUser = await User.findOne({
       $or: [{ email }, { userName }],
     });
-
     if (existingUser) {
       throw new BadRequestError('Email or username is no longer available');
     }
+
     if (password !== confirmedPassword) {
       throw new BadRequestError('Passwords do not match');
     }
@@ -83,7 +85,7 @@ router.post(
     });
 
     await user.save();
-    // Generate JWT
+
     const userJwt = jwt.sign(
       {
         id: user.id,
@@ -92,7 +94,6 @@ router.post(
       process.env.JWT_KEY!,
     );
 
-    // Clear the pending signup and set the JWT
     req.session = {
       jwt: userJwt,
     };

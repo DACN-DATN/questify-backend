@@ -1,7 +1,11 @@
 import request from 'supertest';
 import { app } from '../../app';
-import { UserRole } from '@datn242/questify-common';
-import { RequestValidationError, BadRequestError } from '@datn242/questify-common';
+import {
+  RequestValidationError,
+  BadRequestError,
+  NotFoundError,
+  UserRole,
+} from '@datn242/questify-common';
 import { User } from '../../models/user';
 
 describe('1st signup page: validate userName and email', () => {
@@ -101,7 +105,7 @@ describe('2nd signup page: complete signup', () => {
         password: 'password',
         confirmedPassword: 'password',
       })
-      .expect(RequestValidationError.statusCode);
+      .expect(NotFoundError.statusCode);
   });
 
   it('return BadRequestError when password not match confirmedPassword', async () => {
