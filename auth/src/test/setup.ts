@@ -38,15 +38,23 @@ global.signin = async () => {
   const userName = 'test';
   const email = 'test@test.com';
   const password = 'password';
-  const role = UserRole.Student;
+
+  const firstResponse = await request(app)
+    .post('/api/users/validate-credentials')
+    .send({
+      userName: userName,
+      email: email,
+    })
+    .expect(200);
+
+  const cookies = firstResponse.get('Set-Cookie');
 
   const response = await request(app)
-    .post('/api/users/signup')
+    .post('/api/users/complete-signup')
+    .set('Cookie', cookies || [])
     .send({
-      userName,
-      email,
-      password,
-      role,
+      password: password,
+      confirmedPassword: password,
     })
     .expect(201);
 
