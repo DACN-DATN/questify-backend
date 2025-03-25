@@ -4,7 +4,7 @@ import { currentUser } from '@datn242/questify-common';
 
 const router = express.Router();
 
-router.get('/api/users/currentuser', currentUser, async (req, res) => {
+router.get('/api/users/currentuser', currentUser, (req, res) => {
   res.send({ currentUser: req.currentUser || null });
 });
 
