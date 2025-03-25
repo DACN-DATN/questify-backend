@@ -15,7 +15,7 @@ router.get('/api/users/currentuser', currentUser, async (req, res) => {
       res.status(404).send({ error: 'User not found' });
     }
   } else {
-    res.send(null);
+    res.send({ currentUser: null });
   }
 });
 
