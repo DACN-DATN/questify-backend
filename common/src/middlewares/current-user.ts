@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { UserRole } from '../types/user-roles';
 
 interface UserPayload {
   id: string;
   email: string;
+  userName: string;
+  role: UserRole
 }
 
 declare module 'express-serve-static-core' {
