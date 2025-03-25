@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
-import { Challenge } from './challenge';
+import { Level } from './level';
 import { v4 as uuidv4 } from 'uuid';
 
 const MinigameDefinition = {
@@ -14,7 +14,7 @@ const MinigameDefinition = {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
-      model: Challenge,
+      model: Level,
       key: 'id',
     },
   },
