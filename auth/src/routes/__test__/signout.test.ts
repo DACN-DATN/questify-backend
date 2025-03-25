@@ -1,6 +1,5 @@
 import request from 'supertest';
 import { app } from '../../app';
-import { UserRole } from '@datn242/questify-common';
 
 const signUp = async () => {
   const firstResponse = await request(app)

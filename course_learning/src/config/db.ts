@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === EnvStage.Prod || process.env.NODE_ENV === EnvStage.
 const connectDb = async () => {
   try {
     await sequelize.authenticate();
-    console.log('Connected to Course Management SRV Postgres');
+    console.log('Connected to Course Learning SRV Postgres');
   } catch (err) {
     console.error('Database connection error:', err);
     process.exit(1);
@@ -35,7 +35,7 @@ const connectDb = async () => {
 const closeDbConnection = async () => {
   try {
     await sequelize.close();
-    console.log('Course Management SRV | Database connection closed.');
+    console.log('Course Learning SRV | Database connection closed.');
   } catch (err) {
     console.error('Error closing database connection:', err);
   }

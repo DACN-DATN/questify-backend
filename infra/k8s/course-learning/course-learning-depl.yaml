@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: course-learning-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: course-learning
+  template:
+    metadata:
+      labels:
+        app: course-learning
+    spec:
+      containers:
+        - name: course-learning
+          image: questify/course-learning
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '150m'
+            limits:
+              memory: '384Mi'
+              cpu: '350m'
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: NODE_ENV
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: course-learning-postgres-secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: course-learning-postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: course-learning-postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_URI
+              value: 'postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@course-learning-postgres-srv:5432/$(POSTGRES_DB)'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: course-learning-srv
+spec:
+  selector:
+    app: course-learning
+  ports:
+    - name: course-learning
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
