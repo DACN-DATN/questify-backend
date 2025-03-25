@@ -91,7 +91,7 @@ router.post(
         id: user.id,
         email: user.email,
         userName: user.userName,
-        role: user.role
+        role: user.role,
       },
       process.env.JWT_KEY!,
     );

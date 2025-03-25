@@ -6,7 +6,7 @@ interface UserPayload {
   id: string;
   email: string;
   userName: string;
-  role: UserRole
+  role: UserRole;
 }
 
 declare module 'express-serve-static-core' {
