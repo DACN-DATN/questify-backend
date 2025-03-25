@@ -54,6 +54,14 @@ export default tseslint.config(
     },
   },
   {
+    files: ['course_learning/**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: ['./course_learning/tsconfig.json'],
+      },
+    },
+  },
+  {
     files: ['common/**/*.ts'],
     languageOptions: {
       parserOptions: {

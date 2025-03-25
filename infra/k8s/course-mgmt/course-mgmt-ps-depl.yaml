@@ -15,13 +15,20 @@ spec:
       containers:
         - name: course-mgmt-postgres
           image: 'postgres:17'
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '200m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
           ports:
             - containerPort: 5432
           envFrom:
             - configMapRef:
                 name: course-mgmt-postgres-secret
           volumeMounts:
-            - mountPath: /var/lib/course-mgmt-postgresql/data
+            - mountPath: /var/lib/postgresql/data
               name: course-mgmt-postgresdata
       volumes:
         - name: course-mgmt-postgresdata
