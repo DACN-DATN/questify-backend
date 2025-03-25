@@ -4,7 +4,7 @@ import '../models/associations';
 
 const syncModels = async () => {
   if (process.env.NODE_ENV === EnvStage.Dev) {
-    console.log('⚙️ Course Management SRV | Running sync in development mode...');
+    console.log('⚙️ Course Learning SRV | Running sync in development mode...');
     try {
       await sequelize.sync({ force: true });
       console.log('Database synced successfully');
@@ -12,7 +12,7 @@ const syncModels = async () => {
       console.error('Error syncing database:', error);
     }
   } else if (process.env.NODE_ENV === EnvStage.Prod) {
-    console.log('🚀 Course Management SRV | Production mode detected. Use migrations instead.');
+    console.log('🚀 Course Learning SRV | Production mode detected. Use migrations instead.');
     // TODO: implement migrations for production later. Temporary use force for dev
     try {
       await sequelize.sync({ force: true });
