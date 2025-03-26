@@ -44,7 +44,7 @@ app.all('*', async () => {
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  errorHandler(err, req, res, next);
+  errorHandler(err, req, res);
 });
 
 export { app };
