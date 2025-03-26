@@ -3,6 +3,8 @@ import { sequelize } from '../config/db';
 import { Level } from './level';
 import { v4 as uuidv4 } from 'uuid';
 
+type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];
+
 const MinigameDefinition = {
   id: {
     allowNull: false,
@@ -39,8 +41,8 @@ interface MinigameAttributes {
   id: string;
   challengeId: string;
   type: string;
-  description?: any;
-  answer?: any;
+  description?: JsonValue;
+  answer?: JsonValue;
 }
 
 type MinigameCreationAttributes = Optional<MinigameAttributes, 'id'>;
@@ -52,8 +54,8 @@ class Minigame
   public id!: string;
   public challengeId!: string;
   public type!: string;
-  public description?: any;
-  public answer?: any;
+  public description?: JsonValue;
+  public answer?: JsonValue;
 }
 
 Minigame.init(MinigameDefinition, {

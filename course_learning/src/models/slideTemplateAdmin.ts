@@ -11,7 +11,7 @@ const SlideTemplateAdminDefinition = {
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
   },
-  categoryId: {
+  slideTemplateId: {
     allowNull: false,
     primaryKey: true,
     type: DataTypes.UUID,
@@ -33,7 +33,7 @@ const SlideTemplateAdminDefinition = {
 
 interface SlideTemplateAdminAttributes {
   id: string;
-  categoryId: string;
+  slideTemplateId: string;
   adminId: string;
 }
 
@@ -42,7 +42,7 @@ class SlideTemplateAdmin
   implements SlideTemplateAdminAttributes
 {
   public id!: string;
-  public categoryId!: string;
+  public slideTemplateId!: string;
   public adminId!: string;
 }
 

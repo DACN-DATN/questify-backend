@@ -1,8 +1,10 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
-import { Challenge } from './challenge';
-import { SlideCategory } from './slideTemplate';
+import { Level } from './level';
+import { SlideTemplate } from './slideTemplate';
 import { v4 as uuidv4 } from 'uuid';
+
+type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];
 
 const SlideDefinition = {
   id: {
@@ -15,7 +17,7 @@ const SlideDefinition = {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
-      model: Challenge,
+      model: Level,
       key: 'id',
     },
   },
@@ -23,11 +25,11 @@ const SlideDefinition = {
     allowNull: true,
     type: DataTypes.JSON,
   },
-  categoryId: {
+  slideTemplateId: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
-      model: SlideCategory,
+      model: SlideTemplate,
       key: 'id',
     },
   },
@@ -36,8 +38,8 @@ const SlideDefinition = {
 interface SlideAttributes {
   id: string;
   challengeId: string;
-  parameterValue?: any;
-  categoryId: string;
+  parameterValue?: JsonValue;
+  slideTemplateId: string;
 }
 
 type SlideCreationAttributes = Optional<SlideAttributes, 'id'>;
@@ -45,8 +47,8 @@ type SlideCreationAttributes = Optional<SlideAttributes, 'id'>;
 class Slide extends Model<SlideAttributes, SlideCreationAttributes> implements SlideAttributes {
   public id!: string;
   public challengeId!: string;
-  public parameterValue?: any;
-  public categoryId!: string;
+  public parameterValue?: JsonValue;
+  public slideTemplateId!: string;
 }
 
 Slide.init(SlideDefinition, {

@@ -6,6 +6,8 @@ import { Island } from './island';
 import { Level } from './level';
 import { v4 as uuidv4 } from 'uuid';
 
+type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];
+
 const ProgressDefinition = {
   id: {
     allowNull: false,
@@ -15,7 +17,6 @@ const ProgressDefinition = {
   },
   studentId: {
     allowNull: false,
-    primaryKey: true,
     type: DataTypes.UUID,
     references: {
       model: User,
@@ -64,7 +65,7 @@ const ProgressDefinition = {
 interface ProgressAttributes {
   id: string;
   studentId: string;
-  progress?: any;
+  progress?: JsonValue;
   startDate: Date;
   finishDate?: Date;
   courseId: string;
@@ -80,7 +81,7 @@ class Progress
 {
   public id!: string;
   public studentId!: string;
-  public progress?: any;
+  public progress?: JsonValue;
   public startDate!: Date;
   public finishDate?: Date;
   public courseId!: string;

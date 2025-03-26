@@ -2,6 +2,8 @@ import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { v4 as uuidv4 } from 'uuid';
 
+type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];
+
 const SlideTemplateDefinition = {
   id: {
     allowNull: false,
@@ -17,7 +19,7 @@ const SlideTemplateDefinition = {
 
 interface SlideTemplateAttributes {
   id: string;
-  parameter?: any;
+  parameter?: JsonValue;
 }
 
 type SlideTemplateCreationAttributes = Optional<SlideTemplateAttributes, 'id'>;
@@ -27,7 +29,7 @@ class SlideTemplate
   implements SlideTemplateAttributes
 {
   public id!: string;
-  public parameter?: any;
+  public parameter?: JsonValue;
 }
 
 SlideTemplate.init(SlideTemplateDefinition, {
