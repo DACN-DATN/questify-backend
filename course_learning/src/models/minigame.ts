@@ -12,7 +12,7 @@ const MinigameDefinition = {
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
   },
-  challengeId: {
+  levelId: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
@@ -39,7 +39,7 @@ const MinigameDefinition = {
 
 interface MinigameAttributes {
   id: string;
-  challengeId: string;
+  levelId: string;
   type: string;
   description?: JsonValue;
   answer?: JsonValue;
@@ -52,7 +52,7 @@ class Minigame
   implements MinigameAttributes
 {
   public id!: string;
-  public challengeId!: string;
+  public levelId!: string;
   public type!: string;
   public description?: JsonValue;
   public answer?: JsonValue;

@@ -4,17 +4,7 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
-// import { indexCourseRouter } from './routes/course/index';
-// import { showCourseRouter } from './routes/course/show';
-// import { createCourseRouter } from './routes/course/new';
-// import { updateCourseRouter } from './routes/course/update';
-// import { deleteCourseRouter } from './routes/course/delete';
-
-// import { createIslandRouter } from './routes/island/new';
-// import { showIslandRouter } from './routes/island/show';
-// import { updateIslandRouter } from './routes/island/update';
-
-// import { createLevelRouter } from './routes/level/new';
+import { showLevelRouter } from './routes/island/show';
 
 const app = express();
 app.set('trust proxy', true);
@@ -27,17 +17,7 @@ app.use(
 );
 app.use(currentUser);
 
-// app.use(indexCourseRouter);
-// app.use(showCourseRouter);
-// app.use(createCourseRouter);
-// app.use(updateCourseRouter);
-// app.use(deleteCourseRouter);
-
-// app.use(createIslandRouter);
-// app.use(showIslandRouter);
-// app.use(updateIslandRouter);
-
-// app.use(createLevelRouter);
+app.use(showLevelRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
