@@ -15,11 +15,6 @@ const FeedbackDefinition = {
     allowNull: true,
     type: DataTypes.STRING,
   },
-  uploadDate: {
-    allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
   teacherId: {
     allowNull: false,
     type: DataTypes.UUID,
@@ -41,12 +36,11 @@ const FeedbackDefinition = {
 interface FeedbackAttributes {
   id: string;
   description?: string;
-  uploadDate: Date;
   teacherId: string;
   progressId?: string;
 }
 
-type FeedbackCreationAttributes = Optional<FeedbackAttributes, 'id' | 'uploadDate'>;
+type FeedbackCreationAttributes = Optional<FeedbackAttributes, 'id'>;
 
 class Feedback
   extends Model<FeedbackAttributes, FeedbackCreationAttributes>
@@ -54,7 +48,6 @@ class Feedback
 {
   public id!: string;
   public description?: string;
-  public uploadDate!: Date;
   public teacherId!: string;
   public progressId?: string;
 }

@@ -23,6 +23,9 @@ const VideoDefinition = {
     type: DataTypes.STRING,
     validate: {
       notEmpty: true,
+      isUrl: {
+        msg: 'Must be a valid URL (e.g., https://example.com)',
+      },
     },
   },
 };

@@ -15,6 +15,7 @@ const CourseDefinition = {
     type: DataTypes.STRING,
     validate: {
       notEmpty: true,
+      len: [2, 100] as [number, number],
     },
   },
   description: {

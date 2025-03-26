@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Challenge } from './challenge';
-import { SlideCategory } from './slideCategory';
+import { SlideCategory } from './slideTemplate';
 import { v4 as uuidv4 } from 'uuid';
 
 const SlideDefinition = {

@@ -2,7 +2,7 @@ import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { v4 as uuidv4 } from 'uuid';
 
-const SlideCategoryDefinition = {
+const SlideTemplateDefinition = {
   id: {
     allowNull: false,
     primaryKey: true,
@@ -15,27 +15,27 @@ const SlideCategoryDefinition = {
   },
 };
 
-interface SlideCategoryAttributes {
+interface SlideTemplateAttributes {
   id: string;
   parameter?: any;
 }
 
-type SlideCategoryCreationAttributes = Optional<SlideCategoryAttributes, 'id'>;
+type SlideTemplateCreationAttributes = Optional<SlideTemplateAttributes, 'id'>;
 
-class SlideCategory
-  extends Model<SlideCategoryAttributes, SlideCategoryCreationAttributes>
-  implements SlideCategoryAttributes
+class SlideTemplate
+  extends Model<SlideTemplateAttributes, SlideTemplateCreationAttributes>
+  implements SlideTemplateAttributes
 {
   public id!: string;
   public parameter?: any;
 }
 
-SlideCategory.init(SlideCategoryDefinition, {
+SlideTemplate.init(SlideTemplateDefinition, {
   sequelize,
-  tableName: 'slide_category',
+  tableName: 'slide_template',
   underscored: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export { SlideCategory };
+export { SlideTemplate };

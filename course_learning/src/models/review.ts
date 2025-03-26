@@ -33,10 +33,18 @@ const ReviewDefinition = {
   },
   rating: {
     allowNull: false,
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL(2, 1),
     validate: {
+      isDecimal: true,
       min: 1,
       max: 5,
+      isValidStep(value: number) {
+        const numValue = Number(value);
+        const decimalPart = numValue % 1;
+        if (decimalPart !== 0 && decimalPart !== 0.5) {
+          throw new Error('Rating must be in increments of 0.5 (e.g., 1, 1.5, 2, 2.5, etc.)');
+        }
+      },
     },
   },
   reviewDate: {

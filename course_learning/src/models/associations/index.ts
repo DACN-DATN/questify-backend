@@ -6,7 +6,7 @@ import defineProgressAssociations from './progress.associations';
 import defineReviewAssociations from './review.associations';
 import defineRewardAssociations from './reward.associations';
 import defineSlideAssociations from './slide.associations';
-import defineSlideCategoryAssociations from './slideCategory.associations';
+import defineSlideTemplateAssociations from './slideTemplate.associations';
 import defineStudentRewardAssociations from './studentReward.associations';
 import defineUserAssociations from './user.associations';
 import defineLevelAssociations from './level.associations';
@@ -22,7 +22,7 @@ export const defineAssociations = () => {
   defineReviewAssociations();
   defineRewardAssociations();
   defineSlideAssociations();
-  defineSlideCategoryAssociations();
+  defineSlideTemplateAssociations();
   defineStudentRewardAssociations();
   defineUserAssociations();
   defineLevelAssociations();

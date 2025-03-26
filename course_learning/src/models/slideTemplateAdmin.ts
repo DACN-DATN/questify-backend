@@ -1,15 +1,22 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../config/db';
-import { SlideCategory } from './slideCategory';
+import { SlideTemplate } from './slideTemplate';
 import { User } from './user';
+import { v4 as uuidv4 } from 'uuid';
 
-const CategoryAdminDefinition = {
+const SlideTemplateAdminDefinition = {
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: DataTypes.UUID,
+    defaultValue: () => uuidv4(),
+  },
   categoryId: {
     allowNull: false,
     primaryKey: true,
     type: DataTypes.UUID,
     references: {
-      model: SlideCategory,
+      model: SlideTemplate,
       key: 'id',
     },
   },
@@ -24,22 +31,27 @@ const CategoryAdminDefinition = {
   },
 };
 
-interface CategoryAdminAttributes {
+interface SlideTemplateAdminAttributes {
+  id: string;
   categoryId: string;
   adminId: string;
 }
 
-class CategoryAdmin extends Model<CategoryAdminAttributes> implements CategoryAdminAttributes {
+class SlideTemplateAdmin
+  extends Model<SlideTemplateAdminAttributes>
+  implements SlideTemplateAdminAttributes
+{
+  public id!: string;
   public categoryId!: string;
   public adminId!: string;
 }
 
-CategoryAdmin.init(CategoryAdminDefinition, {
+SlideTemplateAdmin.init(SlideTemplateAdminDefinition, {
   sequelize,
-  tableName: 'category_management',
+  tableName: 'slide_template_admin',
   underscored: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export { CategoryAdmin };
+export { SlideTemplateAdmin };
