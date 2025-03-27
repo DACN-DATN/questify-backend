@@ -5,6 +5,7 @@ import {
   requireAuth,
   validateRequest,
 } from '@datn242/questify-common';
+import { query } from 'express-validator';
 import { Level } from '../../models/level';
 import { Hint } from '../../models/hint';
 
