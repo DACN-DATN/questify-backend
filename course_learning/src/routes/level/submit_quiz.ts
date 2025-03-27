@@ -9,7 +9,6 @@ router.post(
   '/api/course-learning/levels/:level_id/quizzes/:quiz_id',
   requireAuth,
   async (req: Request, res: Response) => {
-
     const { level_id, quiz_id } = req.params;
     const level = await Level.findByPk(level_id);
     if (!level) {
@@ -28,7 +27,7 @@ router.post(
     }
 
     //TODO: implement logic of submitting quiz here
-    
+
     res.status(201).send(quiz);
   },
 );

@@ -5,6 +5,8 @@ import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
 import { showLevelRouter } from './routes/island/show';
+import { showHintRouter } from './routes/level/show_hints';
+import { submitQuizRouter } from './routes/level/submit_quiz';
 
 const app = express();
 app.set('trust proxy', true);
@@ -18,6 +20,8 @@ app.use(
 app.use(currentUser);
 
 app.use(showLevelRouter);
+app.use(showHintRouter);
+app.use(submitQuizRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
