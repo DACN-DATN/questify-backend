@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Course } from '../../models/course';
 import { Island } from '../../models/island';
-import { validateRequest, requireAuth } from '@datn242/questify-common';
+import { validateRequest, requireAuth, BadRequestError } from '@datn242/questify-common';
 
 const router = express.Router();
 
@@ -22,7 +22,7 @@ router.post(
     const course = await Course.findByPk(req.params.course_id);
 
     if (!course) {
-      throw new Error('Course not found');
+      throw new BadRequestError('Course not found');
     }
 
     const { name, description, position, backgroundImage } = req.body;

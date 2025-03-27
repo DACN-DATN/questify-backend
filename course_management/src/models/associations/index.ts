@@ -1,46 +1,16 @@
-import { Course } from '../course';
-import { Island } from '../island';
-import { User } from '../user';
-import { Level } from '../level';
-import { PrerequisiteIsland } from '../prerequisiteIsland';
+import defineCourseAssociations from './course.associations';
 
-Course.belongsTo(User, {
-  foreignKey: 'userId',
-});
-Course.hasMany(Island, { foreignKey: 'courseId' });
+import defineIslandAssociations from './island.associations';
+import defineUserAssociations from './user.associations';
+import defineLevelAssociations from './level.associations';
+import definePrerequisiteIslandAssociations from './prerequisiteIsland.associations';
 
-Island.belongsTo(Course, { foreignKey: 'courseId' });
-Island.hasMany(Level, { foreignKey: 'islandId' });
-Island.belongsToMany(Island, {
-  through: PrerequisiteIsland,
-  foreignKey: 'islandId',
-  otherKey: 'prerequisiteIslandId',
-  as: 'prerequisites',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
-});
-Island.belongsToMany(Island, {
-  through: PrerequisiteIsland,
-  foreignKey: 'prerequisiteIslandId',
-  otherKey: 'islandId',
-  as: 'islandsThatArePrerequisites',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
-});
+export const defineAssociations = () => {
+  defineCourseAssociations();
+  defineIslandAssociations();
+  defineUserAssociations();
+  defineLevelAssociations();
+  definePrerequisiteIslandAssociations();
+};
 
-Level.belongsTo(Island, { foreignKey: 'islandId' });
-
-PrerequisiteIsland.belongsTo(Island, {
-  foreignKey: 'islandId',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
-});
-PrerequisiteIsland.belongsTo(Island, {
-  foreignKey: 'prerequisiteIslandId',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
-});
-
-User.hasMany(Course, { foreignKey: 'userId' });
-
-export { Course, Island, User, Level, PrerequisiteIsland };
+defineAssociations();
