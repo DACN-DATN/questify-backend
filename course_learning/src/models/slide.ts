@@ -33,6 +33,17 @@ const SlideDefinition = {
       key: 'id',
     },
   },
+
+  position: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    validate: {
+      notEmpty: true,
+      min: 0,
+    },
+    defaultValue: 0,
+    unique: true,
+  },
 };
 
 interface SlideAttributes {
@@ -40,6 +51,7 @@ interface SlideAttributes {
   challengeId: string;
   parameterValue?: JsonValue;
   slideTemplateId: string;
+  position: number;
 }
 
 type SlideCreationAttributes = Optional<SlideAttributes, 'id'>;
@@ -49,6 +61,7 @@ class Slide extends Model<SlideAttributes, SlideCreationAttributes> implements S
   public challengeId!: string;
   public parameterValue?: JsonValue;
   public slideTemplateId!: string;
+  public position!: number;
 }
 
 Slide.init(SlideDefinition, {

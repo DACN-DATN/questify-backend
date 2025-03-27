@@ -35,6 +35,16 @@ const MinigameDefinition = {
     allowNull: true,
     type: DataTypes.JSON,
   },
+  position: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    validate: {
+      notEmpty: true,
+      min: 0,
+    },
+    defaultValue: 0,
+    unique: true,
+  },
 };
 
 interface MinigameAttributes {
@@ -43,6 +53,7 @@ interface MinigameAttributes {
   type: string;
   description?: JsonValue;
   answer?: JsonValue;
+  position: number;
 }
 
 type MinigameCreationAttributes = Optional<MinigameAttributes, 'id'>;
@@ -56,6 +67,7 @@ class Minigame
   public type!: string;
   public description?: JsonValue;
   public answer?: JsonValue;
+  public position!: number;
 }
 
 Minigame.init(MinigameDefinition, {
