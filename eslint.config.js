@@ -70,6 +70,14 @@ export default tseslint.config(
     },
   },
   {
+    files: ['admin/**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: ['./admin/tsconfig.json'],
+      },
+    },
+  },
+  {
     files: ['common/**/*.ts'],
     languageOptions: {
       parserOptions: {

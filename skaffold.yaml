@@ -41,6 +41,14 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: questify/admin
+      context: admin
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
     - image: questify/client
       context: ../questify-frontend
       docker:
