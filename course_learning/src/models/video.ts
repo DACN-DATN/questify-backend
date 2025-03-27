@@ -28,12 +28,23 @@ const VideoDefinition = {
       },
     },
   },
+  position: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    validate: {
+      notEmpty: true,
+      min: 0,
+    },
+    defaultValue: 0,
+    unique: true,
+  },
 };
 
 interface VideoAttributes {
   id: string;
   levelId: string;
   url: string;
+  position: number;
 }
 
 type VideoCreationAttributes = Optional<VideoAttributes, 'id'>;
@@ -42,6 +53,7 @@ class Video extends Model<VideoAttributes, VideoCreationAttributes> implements V
   public id!: string;
   public levelId!: string;
   public url!: string;
+  public position!: number;
 }
 
 Video.init(VideoDefinition, {
