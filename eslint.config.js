@@ -62,6 +62,14 @@ export default tseslint.config(
     },
   },
   {
+    files: ['code_problem/**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: ['./code_problem/tsconfig.json'],
+      },
+    },
+  },
+  {
     files: ['common/**/*.ts'],
     languageOptions: {
       parserOptions: {

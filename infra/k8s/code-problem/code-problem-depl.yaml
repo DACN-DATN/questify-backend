@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: code-problem-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: code-problem
+  template:
+    metadata:
+      labels:
+        app: code-problem
+    spec:
+      containers:
+        - name: code-problem
+          image: questify/code-problem
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '150m'
+            limits:
+              memory: '384Mi'
+              cpu: '350m'
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: NODE_ENV
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: code-problem-postgres-secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: code-problem-postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: code-problem-postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_URI
+              value: 'postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@code-problem-postgres-srv:5432/$(POSTGRES_DB)'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: code-problem-srv
+spec:
+  selector:
+    app: code-problem
+  ports:
+    - name: code-problem
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

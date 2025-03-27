@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: code-problem-postgres-secret
+  labels:
+    app: code-problem-postgres
+data:
+  POSTGRES_DB: code_problem_ps_db
+  POSTGRES_USER: code_problem_ps_user
+  POSTGRES_PASSWORD: CodeProblemSecurePassword
