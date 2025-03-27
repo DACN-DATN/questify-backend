@@ -4,7 +4,7 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
-import { showLevelRouter } from './routes/island/show';
+import { showLevelRouter } from './routes/level/show';
 import { showHintRouter } from './routes/show_hints';
 import { submitQuizRouter } from './routes/submit_quiz';
 
