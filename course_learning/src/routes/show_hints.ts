@@ -6,8 +6,8 @@ import {
   validateRequest,
 } from '@datn242/questify-common';
 import { query } from 'express-validator';
-import { Level } from '../../models/level';
-import { Hint } from '../../models/hint';
+import { Level } from '../models/level';
+import { Hint } from '../models/hint';
 
 const router = express.Router();
 
