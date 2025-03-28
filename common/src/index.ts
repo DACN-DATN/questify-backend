@@ -12,3 +12,5 @@ export * from './middlewares/validate-request';
 
 export * from './types/user-roles';
 export * from './types/env-stages';
+export * from './types/user-status';
+export * from './types/course-status';
