@@ -1,6 +1,6 @@
 import { User } from '../user';
 import { Reward } from '../reward';
-import { StudentReward } from '../studentReward';
+import { StudentReward } from '../student-reward';
 
 const defineStudentRewardAssociations = () => {
   StudentReward.belongsTo(User, {

@@ -1,7 +1,7 @@
 import { Island } from '../island';
 import { Course } from '../course';
 import { Level } from '../level';
-import { PrerequisiteIsland } from '../prerequisiteIsland';
+import { PrerequisiteIsland } from '../prerequisite-island';
 import { Progress } from '../progress';
 import { Reward } from '../reward';
 

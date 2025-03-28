@@ -4,7 +4,7 @@ import { User } from '../user';
 import { Progress } from '../progress';
 import { Review } from '../review';
 import { Reward } from '../reward';
-import { StudentReward } from '../studentReward';
+import { StudentReward } from '../student-reward';
 
 const defineUserAssociations = () => {
   User.hasMany(Course, { foreignKey: 'userId' });

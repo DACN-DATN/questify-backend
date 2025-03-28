@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Level } from './level';
-import { SlideTemplate } from './slideTemplate';
+import { SlideTemplate } from './slide-template';
 import { v4 as uuidv4 } from 'uuid';
 
 type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];

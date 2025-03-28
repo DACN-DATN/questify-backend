@@ -6,11 +6,11 @@ import defineProgressAssociations from './progress.associations';
 import defineReviewAssociations from './review.associations';
 import defineRewardAssociations from './reward.associations';
 import defineSlideAssociations from './slide.associations';
-import defineSlideTemplateAssociations from './slideTemplate.associations';
-import defineStudentRewardAssociations from './studentReward.associations';
+import defineSlideTemplateAssociations from './slide-template.associations';
+import defineStudentRewardAssociations from './student-reward.associations';
 import defineUserAssociations from './user.associations';
 import defineLevelAssociations from './level.associations';
-import definePrerequisiteIslandAssociations from './prerequisiteIsland.associations';
+import definePrerequisiteIslandAssociations from './prerequisite-island.associations';
 import defineVideoAssociations from './video.associations';
 
 export const defineAssociations = () => {

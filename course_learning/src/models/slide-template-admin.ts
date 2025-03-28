@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../config/db';
-import { SlideTemplate } from './slideTemplate';
+import { SlideTemplate } from './slide-template';
 import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
 

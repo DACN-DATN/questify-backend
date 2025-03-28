@@ -3,7 +3,7 @@ import { Island } from '../island';
 import { Level } from '../level';
 import { Reward } from '../reward';
 import { User } from '../user';
-import { StudentReward } from '../studentReward';
+import { StudentReward } from '../student-reward';
 
 const defineRewardAssociations = () => {
   Reward.belongsTo(Course, {
