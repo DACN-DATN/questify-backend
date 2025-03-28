@@ -8,6 +8,8 @@ import { showLevelRouter } from './routes/level/show';
 import { showHintRouter } from './routes/show-hints';
 import { submitQuizRouter } from './routes/submit-quiz';
 import { showRewardsRouter } from './routes/show-rewards';
+import { showLeaderboardRouter } from './routes/show-leaderboard';
+import { newFeedbackRouter } from './routes/new-feedback';
 
 const app = express();
 app.set('trust proxy', true);
@@ -24,6 +26,8 @@ app.use(showLevelRouter);
 app.use(showHintRouter);
 app.use(submitQuizRouter);
 app.use(showRewardsRouter);
+app.use(showLeaderboardRouter);
+app.use(newFeedbackRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

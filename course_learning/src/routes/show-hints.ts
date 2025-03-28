@@ -15,13 +15,7 @@ const router = express.Router();
 router.get(
   ResourcePrefix.CourseLearning + '/hints',
   requireAuth,
-  [
-    query('level-id')
-      .exists()
-      .withMessage('level-id is required')
-      .isUUID()
-      .withMessage('level-id must be a valid UUID'),
-  ],
+  [query('level-id').isUUID().withMessage('level-id must be a valid UUID')],
   validateRequest,
   async (req: Request, res: Response) => {
     const level_id = req.query['level-id'] as string;

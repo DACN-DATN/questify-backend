@@ -6,38 +6,25 @@ import {
   validateRequest,
   ResourcePrefix,
 } from '@datn242/questify-common';
-import { query } from 'express-validator';
-import { Level } from '../models/level';
-import { Hint } from '../models/hint';
+import { param } from 'express-validator';
+import { Course } from '../models/course';
 
 const router = express.Router();
 
 router.get(
-  ResourcePrefix.CourseLearning + '/hints',
+  ResourcePrefix.CourseLearning + '/courses/:course_id/leaderboard',
   requireAuth,
-  [
-    query('level-id')
-      .exists()
-      .withMessage('level-id is required')
-      .isUUID()
-      .withMessage('level-id must be a valid UUID'),
-  ],
+  [param('course_id').isUUID().withMessage('course_id must be a valid UUID')],
   validateRequest,
   async (req: Request, res: Response) => {
-    const level_id = req.query['level-id'] as string;
+    const { course_id } = req.params;
 
-    if (!level_id) {
-      throw new BadRequestError('Level ID is required.');
-    }
-    const level = await Level.findByPk(level_id);
+    const course = await Course.findByPk(course_id);
 
-    if (!level) {
+    if (!course) {
       throw new NotFoundError();
     }
-
-    const hints = await Hint.findAll({ where: { levelId: level_id } });
-    res.send(hints);
   },
 );
 
-export { router as showHintRouter };
+export { router as showLeaderboardRouter };

@@ -52,6 +52,8 @@ class Level extends Model<LevelAttributes, LevelCreationAttributes> implements L
   public position!: number;
   public islandId!: string;
 
+  public getIsland!: () => Promise<Island>;
+
   static readonly scopes: ModelScopeOptions = {};
 
   static readonly validations: ModelValidateOptions = {};

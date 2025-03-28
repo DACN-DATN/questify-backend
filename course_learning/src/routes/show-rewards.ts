@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 import {
-  BadRequestError,
   requireAuth,
   validateRequest,
   ResourcePrefix,
+  NotFoundError,
 } from '@datn242/questify-common';
 import { param } from 'express-validator';
 import { User } from '../models/user';
@@ -14,13 +14,7 @@ const router = express.Router();
 router.get(
   ResourcePrefix.CourseLearning + '/students/:student_id/rewards',
   requireAuth,
-  [
-    param('level-id')
-      .exists()
-      .withMessage('level-id is required')
-      .isUUID()
-      .withMessage('level-id must be a valid UUID'),
-  ],
+  [param('student_id').isUUID().withMessage('student_id must be a valid UUID')],
   validateRequest,
   async (req: Request, res: Response) => {
     const { student_id } = req.params;
@@ -35,7 +29,7 @@ router.get(
     });
 
     if (!student) {
-      throw new BadRequestError('Student not found.');
+      throw new NotFoundError();
     }
 
     const rewards = student.rewards || [];

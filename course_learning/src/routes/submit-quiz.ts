@@ -4,10 +4,11 @@ import {
   requireAuth,
   validateRequest,
   ResourcePrefix,
+  BadRequestError,
 } from '@datn242/questify-common';
 import { Level } from '../models/level';
 import { Minigame } from '../models/minigame';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router.post(
       .withMessage('level-id is required')
       .isUUID()
       .withMessage('level-id must be a valid UUID'),
+    param('quiz_id').isUUID().withMessage('quiz-id must be a valid UUID'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -27,7 +29,7 @@ router.post(
     const { quiz_id } = req.params;
     const level = await Level.findByPk(level_id);
     if (!level) {
-      throw new NotFoundError();
+      throw new BadRequestError('Level not found');
     }
 
     const quiz = await Minigame.findOne({
