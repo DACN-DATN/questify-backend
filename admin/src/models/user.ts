@@ -56,6 +56,7 @@ const UserDefinition = {
     validate: {
       isIn: [[UserStatus.Active, UserStatus.Inactive, UserStatus.Suspended]],
     },
+    defaultValue: UserStatus.Active,
   },
 };
 
