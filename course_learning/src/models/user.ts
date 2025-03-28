@@ -2,6 +2,7 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { UserRole } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
+import { Reward } from './reward';
 
 const UserDefinition = {
   id: {
@@ -45,6 +46,8 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public gmail!: string;
   public role!: UserRole;
   public userName!: string;
+
+  public readonly rewards?: Reward[];
 
   static readonly scopes: ModelScopeOptions = {};
 
