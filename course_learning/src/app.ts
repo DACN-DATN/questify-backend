@@ -9,7 +9,7 @@ import { showHintRouter } from './routes/show-hints';
 import { submitQuizRouter } from './routes/submit-quiz';
 import { showRewardsRouter } from './routes/show-rewards';
 import { showLeaderboardRouter } from './routes/show-leaderboard';
-import { newFeedbackRouter } from './routes/new-feedback';
+import { newFeedbackRouter } from './routes/feedback/new';
 
 const app = express();
 app.set('trust proxy', true);

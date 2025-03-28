@@ -44,7 +44,7 @@ router.get(
     let rank = 1;
     const rankedLeaderboard = leaderboard.map((progress) => {
       return {
-        rank: rank++, // Start from 1 and increment
+        rank: rank++,
         studentId: progress.studentId,
         studentName: progress.student!.userName,
         points: progress.point,

@@ -7,12 +7,12 @@ import {
   BadRequestError,
 } from '@datn242/questify-common';
 import { body } from 'express-validator';
-import { Course } from '../models/course';
-import { Island } from '../models/island';
-import { Level } from '../models/level';
-import { Progress } from '../models/progress';
-import { User } from '../models/user';
-import { Feedback } from '../models/feedback';
+import { Course } from '../../models/course';
+import { Island } from '../../models/island';
+import { Level } from '../../models/level';
+import { Progress } from '../../models/progress';
+import { User } from '../../models/user';
+import { Feedback } from '../../models/feedback';
 
 const router = express.Router();
 
