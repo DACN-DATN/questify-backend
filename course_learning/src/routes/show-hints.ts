@@ -4,6 +4,7 @@ import {
   NotFoundError,
   requireAuth,
   validateRequest,
+  ResourcePrefix,
 } from '@datn242/questify-common';
 import { query } from 'express-validator';
 import { Level } from '../models/level';
@@ -12,7 +13,7 @@ import { Hint } from '../models/hint';
 const router = express.Router();
 
 router.get(
-  '/api/course-learning/hints',
+  ResourcePrefix.CourseLearning + '/hints',
   requireAuth,
   [
     query('level-id')

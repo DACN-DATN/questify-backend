@@ -1,5 +1,10 @@
 import express, { Request, Response } from 'express';
-import { NotFoundError, requireAuth, validateRequest } from '@datn242/questify-common';
+import {
+  NotFoundError,
+  requireAuth,
+  validateRequest,
+  ResourcePrefix,
+} from '@datn242/questify-common';
 import { Level } from '../models/level';
 import { Minigame } from '../models/minigame';
 import { body } from 'express-validator';
@@ -7,7 +12,7 @@ import { body } from 'express-validator';
 const router = express.Router();
 
 router.post(
-  '/api/course-learning/quizzes/:quiz_id',
+  ResourcePrefix.CourseLearning + '/quizzes/:quiz_id',
   requireAuth,
   [
     body('level_id')

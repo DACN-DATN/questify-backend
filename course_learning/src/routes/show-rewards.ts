@@ -1,5 +1,10 @@
 import express, { Request, Response } from 'express';
-import { BadRequestError, requireAuth, validateRequest } from '@datn242/questify-common';
+import {
+  BadRequestError,
+  requireAuth,
+  validateRequest,
+  ResourcePrefix,
+} from '@datn242/questify-common';
 import { param } from 'express-validator';
 import { User } from '../models/user';
 import { Reward } from '../models/reward';
@@ -7,7 +12,7 @@ import { Reward } from '../models/reward';
 const router = express.Router();
 
 router.get(
-  '/api/course-learning/students/:student_id/rewards',
+  ResourcePrefix.CourseLearning + '/students/:student_id/rewards',
   requireAuth,
   [
     param('level-id')
