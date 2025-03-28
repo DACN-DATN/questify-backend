@@ -38,6 +38,13 @@ spec:
                 name: code-problem-srv
                 port:
                   number: 3000
+          - path: /api/admin/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: admin-srv
+                port:
+                  number: 3000
           - path: /?(.*)
             pathType: ImplementationSpecific
             backend:
