@@ -5,8 +5,8 @@ import { Course } from './course';
 import { v4 as uuidv4 } from 'uuid';
 
 enum AdminCourseActionType {
-    Reject = 'reject',
-    Approve = 'approve',
+  Reject = 'reject',
+  Approve = 'approve',
 }
 
 const AdminCourseDefinition = {
@@ -50,17 +50,14 @@ const AdminCourseDefinition = {
 
 interface AdminCourseAttributes {
   id: string;
-  adminId: string;   
-  courseId: string;    
+  adminId: string;
+  courseId: string;
   timestamp: Date;
   reason?: string;
   actionType: AdminCourseActionType;
 }
 
-type AdminCourseCreationAttributes = Optional<
-  AdminCourseAttributes,
-  'id' | 'timestamp'
->;
+type AdminCourseCreationAttributes = Optional<AdminCourseAttributes, 'id' | 'timestamp'>;
 
 class AdminCourse
   extends Model<AdminCourseAttributes, AdminCourseCreationAttributes>
@@ -97,7 +94,7 @@ AdminCourse.init(AdminCourseDefinition, {
     },
     {
       fields: ['timestamp'],
-    }
+    },
   ],
 });
 

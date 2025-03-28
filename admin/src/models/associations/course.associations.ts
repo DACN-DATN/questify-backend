@@ -5,12 +5,12 @@ import { AdminCourse } from '../adminCourse';
 const defineCourseAssociations = () => {
   Course.belongsTo(User, {
     foreignKey: 'teacherId',
-    as: 'teacher'
+    as: 'teacher',
   });
-  
+
   Course.hasMany(AdminCourse, {
     foreignKey: 'courseId',
-    as: 'adminActions'
+    as: 'adminActions',
   });
 };
 

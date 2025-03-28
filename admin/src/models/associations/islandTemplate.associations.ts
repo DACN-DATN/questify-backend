@@ -4,7 +4,7 @@ import { AdminIslandTemplate } from '../adminIslandTemplate';
 const defineIslandTemplateAssociations = () => {
   IslandTemplate.hasMany(AdminIslandTemplate, {
     foreignKey: 'islandTemplateId',
-    as: 'adminActions'
+    as: 'adminActions',
   });
 };
 

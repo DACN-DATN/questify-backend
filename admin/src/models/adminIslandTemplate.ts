@@ -5,9 +5,9 @@ import { IslandTemplate } from './islandTemplate';
 import { v4 as uuidv4 } from 'uuid';
 
 enum AdminIslandTemplateActionType {
-    Add = 'add',
-    Edit = 'edit',
-    Remove = 'remove',
+  Add = 'add',
+  Edit = 'edit',
+  Remove = 'remove',
 }
 
 const AdminIslandTemplateDefinition = {
@@ -51,8 +51,8 @@ const AdminIslandTemplateDefinition = {
 
 interface AdminIslandTemplateAttributes {
   id: string;
-  adminId: string;   
-  islandTemplateId: string;    
+  adminId: string;
+  islandTemplateId: string;
   timestamp: Date;
   reason?: string;
   actionType: AdminIslandTemplateActionType;
@@ -98,7 +98,7 @@ AdminIslandTemplate.init(AdminIslandTemplateDefinition, {
     },
     {
       fields: ['timestamp'],
-    }
+    },
   ],
 });
 

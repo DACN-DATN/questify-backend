@@ -5,12 +5,12 @@ import { IslandTemplate } from '../islandTemplate';
 const defineAdminIslandTemplateAssociations = () => {
   AdminIslandTemplate.belongsTo(User, {
     foreignKey: 'adminId',
-    as: 'admin'
+    as: 'admin',
   });
-  
+
   AdminIslandTemplate.belongsTo(IslandTemplate, {
     foreignKey: 'islandTemplateId',
-    as: 'islandTemplate'
+    as: 'islandTemplate',
   });
 };
 

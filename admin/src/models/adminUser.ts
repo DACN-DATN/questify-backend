@@ -4,8 +4,8 @@ import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
 
 enum AdminActionType {
-    Suspend = 'suspend',
-    EditInformation = 'editInformation',
+  Suspend = 'suspend',
+  EditInformation = 'editInformation',
 }
 
 const AdminUserDefinition = {
@@ -49,17 +49,14 @@ const AdminUserDefinition = {
 
 interface AdminUserAttributes {
   id: string;
-  adminId: string;   
-  userId: string;    
+  adminId: string;
+  userId: string;
   timestamp: Date;
   reason?: string;
   actionType: AdminActionType;
 }
 
-type AdminUserCreationAttributes = Optional<
-  AdminUserAttributes,
-  'id' | 'timestamp'
->;
+type AdminUserCreationAttributes = Optional<AdminUserAttributes, 'id' | 'timestamp'>;
 
 class AdminUser
   extends Model<AdminUserAttributes, AdminUserCreationAttributes>
@@ -96,7 +93,7 @@ AdminUser.init(AdminUserDefinition, {
     },
     {
       fields: ['timestamp'],
-    }
+    },
   ],
 });
 

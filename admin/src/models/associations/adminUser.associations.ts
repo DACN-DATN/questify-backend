@@ -4,12 +4,12 @@ import { User } from '../user';
 const defineAdminUserAssociations = () => {
   AdminUser.belongsTo(User, {
     foreignKey: 'adminId',
-    as: 'admin'
+    as: 'admin',
   });
-  
+
   AdminUser.belongsTo(User, {
     foreignKey: 'userId',
-    as: 'targetUser'
+    as: 'targetUser',
   });
 };
 

@@ -39,9 +39,15 @@ interface IslandTemplateAttributes {
   deletedAt?: Date;
 }
 
-type IslandTemplateCreationAttributes = Optional<IslandTemplateAttributes, 'id' | 'isDeleted' | 'deletedAt'>;
+type IslandTemplateCreationAttributes = Optional<
+  IslandTemplateAttributes,
+  'id' | 'isDeleted' | 'deletedAt'
+>;
 
-class IslandTemplate extends Model<IslandTemplateAttributes, IslandTemplateCreationAttributes> implements IslandTemplateAttributes {
+class IslandTemplate
+  extends Model<IslandTemplateAttributes, IslandTemplateCreationAttributes>
+  implements IslandTemplateAttributes
+{
   public id!: string;
   public name!: string;
   public imageUrl!: string;
