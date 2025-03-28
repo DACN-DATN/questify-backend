@@ -12,3 +12,4 @@ export * from './middlewares/validate-request';
 
 export * from './types/user-roles';
 export * from './types/env-stages';
+export * from './types/resource-prefix';
