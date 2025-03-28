@@ -27,10 +27,10 @@ const ProgressDefinition = {
     allowNull: true,
     type: DataTypes.JSON,
   },
-  startDate: {
+  point: {
     allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
   },
   finishDate: {
     allowNull: true,
@@ -66,14 +66,16 @@ interface ProgressAttributes {
   id: string;
   studentId: string;
   progress?: JsonValue;
-  startDate: Date;
+  point: number;
   finishDate?: Date;
   courseId: string;
   islandId: string;
   levelId: string;
+
+  student?: User;
 }
 
-type ProgressCreationAttributes = Optional<ProgressAttributes, 'id' | 'startDate' | 'finishDate'>;
+type ProgressCreationAttributes = Optional<ProgressAttributes, 'id' | 'finishDate'>;
 
 class Progress
   extends Model<ProgressAttributes, ProgressCreationAttributes>
@@ -82,11 +84,13 @@ class Progress
   public id!: string;
   public studentId!: string;
   public progress?: JsonValue;
-  public startDate!: Date;
+  public point!: number;
   public finishDate?: Date;
   public courseId!: string;
   public islandId!: string;
   public levelId!: string;
+
+  public student?: User;
 }
 
 Progress.init(ProgressDefinition, {

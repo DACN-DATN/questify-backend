@@ -7,7 +7,7 @@ import { Level } from '../level';
 
 const defineProgressAssociations = () => {
   Progress.hasOne(Feedback, { foreignKey: 'progressId' });
-  Progress.belongsTo(User, { foreignKey: 'userId' });
+  Progress.belongsTo(User, { foreignKey: 'studentId', as: 'student' });
   Progress.belongsTo(Course, { foreignKey: 'courseId' });
   Progress.belongsTo(Island, { foreignKey: 'islandId' });
   Progress.belongsTo(Level, { foreignKey: 'levelId' });

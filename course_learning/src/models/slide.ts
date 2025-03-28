@@ -42,7 +42,6 @@ const SlideDefinition = {
       min: 0,
     },
     defaultValue: 0,
-    unique: true,
   },
 };
 
@@ -70,6 +69,12 @@ Slide.init(SlideDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['position'],
+    },
+  ],
 });
 
 export { Slide };

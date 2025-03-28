@@ -43,7 +43,6 @@ const MinigameDefinition = {
       min: 0,
     },
     defaultValue: 0,
-    unique: true,
   },
 };
 
@@ -76,6 +75,12 @@ Minigame.init(MinigameDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['position'],
+    },
+  ],
 });
 
 export { Minigame };

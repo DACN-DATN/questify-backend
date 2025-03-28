@@ -9,7 +9,7 @@ import { StudentReward } from '../student-reward';
 const defineUserAssociations = () => {
   User.hasMany(Course, { foreignKey: 'userId' });
   User.hasMany(Feedback, { foreignKey: 'userId' });
-  User.hasMany(Progress, { foreignKey: 'userId' });
+  User.hasMany(Progress, { foreignKey: 'studentId' });
   User.hasMany(Review, { foreignKey: 'userId' });
   User.belongsToMany(Reward, {
     through: StudentReward,

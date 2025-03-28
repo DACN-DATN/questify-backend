@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import {
-  BadRequestError,
   NotFoundError,
   requireAuth,
   validateRequest,
@@ -8,6 +7,8 @@ import {
 } from '@datn242/questify-common';
 import { param } from 'express-validator';
 import { Course } from '../models/course';
+import { User } from '../models/user';
+import { Progress } from '../models/progress';
 
 const router = express.Router();
 
@@ -24,6 +25,33 @@ router.get(
     if (!course) {
       throw new NotFoundError();
     }
+
+    const leaderboard = await Progress.findAll({
+      where: {
+        courseId: course.id,
+      },
+      include: [
+        {
+          model: User,
+          as: 'student',
+          attributes: ['id', 'userName'],
+        },
+      ],
+      attributes: ['id', 'studentId', 'point'],
+      order: [['point', 'DESC']],
+    });
+
+    let rank = 1;
+    const rankedLeaderboard = leaderboard.map((progress) => {
+      return {
+        rank: rank++, // Start from 1 and increment
+        studentId: progress.studentId,
+        studentName: progress.student!.userName,
+        points: progress.point,
+      };
+    });
+
+    res.send(rankedLeaderboard);
   },
 );
 
