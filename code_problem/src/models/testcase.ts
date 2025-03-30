@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
-import { CodeProblem } from './codeProblem';
+import { CodeProblem } from './code-problem';
 import { v4 as uuidv4 } from 'uuid';
 
 const TestcaseDefinition = {
@@ -31,7 +31,7 @@ const TestcaseDefinition = {
     type: DataTypes.STRING,
   },
   isShowed: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.BOOLEAN,
   },
 };
@@ -42,7 +42,7 @@ interface TestcaseAttributes {
   input?: string[];
   output?: string[];
   explaination?: string;
-  isShowed?: boolean;
+  isShowed: boolean;
 }
 
 type TestcaseCreationAttributes = Optional<TestcaseAttributes, 'id'>;
@@ -56,7 +56,7 @@ class Testcase
   public input?: string[];
   public output?: string[];
   public explaination?: string;
-  public isShowed?: boolean;
+  public isShowed!: boolean;
 }
 
 Testcase.init(TestcaseDefinition, {

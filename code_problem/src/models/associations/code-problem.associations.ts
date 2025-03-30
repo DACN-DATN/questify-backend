@@ -1,4 +1,4 @@
-import { CodeProblem } from '../codeProblem';
+import { CodeProblem } from '../code-problem';
 import { Testcase } from '../testcase';
 import { Level } from '../level';
 

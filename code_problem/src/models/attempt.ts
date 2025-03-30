@@ -20,7 +20,7 @@ const AttemptDefinition = {
     },
   },
   answer: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.JSON,
   },
   point: {

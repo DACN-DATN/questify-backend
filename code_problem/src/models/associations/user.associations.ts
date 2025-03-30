@@ -1,6 +1,6 @@
 import { User } from '../user';
 import { Attempt } from '../attempt';
-import { UserLevel } from '../userLevel';
+import { UserLevel } from '../user-level';
 import { Level } from '../level';
 
 const defineUserAssociations = () => {

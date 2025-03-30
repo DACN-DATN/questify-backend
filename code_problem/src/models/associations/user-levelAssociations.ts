@@ -1,4 +1,4 @@
-import { UserLevel } from '../userLevel';
+import { UserLevel } from '../user-level';
 import { User } from '../user';
 import { Level } from '../level';
 

@@ -19,8 +19,11 @@ const CodeProblemDefinition = {
     },
   },
   description: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.STRING,
+    validate: {
+      notEmpty: true,
+    },
   },
 };
 

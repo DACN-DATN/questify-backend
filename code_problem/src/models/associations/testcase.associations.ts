@@ -1,5 +1,5 @@
 import { Testcase } from '../testcase';
-import { CodeProblem } from '../codeProblem';
+import { CodeProblem } from '../code-problem';
 
 const defineTestcaseAssociations = () => {
   Testcase.belongsTo(CodeProblem, { foreignKey: 'codeProblemId' });

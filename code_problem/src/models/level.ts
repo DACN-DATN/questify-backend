@@ -20,10 +20,17 @@ const LevelDefinition = {
   description: {
     allowNull: true,
     type: DataTypes.STRING,
+    validate: {
+      notEmpty: true,
+    },
   },
   position: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
+    validate: {
+      notEmpty: true,
+      min: 0,
+    },
   },
   content_type: {
     allowNull: true,

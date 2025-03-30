@@ -1,7 +1,7 @@
 import { Level } from '../level';
 import { User } from '../user';
-import { CodeProblem } from '../codeProblem';
-import { UserLevel } from '../userLevel';
+import { CodeProblem } from '../code-problem';
+import { UserLevel } from '../user-level';
 
 const defineLevelAssociations = () => {
   Level.hasMany(CodeProblem, { foreignKey: 'levelId' });
