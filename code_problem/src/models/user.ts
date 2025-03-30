@@ -35,7 +35,7 @@ const UserDefinition = {
     validate: {
       isIn: [[UserStatus.Active, UserStatus.Suspended]],
     },
-  }
+  },
 };
 
 interface UserAttributes {

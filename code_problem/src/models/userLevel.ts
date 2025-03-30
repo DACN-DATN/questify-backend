@@ -50,7 +50,8 @@ type UserLevelCreationAttributes = Optional<UserLevelAttributes, 'finish_date'>;
 
 class UserLevel
   extends Model<UserLevelAttributes, UserLevelCreationAttributes>
-  implements UserLevelAttributes {
+  implements UserLevelAttributes
+{
   public studentId!: string;
   public completionStatus!: CompletionStatus;
   public point!: number;

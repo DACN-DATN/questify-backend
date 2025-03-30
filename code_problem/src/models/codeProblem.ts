@@ -34,7 +34,8 @@ type CodeProblemCreationAttributes = Optional<CodeProblemAttributes, 'id'>;
 
 class CodeProblem
   extends Model<CodeProblemAttributes, CodeProblemCreationAttributes>
-  implements CodeProblemAttributes {
+  implements CodeProblemAttributes
+{
   public id!: string;
   public levelId!: string;
   public description!: string;

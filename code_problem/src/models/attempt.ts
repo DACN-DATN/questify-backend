@@ -49,7 +49,8 @@ type AttemptCreationAttributes = Optional<AttemptAttributes, 'id'>;
 
 class Attempt
   extends Model<AttemptAttributes, AttemptCreationAttributes>
-  implements AttemptAttributes {
+  implements AttemptAttributes
+{
   public id!: string;
   public userId!: string;
   public answer!: object;

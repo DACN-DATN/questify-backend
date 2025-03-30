@@ -49,7 +49,8 @@ type TestcaseCreationAttributes = Optional<TestcaseAttributes, 'id'>;
 
 class Testcase
   extends Model<TestcaseAttributes, TestcaseCreationAttributes>
-  implements TestcaseAttributes {
+  implements TestcaseAttributes
+{
   public id!: string;
   public codeProblemId!: string;
   public input?: string[];
