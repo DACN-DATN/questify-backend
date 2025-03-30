@@ -1,8 +1,8 @@
-import { Level } from '../level';
 import { Testcase } from '../testcase';
+import { CodeProblem } from '../codeProblem';
 
 const defineTestcaseAssociations = () => {
-  Testcase.belongsTo(Level, { foreignKey: 'levelId' });
+  Testcase.belongsTo(CodeProblem, { foreignKey: 'codeProblemId' });
 };
 
 export default defineTestcaseAssociations;

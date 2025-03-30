@@ -1,12 +1,10 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
-import { User } from './user';
 import { Level } from './level';
+import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
 
-type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];
-
-const ProgressDefinition = {
+const AttemptDefinition = {
   id: {
     allowNull: false,
     primaryKey: true,
@@ -21,18 +19,13 @@ const ProgressDefinition = {
       key: 'id',
     },
   },
-  progress: {
-    allowNull: true,
+  answer: {
+    allowNull: false,
     type: DataTypes.JSON,
   },
-  startDate: {
+  point: {
     allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-  finishDate: {
-    allowNull: true,
-    type: DataTypes.DATE,
+    type: DataTypes.INTEGER,
   },
   levelId: {
     allowNull: false,
@@ -44,35 +37,32 @@ const ProgressDefinition = {
   },
 };
 
-interface ProgressAttributes {
+interface AttemptAttributes {
   id: string;
   userId: string;
-  progress?: JsonValue;
-  startDate: Date;
-  finishDate?: Date;
+  answer: object;
+  point: number;
   levelId: string;
 }
 
-type ProgressCreationAttributes = Optional<ProgressAttributes, 'id' | 'startDate' | 'finishDate'>;
+type AttemptCreationAttributes = Optional<AttemptAttributes, 'id'>;
 
-class Progress
-  extends Model<ProgressAttributes, ProgressCreationAttributes>
-  implements ProgressAttributes
-{
+class Attempt
+  extends Model<AttemptAttributes, AttemptCreationAttributes>
+  implements AttemptAttributes {
   public id!: string;
   public userId!: string;
-  public progress?: JsonValue;
-  public startDate!: Date;
-  public finishDate?: Date;
+  public answer!: object;
+  public point!: number;
   public levelId!: string;
 }
 
-Progress.init(ProgressDefinition, {
+Attempt.init(AttemptDefinition, {
   sequelize,
-  tableName: 'progress',
+  tableName: 'attempts',
   underscored: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export { Progress };
+export { Attempt };

@@ -1,10 +1,18 @@
 import { Level } from '../level';
-import { Progress } from '../progress';
-import { Testcase } from '../testcase';
+import { User } from '../user';
+import { CodeProblem } from '../codeProblem';
+import { UserLevel } from '../userLevel';
 
 const defineLevelAssociations = () => {
-  Level.belongsTo(Progress, { foreignKey: 'progressId' });
-  Level.hasMany(Testcase, { foreignKey: 'levelId' });
+  Level.hasMany(CodeProblem, { foreignKey: 'levelId' });
+  Level.belongsToMany(User, {
+    through: UserLevel,
+    foreignKey: 'levelId',
+    otherKey: 'studentId',
+    as: 'students',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
 };
 
 export default defineLevelAssociations;

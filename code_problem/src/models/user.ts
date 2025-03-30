@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
-import { UserRole } from '@datn242/questify-common';
+import { UserRole, UserStatus } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 
 const UserDefinition = {
@@ -29,6 +29,13 @@ const UserDefinition = {
     allowNull: false,
     type: DataTypes.STRING,
   },
+  status: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    validate: {
+      isIn: [[UserStatus.Active, UserStatus.Suspended]],
+    },
+  }
 };
 
 interface UserAttributes {
@@ -36,6 +43,7 @@ interface UserAttributes {
   gmail: string;
   role: UserRole;
   userName: string;
+  status: UserStatus;
 }
 
 type UserCreationAttributes = Optional<UserAttributes, 'id'>;
@@ -45,6 +53,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public gmail!: string;
   public role!: UserRole;
   public userName!: string;
+  public status!: UserStatus;
 
   static readonly scopes: ModelScopeOptions = {};
 

@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
-import { Level } from './level';
+import { CodeProblem } from './codeProblem';
 import { v4 as uuidv4 } from 'uuid';
 
 const TestcaseDefinition = {
@@ -10,11 +10,11 @@ const TestcaseDefinition = {
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
   },
-  levelId: {
+  codeProblemId: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
-      model: Level,
+      model: CodeProblem,
       key: 'id',
     },
   },
@@ -38,7 +38,7 @@ const TestcaseDefinition = {
 
 interface TestcaseAttributes {
   id: string;
-  levelId: string;
+  codeProblemId: string;
   input?: string[];
   output?: string[];
   explaination?: string;
@@ -49,10 +49,9 @@ type TestcaseCreationAttributes = Optional<TestcaseAttributes, 'id'>;
 
 class Testcase
   extends Model<TestcaseAttributes, TestcaseCreationAttributes>
-  implements TestcaseAttributes
-{
+  implements TestcaseAttributes {
   public id!: string;
-  public levelId!: string;
+  public codeProblemId!: string;
   public input?: string[];
   public output?: string[];
   public explaination?: string;
@@ -61,7 +60,7 @@ class Testcase
 
 Testcase.init(TestcaseDefinition, {
   sequelize,
-  tableName: 'testcase',
+  tableName: 'testcases',
   underscored: true,
   createdAt: true,
   updatedAt: true,

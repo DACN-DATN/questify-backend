@@ -1,8 +1,18 @@
 import { User } from '../user';
-import { Progress } from '../progress';
+import { Attempt } from '../attempt';
+import { UserLevel } from '../userLevel';
+import { Level } from '../level';
 
 const defineUserAssociations = () => {
-  User.hasMany(Progress, { foreignKey: 'userId' });
+  User.hasMany(Attempt, { foreignKey: 'userId' });
+  User.belongsToMany(Level, {
+    through: UserLevel,
+    foreignKey: 'studentId',
+    otherKey: 'levelId',
+    as: 'levels',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
 };
 
 export default defineUserAssociations;
