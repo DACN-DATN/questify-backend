@@ -1,4 +1,4 @@
-export enum CompletionStatus {
+export enum UserStatus {
   Active = 'active',
   Suspended = 'suspended',
 }

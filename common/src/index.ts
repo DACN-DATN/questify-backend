@@ -14,3 +14,4 @@ export * from './types/user-roles';
 export * from './types/env-stages';
 export * from './types/completion-status';
 export * from './types/level-contents';
+export * from './types/user-status';
