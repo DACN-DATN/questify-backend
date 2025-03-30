@@ -1,11 +1,7 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { v4 as uuidv4 } from 'uuid';
-
-declare enum LevelContent {
-  Challenge = 'challenge',
-  CodeProblem = 'code_problem',
-}
+import { LevelContent } from '@datn242/questify-common';
 
 const LevelDefinition = {
   id: {

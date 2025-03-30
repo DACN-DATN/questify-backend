@@ -2,12 +2,7 @@ import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Level } from './level';
 import { User } from './user';
-
-declare enum CompletionStatus {
-  Completed = 'completed',
-  Fail = 'fail',
-  In_progress = 'in_progress',
-}
+import { CompletionStatus } from '@datn242/questify-common';
 
 const UserLevelDefinition = {
   studentId: {
