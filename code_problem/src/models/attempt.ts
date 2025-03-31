@@ -24,8 +24,11 @@ const AttemptDefinition = {
     type: DataTypes.JSON,
   },
   point: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
+    validate: {
+      min: 0,
+    },
   },
   levelId: {
     allowNull: false,
@@ -41,7 +44,7 @@ interface AttemptAttributes {
   id: string;
   userId: string;
   answer: object;
-  point: number;
+  point?: number;
   levelId: string;
 }
 
@@ -54,7 +57,7 @@ class Attempt
   public id!: string;
   public userId!: string;
   public answer!: object;
-  public point!: number;
+  public point?: number;
   public levelId!: string;
 }
 

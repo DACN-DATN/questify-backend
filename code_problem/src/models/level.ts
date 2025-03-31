@@ -15,13 +15,17 @@ const LevelDefinition = {
     type: DataTypes.STRING,
     validate: {
       notEmpty: true,
+      max: 120,
+      min: 0,
     },
   },
   description: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.STRING,
     validate: {
       notEmpty: true,
+      max: 120,
+      min: 0,
     },
   },
   position: {
@@ -44,7 +48,7 @@ const LevelDefinition = {
 interface LevelAttributes {
   id: string;
   name: string;
-  description?: string;
+  description: string;
   position: number;
   content_type?: LevelContent;
 }
@@ -54,7 +58,7 @@ type LevelCreationAttributes = Optional<LevelAttributes, 'id'>;
 class Level extends Model<LevelAttributes, LevelCreationAttributes> implements LevelAttributes {
   public id!: string;
   public name!: string;
-  public description?: string;
+  public description!: string;
   public position!: number;
   public content_type?: LevelContent;
 

@@ -13,6 +13,7 @@ const defineUserAssociations = () => {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
+  User.hasMany(UserLevel, { foreignKey: 'studentId' });
 };
 
 export default defineUserAssociations;

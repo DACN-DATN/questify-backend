@@ -4,7 +4,7 @@ import { CodeProblem } from '../code-problem';
 import { UserLevel } from '../user-level';
 
 const defineLevelAssociations = () => {
-  Level.hasMany(CodeProblem, { foreignKey: 'levelId' });
+  Level.hasOne(CodeProblem, { foreignKey: 'levelId' });
   Level.belongsToMany(User, {
     through: UserLevel,
     foreignKey: 'levelId',
@@ -13,6 +13,7 @@ const defineLevelAssociations = () => {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
+  Level.hasMany(UserLevel, { foreignKey: 'levelId' });
 };
 
 export default defineLevelAssociations;

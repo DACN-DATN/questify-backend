@@ -17,12 +17,15 @@ const UserLevelDefinition = {
     allowNull: false,
     type: DataTypes.STRING,
     validate: {
-      isIn: [[CompletionStatus.Completed, CompletionStatus.Fail, CompletionStatus.In_progress]],
+      isIn: [[CompletionStatus.Completed, CompletionStatus.Fail, CompletionStatus.InProgress]],
     },
   },
   point: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
+    validate: {
+      min: 0,
+    },
   },
   finish_date: {
     allowNull: true,
@@ -41,7 +44,7 @@ const UserLevelDefinition = {
 interface UserLevelAttributes {
   studentId: string;
   completionStatus: CompletionStatus;
-  point: number;
+  point?: number;
   finish_date: Date | null;
   levelId: string;
 }
@@ -54,7 +57,7 @@ class UserLevel
 {
   public studentId!: string;
   public completionStatus!: CompletionStatus;
-  public point!: number;
+  public point?: number;
   public finish_date!: Date | null;
   public levelId!: string;
 }
