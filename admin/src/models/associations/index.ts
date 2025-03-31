@@ -1,9 +1,9 @@
 import defineUserAssociations from './user.associations';
 import defineCourseAssociations from './course.associations';
-import defineIslandTemplateAssociations from './islandTemplate.associations';
-import defineAdminUserAssociations from './adminUser.associations';
-import defineAdminCourseAssociations from './adminCourse.associations';
-import defineAdminIslandTemplateAssociations from './adminIslandTemplate.associations';
+import defineIslandTemplateAssociations from './island-template.associations';
+import defineAdminUserAssociations from './admin-user.associations';
+import defineAdminCourseAssociations from './admin-course.associations';
+import defineAdminIslandTemplateAssociations from './admin-island-template.associations';
 
 export const defineAssociations = () => {
   defineUserAssociations();

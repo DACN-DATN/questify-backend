@@ -1,6 +1,6 @@
 import { Course } from '../course';
 import { User } from '../user';
-import { AdminCourse } from '../adminCourse';
+import { AdminCourse } from '../admin-course';
 
 const defineCourseAssociations = () => {
   Course.belongsTo(User, {

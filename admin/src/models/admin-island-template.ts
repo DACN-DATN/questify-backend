@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
-import { IslandTemplate } from './islandTemplate';
+import { IslandTemplate } from './island-template';
 import { v4 as uuidv4 } from 'uuid';
 
 enum AdminIslandTemplateActionType {

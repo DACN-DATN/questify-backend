@@ -1,4 +1,4 @@
-import { AdminUser } from '../adminUser';
+import { AdminUser } from '../admin-user';
 import { User } from '../user';
 
 const defineAdminUserAssociations = () => {

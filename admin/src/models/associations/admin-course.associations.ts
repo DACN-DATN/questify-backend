@@ -1,4 +1,4 @@
-import { AdminCourse } from '../adminCourse';
+import { AdminCourse } from '../admin-course';
 import { User } from '../user';
 import { Course } from '../course';
 

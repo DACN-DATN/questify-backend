@@ -1,7 +1,7 @@
 import { User } from '../user';
-import { AdminUser } from '../adminUser';
-import { AdminCourse } from '../adminCourse';
-import { AdminIslandTemplate } from '../adminIslandTemplate';
+import { AdminUser } from '../admin-user';
+import { AdminCourse } from '../admin-course';
+import { AdminIslandTemplate } from '../admin-island-template';
 import { Course } from '../course';
 
 const defineUserAssociations = () => {

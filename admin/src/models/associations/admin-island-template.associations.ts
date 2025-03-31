@@ -1,6 +1,6 @@
-import { AdminIslandTemplate } from '../adminIslandTemplate';
+import { AdminIslandTemplate } from '../admin-island-template';
 import { User } from '../user';
-import { IslandTemplate } from '../islandTemplate';
+import { IslandTemplate } from '../island-template';
 
 const defineAdminIslandTemplateAssociations = () => {
   AdminIslandTemplate.belongsTo(User, {

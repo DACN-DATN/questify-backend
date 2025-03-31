@@ -1,5 +1,5 @@
-import { IslandTemplate } from '../islandTemplate';
-import { AdminIslandTemplate } from '../adminIslandTemplate';
+import { IslandTemplate } from '../island-template';
+import { AdminIslandTemplate } from '../admin-island-template';
 
 const defineIslandTemplateAssociations = () => {
   IslandTemplate.hasMany(AdminIslandTemplate, {
