@@ -18,31 +18,6 @@ const UserDefinition = {
       isEmail: true,
     },
   },
-  hashedPassword: {
-    allowNull: false,
-    type: DataTypes.STRING,
-  },
-  phoneNumber: {
-    allowNull: true,
-    type: DataTypes.STRING,
-    validate: {
-      is: /^[0-9]{10,15}$/,
-    },
-  },
-  firstName: {
-    allowNull: true,
-    type: DataTypes.STRING,
-    validate: {
-      isAlpha: true,
-    },
-  },
-  lastName: {
-    allowNull: true,
-    type: DataTypes.STRING,
-    validate: {
-      isAlpha: true,
-    },
-  },
   role: {
     allowNull: false,
     type: DataTypes.STRING,
@@ -50,24 +25,24 @@ const UserDefinition = {
       isIn: [[UserRole.Student, UserRole.Teacher, UserRole.Admin]],
     },
   },
+  userName: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
   status: {
     allowNull: false,
     type: DataTypes.STRING,
     validate: {
-      isIn: [[UserStatus.Active, UserStatus.Inactive, UserStatus.Suspended]],
+      isIn: [[UserStatus.Active, UserStatus.Suspended]],
     },
-    defaultValue: UserStatus.Active,
   },
 };
 
 interface UserAttributes {
   id: string;
-  gmail?: string;
-  hashedPassword: string;
-  phoneNumber?: string;
-  firstName?: string;
-  lastName?: string;
+  gmail: string;
   role: UserRole;
+  userName: string;
   status: UserStatus;
 }
 
@@ -75,12 +50,9 @@ type UserCreationAttributes = Optional<UserAttributes, 'id'>;
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: string;
-  public gmail?: string;
-  public hashedPassword!: string;
-  public phoneNumber?: string;
-  public firstName?: string;
-  public lastName?: string;
+  public gmail!: string;
   public role!: UserRole;
+  public userName!: string;
   public status!: UserStatus;
 
   static readonly scopes: ModelScopeOptions = {};

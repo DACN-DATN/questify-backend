@@ -32,11 +32,6 @@ const AdminCourseDefinition = {
       key: 'id',
     },
   },
-  timestamp: {
-    allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
   reason: {
     allowNull: true,
     type: DataTypes.STRING,
@@ -52,21 +47,18 @@ interface AdminCourseAttributes {
   id: string;
   adminId: string;
   courseId: string;
-  timestamp: Date;
   reason?: string;
   actionType: AdminCourseActionType;
 }
 
-type AdminCourseCreationAttributes = Optional<AdminCourseAttributes, 'id' | 'timestamp'>;
+type AdminCourseCreationAttributes = Optional<AdminCourseAttributes, 'id'>;
 
 class AdminCourse
   extends Model<AdminCourseAttributes, AdminCourseCreationAttributes>
-  implements AdminCourseAttributes
-{
+  implements AdminCourseAttributes {
   public id!: string;
   public adminId!: string;
   public courseId!: string;
-  public timestamp!: Date;
   public reason?: string;
   public actionType!: AdminCourseActionType;
 
@@ -78,7 +70,7 @@ AdminCourse.init(AdminCourseDefinition, {
   sequelize,
   tableName: 'admin_course_actions',
   underscored: true,
-  createdAt: false,
+  createdAt: true,
   updatedAt: false,
   scopes: AdminCourse.scopes,
   validate: AdminCourse.validations,
@@ -91,9 +83,6 @@ AdminCourse.init(AdminCourseDefinition, {
     },
     {
       fields: ['course_id'],
-    },
-    {
-      fields: ['timestamp'],
     },
   ],
 });

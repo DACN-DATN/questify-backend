@@ -33,11 +33,6 @@ const AdminIslandTemplateDefinition = {
       key: 'id',
     },
   },
-  timestamp: {
-    allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
   reason: {
     allowNull: true,
     type: DataTypes.STRING,
@@ -53,24 +48,18 @@ interface AdminIslandTemplateAttributes {
   id: string;
   adminId: string;
   islandTemplateId: string;
-  timestamp: Date;
   reason?: string;
   actionType: AdminIslandTemplateActionType;
 }
 
-type AdminIslandTemplateCreationAttributes = Optional<
-  AdminIslandTemplateAttributes,
-  'id' | 'timestamp'
->;
+type AdminIslandTemplateCreationAttributes = Optional<AdminIslandTemplateAttributes, 'id'>;
 
 class AdminIslandTemplate
   extends Model<AdminIslandTemplateAttributes, AdminIslandTemplateCreationAttributes>
-  implements AdminIslandTemplateAttributes
-{
+  implements AdminIslandTemplateAttributes {
   public id!: string;
   public adminId!: string;
   public islandTemplateId!: string;
-  public timestamp!: Date;
   public reason?: string;
   public actionType!: AdminIslandTemplateActionType;
 
@@ -82,7 +71,7 @@ AdminIslandTemplate.init(AdminIslandTemplateDefinition, {
   sequelize,
   tableName: 'admin_island_template_actions',
   underscored: true,
-  createdAt: false,
+  createdAt: true,
   updatedAt: false,
   scopes: AdminIslandTemplate.scopes,
   validate: AdminIslandTemplate.validations,
@@ -95,9 +84,6 @@ AdminIslandTemplate.init(AdminIslandTemplateDefinition, {
     },
     {
       fields: ['island_template_id'],
-    },
-    {
-      fields: ['timestamp'],
     },
   ],
 });

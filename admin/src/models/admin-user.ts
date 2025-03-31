@@ -31,11 +31,6 @@ const AdminUserDefinition = {
       key: 'id',
     },
   },
-  timestamp: {
-    allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
   reason: {
     allowNull: true,
     type: DataTypes.STRING,
@@ -51,21 +46,18 @@ interface AdminUserAttributes {
   id: string;
   adminId: string;
   userId: string;
-  timestamp: Date;
   reason?: string;
   actionType: AdminActionType;
 }
 
-type AdminUserCreationAttributes = Optional<AdminUserAttributes, 'id' | 'timestamp'>;
+type AdminUserCreationAttributes = Optional<AdminUserAttributes, 'id'>;
 
 class AdminUser
   extends Model<AdminUserAttributes, AdminUserCreationAttributes>
-  implements AdminUserAttributes
-{
+  implements AdminUserAttributes {
   public id!: string;
   public adminId!: string;
   public userId!: string;
-  public timestamp!: Date;
   public reason?: string;
   public actionType!: AdminActionType;
 
@@ -77,7 +69,7 @@ AdminUser.init(AdminUserDefinition, {
   sequelize,
   tableName: 'admin_user_actions',
   underscored: true,
-  createdAt: false,
+  createdAt: true,
   updatedAt: false,
   scopes: AdminUser.scopes,
   validate: AdminUser.validations,
@@ -90,9 +82,6 @@ AdminUser.init(AdminUserDefinition, {
     },
     {
       fields: ['user_id'],
-    },
-    {
-      fields: ['timestamp'],
     },
   ],
 });
