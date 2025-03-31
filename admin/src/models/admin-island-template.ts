@@ -56,7 +56,8 @@ type AdminIslandTemplateCreationAttributes = Optional<AdminIslandTemplateAttribu
 
 class AdminIslandTemplate
   extends Model<AdminIslandTemplateAttributes, AdminIslandTemplateCreationAttributes>
-  implements AdminIslandTemplateAttributes {
+  implements AdminIslandTemplateAttributes
+{
   public id!: string;
   public adminId!: string;
   public islandTemplateId!: string;

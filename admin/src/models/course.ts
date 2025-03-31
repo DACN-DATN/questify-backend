@@ -24,7 +24,7 @@ const CourseDefinition = {
   },
   backgroundImage: {
     allowNull: true,
-    type: DataTypes.STRING, 
+    type: DataTypes.STRING,
   },
   teacherId: {
     allowNull: false,

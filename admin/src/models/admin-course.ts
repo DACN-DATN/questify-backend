@@ -55,7 +55,8 @@ type AdminCourseCreationAttributes = Optional<AdminCourseAttributes, 'id'>;
 
 class AdminCourse
   extends Model<AdminCourseAttributes, AdminCourseCreationAttributes>
-  implements AdminCourseAttributes {
+  implements AdminCourseAttributes
+{
   public id!: string;
   public adminId!: string;
   public courseId!: string;

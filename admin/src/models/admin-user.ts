@@ -54,7 +54,8 @@ type AdminUserCreationAttributes = Optional<AdminUserAttributes, 'id'>;
 
 class AdminUser
   extends Model<AdminUserAttributes, AdminUserCreationAttributes>
-  implements AdminUserAttributes {
+  implements AdminUserAttributes
+{
   public id!: string;
   public adminId!: string;
   public userId!: string;
