@@ -1,56 +1,57 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
+import { Level } from './level';
 import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
 
-const FeedbackDefinition = {
+const ChallengeDefinition = {
   id: {
     allowNull: false,
     primaryKey: true,
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
   },
-  message: {
-    allowNull: false,
+  description: {
+    allowNull: true,
     type: DataTypes.STRING,
     validate: {
       notEmpty: true,
       len: [1, 1000] as [number, number],
     },
   },
-  teacherId: {
+  levelId: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
-      model: User,
+      model: Level,
       key: 'id',
     },
   },
 };
 
-interface FeedbackAttributes {
+interface ChallengeAttributes {
   id: string;
-  message: string;
-  teacherId: string;
+  description: string;
+  levelId: string;
 }
 
-type FeedbackCreationAttributes = Optional<FeedbackAttributes, 'id'>;
+type ChallengeCreationAttributes = Optional<ChallengeAttributes, 'id'>;
 
-class Feedback
-  extends Model<FeedbackAttributes, FeedbackCreationAttributes>
-  implements FeedbackAttributes
+class Challenge
+  extends Model<ChallengeAttributes, ChallengeCreationAttributes>
+  implements ChallengeAttributes
 {
   public id!: string;
-  public message!: string;
-  public teacherId!: string;
+  public description!: string;
+  public levelId!: string;
 }
 
-Feedback.init(FeedbackDefinition, {
+Challenge.init(ChallengeDefinition, {
   sequelize,
-  tableName: 'feedback',
+  tableName: 'challenges',
   underscored: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export { Feedback };
+export { Challenge };

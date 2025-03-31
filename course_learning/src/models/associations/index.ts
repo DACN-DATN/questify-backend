@@ -2,7 +2,6 @@ import defineCourseAssociations from './course.associations';
 import defineFeedbackAssociations from './feedback.associations';
 import defineIslandAssociations from './island.associations';
 import defineMinigameAssociations from './minigame.associations';
-import defineProgressAssociations from './progress.associations';
 import defineReviewAssociations from './review.associations';
 import defineRewardAssociations from './reward.associations';
 import defineSlideAssociations from './slide.associations';
@@ -12,13 +11,13 @@ import defineUserAssociations from './user.associations';
 import defineLevelAssociations from './level.associations';
 import definePrerequisiteIslandAssociations from './prerequisite-island.associations';
 import defineVideoAssociations from './video.associations';
+import defineAttemptAssociations from './attempt.associations';
 
 export const defineAssociations = () => {
   defineCourseAssociations();
   defineFeedbackAssociations();
   defineIslandAssociations();
   defineMinigameAssociations();
-  defineProgressAssociations();
   defineReviewAssociations();
   defineRewardAssociations();
   defineSlideAssociations();
@@ -28,6 +27,7 @@ export const defineAssociations = () => {
   defineLevelAssociations();
   definePrerequisiteIslandAssociations();
   defineVideoAssociations();
+  defineAttemptAssociations();
 };
 
 defineAssociations();

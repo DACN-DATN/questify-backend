@@ -10,7 +10,6 @@ import { body } from 'express-validator';
 import { Course } from '../../models/course';
 import { Island } from '../../models/island';
 import { Level } from '../../models/level';
-import { Progress } from '../../models/progress';
 import { User } from '../../models/user';
 import { Feedback } from '../../models/feedback';
 
@@ -33,10 +32,6 @@ router.post(
   async (req: Request, res: Response) => {
     const { student_id, course_id, island_id, level_id, description } = req.body;
 
-    if (!course_id && !island_id && !level_id) {
-      throw new BadRequestError('At least one of course_id, island_id, or level_id is required');
-    }
-
     const student = await User.findByPk(student_id);
 
     if (!student) {
@@ -49,6 +44,8 @@ router.post(
       return await addIslandFeedback(description, student, island_id, req, res);
     } else if (course_id) {
       return await addCourseFeedback(description, student, course_id, req, res);
+    } else {
+      throw new BadRequestError('At least one of course_id, island_id, or level_id is required');
     }
   },
 );

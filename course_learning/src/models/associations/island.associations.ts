@@ -2,7 +2,6 @@ import { Island } from '../island';
 import { Course } from '../course';
 import { Level } from '../level';
 import { PrerequisiteIsland } from '../prerequisite-island';
-import { Progress } from '../progress';
 import { Reward } from '../reward';
 
 const defineIslandAssociations = () => {
@@ -24,7 +23,6 @@ const defineIslandAssociations = () => {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
-  Island.hasMany(Progress, { foreignKey: 'islandId' });
   Island.hasMany(Reward, { foreignKey: 'islandId' });
 };
 

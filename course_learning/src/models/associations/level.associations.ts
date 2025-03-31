@@ -1,20 +1,16 @@
 import { Island } from '../island';
 import { Level } from '../level';
-import { Progress } from '../progress';
 import { Reward } from '../reward';
-import { Slide } from '../slide';
-import { Minigame } from '../minigame';
-import { Video } from '../video';
 import { Hint } from '../hint';
+import { Attempt } from '../attempt';
+import { Challenge } from '../challenge';
 
 const defineLevelAssociations = () => {
   Level.belongsTo(Island, { foreignKey: 'islandId' });
-  Level.belongsTo(Progress, { foreignKey: 'progressId' });
   Level.hasMany(Reward, { foreignKey: 'levelId' });
-  Level.hasMany(Slide, { foreignKey: 'levelId' });
-  Level.hasMany(Minigame, { foreignKey: 'levelId' });
-  Level.hasMany(Video, { foreignKey: 'levelId' });
   Level.hasMany(Hint, { foreignKey: 'levelId' });
+  Level.hasMany(Attempt, { foreignKey: 'levelId' });
+  Level.hasOne(Challenge, { foreignKey: 'levelId' });
 };
 
 export default defineLevelAssociations;

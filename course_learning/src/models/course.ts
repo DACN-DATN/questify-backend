@@ -66,8 +66,6 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public isDeleted!: boolean;
   public deletedAt?: Date;
 
-  public getProgresses!: () => Promise<Course>;
-
   static readonly scopes: ModelScopeOptions = {};
 
   static readonly validations: ModelValidateOptions = {};

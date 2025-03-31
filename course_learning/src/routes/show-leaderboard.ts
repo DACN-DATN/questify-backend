@@ -8,7 +8,6 @@ import {
 import { param } from 'express-validator';
 import { Course } from '../models/course';
 import { User } from '../models/user';
-import { Progress } from '../models/progress';
 
 const router = express.Router();
 

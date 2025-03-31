@@ -1,9 +1,9 @@
-import { Level } from '../level';
+import { Challenge } from '../challenge';
 import { Slide } from '../slide';
 import { SlideTemplate } from '../slide-template';
 
 const defineSlideAssociations = () => {
-  Slide.belongsTo(Level, { foreignKey: 'levelId' });
+  Slide.belongsTo(Challenge, { foreignKey: 'challengeId' });
   Slide.belongsTo(SlideTemplate, { foreignKey: 'slideTemplateId' });
 };
 
