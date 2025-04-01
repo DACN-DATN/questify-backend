@@ -11,6 +11,7 @@ import { showRewardsRouter } from './routes/show-rewards';
 import { showLeaderboardRouter } from './routes/show-leaderboard';
 import { createFeedbackRouter } from './routes/feedback/new';
 import { showFeedbackRouter } from './routes/feedback/show';
+import { showProgressRouter } from './routes/progress/show';
 
 const app = express();
 app.set('trust proxy', true);
@@ -30,6 +31,7 @@ app.use(showRewardsRouter);
 app.use(showLeaderboardRouter);
 app.use(createFeedbackRouter);
 app.use(showFeedbackRouter);
+app.use(showProgressRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
