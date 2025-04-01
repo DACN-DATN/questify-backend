@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
-import { UserRole } from '@datn242/questify-common';
+import { UserRole, UserStatus } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 
 const UserDefinition = {
@@ -50,6 +50,14 @@ const UserDefinition = {
       isIn: [[UserRole.Student, UserRole.Teacher, UserRole.Admin]],
     },
   },
+  status: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: UserStatus.Active,
+    validate: {
+      isIn: [Object.values(UserStatus)],
+    },
+  },
 };
 
 interface UserAttributes {
@@ -60,6 +68,7 @@ interface UserAttributes {
   firstName?: string;
   lastName?: string;
   role: UserRole;
+  status: UserStatus;
 }
 
 type UserCreationAttributes = Optional<UserAttributes, 'id'>;
@@ -72,6 +81,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public firstName?: string;
   public lastName?: string;
   public role!: UserRole;
+  public status!: UserStatus;
 
   static readonly scopes: ModelScopeOptions = {};
 
