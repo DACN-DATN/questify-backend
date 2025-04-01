@@ -23,9 +23,11 @@ router.post(
       .withMessage('student_id is required')
       .isUUID()
       .withMessage('course_id must be a valid UUID'),
-    body('course_id').optional().isUUID().withMessage('course_id must be a valid UUID'),
-    body('island_id').optional().isUUID().withMessage('island_id must be a valid UUID'),
-    body('level_id').optional().isUUID().withMessage('level_id must be a valid UUID'),
+    body('attemp_id')
+      .exists()
+      .withMessage('attemp_id is required')
+      .isUUID()
+      .withMessage('attempt_id must be a valid UUID'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -48,6 +50,7 @@ router.post(
     const feedback = await Feedback.create({
       message,
       teacherId: req.currentUser!.id,
+      attemptId: attempt.id,
     });
   },
 );
