@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import { UserRole } from '@datn242/questify-common';
+import { UserRole, UserStatus } from '@datn242/questify-common';
 import { validateRequest, BadRequestError, NotFoundError } from '@datn242/questify-common';
 import { User } from '../models/user';
 
@@ -82,6 +82,7 @@ router.post(
       email,
       password,
       role: UserRole.Student,
+      status: UserStatus.Active,
     });
 
     await user.save();
@@ -92,6 +93,7 @@ router.post(
         email: user.email,
         userName: user.userName,
         role: user.role,
+        status: user.status,
       },
       process.env.JWT_KEY!,
     );
