@@ -6,7 +6,7 @@ import {
   ResourcePrefix,
   BadRequestError,
 } from '@datn242/questify-common';
-import { Level } from '../models/level';
+import { Challenge } from '../models/challenge';
 import { Minigame } from '../models/minigame';
 import { body, param } from 'express-validator';
 
@@ -16,26 +16,26 @@ router.post(
   ResourcePrefix.CourseLearning + '/quizzes/:quiz_id',
   requireAuth,
   [
-    body('level_id')
+    body('challenge_id')
       .exists()
-      .withMessage('level-id is required')
+      .withMessage('challenge-id is required')
       .isUUID()
-      .withMessage('level-id must be a valid UUID'),
+      .withMessage('challenge-id must be a valid UUID'),
     param('quiz_id').isUUID().withMessage('quiz-id must be a valid UUID'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { level_id } = req.body;
+    const { challenge_id } = req.body;
     const { quiz_id } = req.params;
-    const level = await Level.findByPk(level_id);
-    if (!level) {
-      throw new BadRequestError('Level not found');
+    const challenge = await Challenge.findByPk(challenge_id);
+    if (!challenge) {
+      throw new BadRequestError('Challenge not found');
     }
 
     const quiz = await Minigame.findOne({
       where: {
         id: quiz_id,
-        levelId: level.id,
+        challengeId: challenge.id,
       },
     });
 
