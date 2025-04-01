@@ -78,14 +78,6 @@ export default tseslint.config(
     },
   },
   {
-    files: ['common/**/*.ts'],
-    languageOptions: {
-      parserOptions: {
-        project: ['./common/tsconfig.json'],
-      },
-    },
-  },
-  {
     files: ['eslint.config.js'],
     languageOptions: {
       parserOptions: {
