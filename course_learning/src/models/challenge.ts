@@ -1,7 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Level } from './level';
-import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
 
 const ChallengeDefinition = {

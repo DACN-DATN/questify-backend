@@ -6,6 +6,7 @@ import { Reward } from '../reward';
 import { Inventory } from '../inventory';
 import { ItemTemplate } from '../item-template';
 import { CourseItemTemplate } from '../course-item-template';
+import { UserCourse } from '../user-course';
 
 const defineCourseAssociations = () => {
   Course.belongsTo(User, {
@@ -24,6 +25,15 @@ const defineCourseAssociations = () => {
     onUpdate: 'CASCADE',
   });
   Course.hasMany(CourseItemTemplate, { foreignKey: 'courseId' });
+  Course.belongsToMany(User, {
+    through: 'UserCourse',
+    foreignKey: 'courseId',
+    otherKey: 'userId',
+    as: 'users',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+  Course.hasMany(UserCourse, { foreignKey: 'courseId' });
 };
 
 export default defineCourseAssociations;

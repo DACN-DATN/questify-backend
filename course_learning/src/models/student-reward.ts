@@ -13,7 +13,6 @@ const StudentRewardDefinition = {
   },
   studentId: {
     allowNull: false,
-    primaryKey: true,
     type: DataTypes.UUID,
     references: {
       model: User,
@@ -22,7 +21,6 @@ const StudentRewardDefinition = {
   },
   rewardId: {
     allowNull: false,
-    primaryKey: true,
     type: DataTypes.UUID,
     references: {
       model: Reward,
