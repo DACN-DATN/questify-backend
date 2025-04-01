@@ -24,9 +24,9 @@ router.get(
       .withMessage('student-id is required')
       .isUUID()
       .withMessage('student-id must be a valid UUID'),
-    query('course-id').optional().isUUID().withMessage('student-id must be a valid UUID'),
-    query('island-id').optional().isUUID().withMessage('student-id must be a valid UUID'),
-    query('level-id').optional().isUUID().withMessage('student-id must be a valid UUID'),
+    query('course-id').optional().isUUID().withMessage('course-id must be a valid UUID'),
+    query('island-id').optional().isUUID().withMessage('island-id must be a valid UUID'),
+    query('level-id').optional().isUUID().withMessage('level-id must be a valid UUID'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
