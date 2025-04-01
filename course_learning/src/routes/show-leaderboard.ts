@@ -8,6 +8,7 @@ import {
 import { param } from 'express-validator';
 import { Course } from '../models/course';
 import { User } from '../models/user';
+import { UserCourse } from '../models/user-course';
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ router.get(
       throw new NotFoundError();
     }
 
-    const leaderboard = await Progress.findAll({
+    const leaderboard = await UserCourse.findAll({
       where: {
         courseId: course.id,
       },
@@ -44,8 +45,8 @@ router.get(
     const rankedLeaderboard = leaderboard.map((progress) => {
       return {
         rank: rank++,
-        studentId: progress.studentId,
-        studentName: progress.student!.userName,
+        studentId: progress.userId,
+        studentName: progress.user!.userName,
         points: progress.point,
       };
     });

@@ -58,6 +58,8 @@ interface UserCourseAttributes {
   point: number;
   completionStatus: CompletionStatus;
   finishedDate?: Date;
+
+  user?: User;
 }
 
 class UserCourse extends Model<UserCourseAttributes> implements UserCourseAttributes {
@@ -67,6 +69,8 @@ class UserCourse extends Model<UserCourseAttributes> implements UserCourseAttrib
   public point!: number;
   public completionStatus!: CompletionStatus;
   public finishedDate?: Date;
+
+  public user?: User;
 }
 
 UserCourse.init(UserCourseDefinition, {
