@@ -6,7 +6,7 @@ import { Feedback } from '../feedback';
 const defineAttemptAssociations = () => {
   Attempt.belongsTo(Level, { foreignKey: 'levelId' });
   Attempt.belongsTo(User, { foreignKey: 'userId' });
-  Attempt.hasMany(Feedback, { foreignKey: 'attemptId' });
+  Attempt.hasOne(Feedback, { foreignKey: 'attemptId' });
 };
 
 export default defineAttemptAssociations;

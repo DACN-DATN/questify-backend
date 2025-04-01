@@ -1,7 +1,8 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, HasOneGetAssociationMixin } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Level } from './level';
 import { User } from './user';
+import { Feedback } from './feedback';
 import { v4 as uuidv4 } from 'uuid';
 
 const AttemptDefinition = {
@@ -59,6 +60,8 @@ class Attempt
   public answer!: object;
   public point?: number;
   public levelId!: string;
+
+  declare public getFeedback: HasOneGetAssociationMixin<Feedback>;
 }
 
 Attempt.init(AttemptDefinition, {

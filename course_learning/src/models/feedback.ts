@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
+import { Attempt } from './attempt';
 import { v4 as uuidv4 } from 'uuid';
 
 const FeedbackDefinition = {
@@ -26,12 +27,21 @@ const FeedbackDefinition = {
       key: 'id',
     },
   },
+  attemptId: {
+    allowNull: false,
+    type: DataTypes.UUID,
+    references: {
+      model: Attempt,
+      key: 'id',
+    },
+  },
 };
 
 interface FeedbackAttributes {
   id: string;
   message: string;
   teacherId: string;
+  attemptId: string;
 }
 
 type FeedbackCreationAttributes = Optional<FeedbackAttributes, 'id'>;
@@ -43,6 +53,7 @@ class Feedback
   public id!: string;
   public message!: string;
   public teacherId!: string;
+  public attemptId!: string;
 }
 
 Feedback.init(FeedbackDefinition, {
