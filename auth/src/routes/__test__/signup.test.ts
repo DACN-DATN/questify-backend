@@ -5,6 +5,7 @@ import {
   BadRequestError,
   NotFoundError,
   UserRole,
+  UserStatus,
 } from '@datn242/questify-common';
 import { User } from '../../models/user';
 
@@ -44,6 +45,7 @@ describe('1st signup page: validate userName and email', () => {
       email: 'test@datn242.com',
       password: 'password',
       role: UserRole.Student,
+      status: UserStatus.Active,
     });
 
     await user.save();
@@ -62,6 +64,7 @@ describe('1st signup page: validate userName and email', () => {
       email: 'test@datn242.com',
       password: 'password',
       role: UserRole.Student,
+      status: UserStatus.Active,
     });
 
     await user.save();
