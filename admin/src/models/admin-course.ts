@@ -4,7 +4,7 @@ import { User } from './user';
 import { Course } from './course';
 import { v4 as uuidv4 } from 'uuid';
 
-enum AdminCourseActionType {
+export enum AdminCourseActionType {
   Reject = 'reject',
   Approve = 'approve',
 }

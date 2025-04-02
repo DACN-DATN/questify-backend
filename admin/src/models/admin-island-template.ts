@@ -4,7 +4,7 @@ import { User } from './user';
 import { IslandTemplate } from './island-template';
 import { v4 as uuidv4 } from 'uuid';
 
-enum AdminIslandTemplateActionType {
+export enum AdminIslandTemplateActionType {
   Add = 'add',
   Edit = 'edit',
   Remove = 'remove',

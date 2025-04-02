@@ -3,7 +3,7 @@ import { sequelize } from '../config/db';
 import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
 
-enum AdminActionType {
+export enum AdminActionType {
   Suspend = 'suspend',
   EditInformation = 'editInformation',
 }

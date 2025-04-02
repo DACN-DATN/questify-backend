@@ -3,8 +3,10 @@ import { AdminUser } from '../admin-user';
 import { AdminCourse } from '../admin-course';
 import { AdminIslandTemplate } from '../admin-island-template';
 import { Course } from '../course';
+import { IslandTemplate } from '../island-template';
 
 const defineUserAssociations = () => {
+  // Existing One-to-Many relationships
   // User as admin performing actions
   User.hasMany(AdminUser, {
     foreignKey: 'adminId',
@@ -29,10 +31,36 @@ const defineUserAssociations = () => {
     as: 'islandTemplateActions',
   });
 
-  // User as teacher creating courses
-  User.hasMany(Course, {
-    foreignKey: 'teacherId',
-    as: 'courses',
+  // Super Many-to-Many relationships
+  // User to User Many-to-Many (admin to normal users)
+  User.belongsToMany(User, {
+    through: AdminUser,
+    foreignKey: 'adminId',
+    otherKey: 'userId',
+    as: 'managedUsers',
+  });
+
+  User.belongsToMany(User, {
+    through: AdminUser,
+    foreignKey: 'userId',
+    otherKey: 'adminId',
+    as: 'adminUsers',
+  });
+
+  // User to Course Many-to-Many (admin to courses)
+  User.belongsToMany(Course, {
+    through: AdminCourse,
+    foreignKey: 'adminId',
+    otherKey: 'courseId',
+    as: 'managedCourses',
+  });
+
+  // User to IslandTemplate Many-to-Many
+  User.belongsToMany(IslandTemplate, {
+    through: AdminIslandTemplate,
+    foreignKey: 'adminId',
+    otherKey: 'islandTemplateId',
+    as: 'managedTemplates',
   });
 };
 
