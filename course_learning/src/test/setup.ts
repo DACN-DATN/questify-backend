@@ -48,13 +48,14 @@ global.getAuthCookie = async (gmail: string = 'test@test.com') => {
   // Create a user in the database with this ID
   const user = await User.create({
     gmail: gmail,
-    hashedPassword: 'hashed_password',
     role: UserRole.Teacher,
+    userName: 'test',
   });
   const payload = {
     id: user.id,
     gmail: user.gmail,
     role: user.role,
+    userName: user.userName,
   };
   const token = jwt.sign(payload, process.env.JWT_KEY!);
   const session = { jwt: token };

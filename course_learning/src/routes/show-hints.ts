@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import {
-  BadRequestError,
   NotFoundError,
   requireAuth,
   validateRequest,

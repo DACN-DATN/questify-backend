@@ -1,10 +1,5 @@
 import express, { Request, Response } from 'express';
-import {
-  BadRequestError,
-  NotFoundError,
-  ResourcePrefix,
-  validateRequest,
-} from '@datn242/questify-common';
+import { BadRequestError, ResourcePrefix, validateRequest } from '@datn242/questify-common';
 import { Course } from '../../models/course';
 import { Island } from '../../models/island';
 import { Level } from '../../models/level';

@@ -52,6 +52,8 @@ router.post(
       teacherId: req.currentUser!.id,
       attemptId: attempt.id,
     });
+
+    res.send(feedback);
   },
 );
 

@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import {
   CompletionStatus,
   BadRequestError,
-  NotFoundError,
   ResourcePrefix,
   validateRequest,
 } from '@datn242/questify-common';
