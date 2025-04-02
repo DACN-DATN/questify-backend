@@ -12,7 +12,7 @@ import { query } from 'express-validator';
 const router = express.Router();
 
 router.get(
-  ResourcePrefix.CourseLearning + '/feedback',
+  ResourcePrefix.CourseLearning + '/progress',
   [
     query('student-id')
       .exists()

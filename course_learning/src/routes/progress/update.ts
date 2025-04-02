@@ -17,7 +17,7 @@ import { param, body } from 'express-validator';
 const router = express.Router();
 
 router.patch(
-  ResourcePrefix.CourseLearning + '/feedback/students/:student_id/courses/:course_id',
+  ResourcePrefix.CourseLearning + '/progress/students/:student_id/courses/:course_id',
   [
     param('student_id').isUUID().withMessage('student_id must be a valid UUID'),
     param('course_id').isUUID().withMessage('course_id must be a valid UUID'),
@@ -67,7 +67,7 @@ router.patch(
 );
 
 router.patch(
-  ResourcePrefix.CourseLearning + '/feedback/students/:student_id/islands/:island_id',
+  ResourcePrefix.CourseLearning + '/progress/students/:student_id/islands/:island_id',
   [
     param('student_id').isUUID().withMessage('student_id must be a valid UUID'),
     param('island_id').isUUID().withMessage('island_id must be a valid UUID'),
@@ -117,7 +117,7 @@ router.patch(
 );
 
 router.patch(
-  ResourcePrefix.CourseLearning + '/feedback/students/:student_id/levels/:level_id',
+  ResourcePrefix.CourseLearning + '/progress/students/:student_id/levels/:level_id',
   [
     param('student_id').isUUID().withMessage('student_id must be a valid UUID'),
     param('level_id').isUUID().withMessage('level_id must be a valid UUID'),
