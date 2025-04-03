@@ -5,6 +5,7 @@ import { UserIsland } from '../../models/user-island';
 import { Island } from '../../models/island';
 import { Course } from '../../models/course';
 import { Op } from 'sequelize';
+import { CompletionStatus } from '@datn242/questify-common';
 
 const router = express.Router();
 
@@ -38,16 +39,20 @@ router.post(
     }
     const islandIds = islands.map((island) => island.id);
 
-    for (const island in islands) {
+    const userIslands: UserIsland[] = [];
+
+    for (const island of islands) {
       const userIsland = UserIsland.build({
         userId: student.id,
         islandId: island.id,
         point: 0,
-        completionStatus: 'InProgress',
+        completionStatus: CompletionStatus.Locked,
       });
+      await userIsland.save();
+      userIslands.push(userIsland);
     }
 
-    res.status(201).send({});
+    res.status(201).send({ userIslands });
   },
 );
 

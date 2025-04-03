@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
 import { Island } from './island';
@@ -61,7 +61,11 @@ interface UserIslandAttributes {
   finishedDate?: Date;
 }
 
-class UserIsland extends Model<UserIslandAttributes> implements UserIslandAttributes {
+type UserIslandCreationAttributes = Optional<UserIslandAttributes, 'id'>;
+class UserIsland
+  extends Model<UserIslandAttributes, UserIslandCreationAttributes>
+  implements UserIslandAttributes
+{
   public id!: string;
   public userId!: string;
   public islandId!: string;
