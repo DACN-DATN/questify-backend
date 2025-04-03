@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
 import { Level } from './level';
@@ -61,7 +61,12 @@ interface UserLevelAttributes {
   finishedDate?: Date;
 }
 
-class UserLevel extends Model<UserLevelAttributes> implements UserLevelAttributes {
+type UserLevelCreationAttributes = Optional<UserLevelAttributes, 'id'>;
+
+class UserLevel
+  extends Model<UserLevelAttributes, UserLevelCreationAttributes>
+  implements UserLevelAttributes
+{
   public id!: string;
   public userId!: string;
   public levelId!: string;

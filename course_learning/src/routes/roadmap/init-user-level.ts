@@ -1,22 +1,22 @@
 import express, { Request, Response } from 'express';
 import { BadRequestError, requireAuth, ResourcePrefix } from '@datn242/questify-common';
 import { User } from '../../models/user';
-import { UserIsland } from '../../models/user-island';
+import { UserLevel } from '../../models/user-level';
 import { Island } from '../../models/island';
-import { Course } from '../../models/course';
+import { Level } from '../../models/level';
 import { CompletionStatus } from '@datn242/questify-common';
 
 const router = express.Router();
 
 router.post(
-  ResourcePrefix.CourseLearning + '/roadmap/courses/:course_id',
+  ResourcePrefix.CourseLearning + '/roadmap/islands/:island_id',
   requireAuth,
   async (req: Request, res: Response) => {
     const { course_id } = req.params;
 
-    const course = await Course.findByPk(course_id);
-    if (!course) {
-      throw new BadRequestError('Course not found');
+    const island = await Island.findByPk(course_id);
+    if (!island) {
+      throw new BadRequestError('Island not found');
     }
 
     const student = await User.findByPk(req.currentUser!.id);
@@ -25,32 +25,32 @@ router.post(
     }
 
     if (student.role !== 'student') {
-      throw new BadRequestError('Only student can init user island');
+      throw new BadRequestError('Only student can init user level');
     }
 
-    const islands = await Island.findAll({
+    const levels = await Level.findAll({
       where: {
-        courseId: course.id,
+        islandId: island.id,
       },
     });
-    if (!islands) {
-      throw new BadRequestError('Islands not found');
+    if (!levels) {
+      throw new BadRequestError('Levels not found');
     }
 
-    const userIslands: UserIsland[] = [];
+    const userLevels: UserLevel[] = [];
 
-    for (const island of islands) {
-      const userIsland = UserIsland.build({
+    for (const level of levels) {
+      const userLevel = UserLevel.build({
         userId: student.id,
-        islandId: island.id,
+        levelId: level.id,
         point: 0,
         completionStatus: CompletionStatus.Locked,
       });
-      await userIsland.save();
-      userIslands.push(userIsland);
+      await userLevel.save();
+      userLevels.push(userLevel);
     }
 
-    res.status(201).send({ userIslands });
+    res.status(201).send({ userLevels });
   },
 );
 
