@@ -6,11 +6,15 @@ const defineAdminIslandTemplateAssociations = () => {
   AdminIslandTemplate.belongsTo(User, {
     foreignKey: 'adminId',
     as: 'admin',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   });
 
   AdminIslandTemplate.belongsTo(IslandTemplate, {
     foreignKey: 'islandTemplateId',
     as: 'islandTemplate',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   });
 };
 

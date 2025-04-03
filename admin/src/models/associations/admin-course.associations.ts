@@ -6,11 +6,15 @@ const defineAdminCourseAssociations = () => {
   AdminCourse.belongsTo(User, {
     foreignKey: 'adminId',
     as: 'admin',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   });
 
   AdminCourse.belongsTo(Course, {
     foreignKey: 'courseId',
     as: 'course',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   });
 };
 

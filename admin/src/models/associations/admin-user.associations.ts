@@ -5,11 +5,15 @@ const defineAdminUserAssociations = () => {
   AdminUser.belongsTo(User, {
     foreignKey: 'adminId',
     as: 'admin',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   });
 
   AdminUser.belongsTo(User, {
     foreignKey: 'userId',
     as: 'targetUser',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   });
 };
 
