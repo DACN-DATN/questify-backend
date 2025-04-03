@@ -1,21 +1,21 @@
 import express, { Request, Response } from 'express';
 import { BadRequestError, requireAuth, ResourcePrefix } from '@datn242/questify-common';
 import { User } from '../../models/user';
-import { UserIsland } from '../../models/user-island';
+import { UserLevel } from '../../models/user-level';
+import { Level } from '../../models/level';
 import { Island } from '../../models/island';
-import { Course } from '../../models/course';
 import { Op } from 'sequelize';
 
 const router = express.Router();
 
 router.get(
-  ResourcePrefix.CourseLearning + '/roadmap/courses/:course_id',
+  ResourcePrefix.CourseLearning + '/roadmap/islands/:island_id',
   requireAuth,
   async (req: Request, res: Response) => {
-    const { course_id } = req.params;
+    const { island_id } = req.params;
 
-    const course = await Course.findByPk(course_id);
-    if (!course) {
+    const island = await Island.findByPk(island_id);
+    if (!island) {
       throw new BadRequestError('Course not found');
     }
 
@@ -24,32 +24,32 @@ router.get(
       throw new BadRequestError('Current student not found');
     }
 
-    const islands = await Island.findAll({
+    const levels = await Level.findAll({
       where: {
-        courseId: course.id,
+        islandId: island.id,
       },
     });
-    if (!islands) {
-      throw new BadRequestError('Islands not found');
+    if (!levels) {
+      throw new BadRequestError('Levels not found');
     }
-    const islandIds = islands.map((island) => island.id);
+    const levelIds = levels.map((level) => level.id);
 
-    const userIslands = await UserIsland.findAll({
+    const userLevels = await UserLevel.findAll({
       where: {
         userId: student.id,
-        islandId: {
-          [Op.in]: islandIds,
+        levelId: {
+          [Op.in]: levelIds,
         },
       },
       include: [
         {
-          model: Island,
-          as: 'island',
+          model: Level,
+          as: 'levels',
         },
       ],
     });
-    res.send({ userIslands });
+    res.send({ userLevels });
   },
 );
 
-export { router as showUserIslandRouter };
+export { router as showUserLevelRouter };
