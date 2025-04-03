@@ -14,6 +14,7 @@ import { showFeedbackRouter } from './routes/feedback/show';
 import { showProgressRouter } from './routes/progress/show';
 import { showAllProgressRouter } from './routes/progress/show-all';
 import { showUserIslandRouter } from './routes/roadmap/show-user-island';
+import { showUserLevelRouter } from './routes/roadmap/show-user-level';
 
 const app = express();
 app.set('trust proxy', true);
@@ -36,6 +37,7 @@ app.use(showFeedbackRouter);
 app.use(showProgressRouter);
 app.use(showAllProgressRouter);
 app.use(showUserIslandRouter);
+app.use(showUserLevelRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
