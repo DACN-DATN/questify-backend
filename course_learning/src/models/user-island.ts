@@ -42,6 +42,7 @@ const UserIslandDefinition = {
       CompletionStatus.InProgress,
       CompletionStatus.Completed,
       CompletionStatus.Fail,
+      CompletionStatus.Locked,
     ),
     defaultValue: CompletionStatus.InProgress,
   },

@@ -24,7 +24,12 @@ router.patch(
     body('point').optional().isNumeric().withMessage('point must be a number'),
     body('completion_status')
       .optional()
-      .isIn([CompletionStatus.Completed, CompletionStatus.InProgress, CompletionStatus.Fail])
+      .isIn([
+        CompletionStatus.Completed,
+        CompletionStatus.InProgress,
+        CompletionStatus.Fail,
+        CompletionStatus.Locked,
+      ])
       .withMessage('status must be one of CompletionStatus'),
     body('finished_date').optional().isDate().withMessage('finished_date must be a valid date'),
   ],
@@ -74,7 +79,12 @@ router.patch(
     body('point').optional().isNumeric().withMessage('point must be a number'),
     body('completion_status')
       .optional()
-      .isIn([CompletionStatus.Completed, CompletionStatus.InProgress, CompletionStatus.Fail])
+      .isIn([
+        CompletionStatus.Completed,
+        CompletionStatus.InProgress,
+        CompletionStatus.Fail,
+        CompletionStatus.Locked,
+      ])
       .withMessage('status must be one of CompletionStatus'),
     body('finished_date').optional().isDate().withMessage('finished_date must be a valid date'),
   ],
@@ -124,7 +134,12 @@ router.patch(
     body('point').optional().isNumeric().withMessage('point must be a number'),
     body('completion_status')
       .optional()
-      .isIn([CompletionStatus.Completed, CompletionStatus.InProgress, CompletionStatus.Fail])
+      .isIn([
+        CompletionStatus.Completed,
+        CompletionStatus.InProgress,
+        CompletionStatus.Fail,
+        CompletionStatus.Locked,
+      ])
       .withMessage('status must be one of CompletionStatus'),
     body('finished_date').optional().isDate().withMessage('finished_date must be a valid date'),
   ],
