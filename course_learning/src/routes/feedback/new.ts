@@ -8,7 +8,6 @@ import {
   BadRequestError,
 } from '@datn242/questify-common';
 import { body } from 'express-validator';
-import { User } from '../../models/user';
 import { Feedback } from '../../models/feedback';
 import { Attempt } from '../../models/attempt';
 
@@ -18,28 +17,23 @@ router.post(
   ResourcePrefix.CourseLearning + '/feedback',
   requireAuth,
   [
-    body('student_id')
-      .exists()
-      .withMessage('student_id is required')
-      .isUUID()
-      .withMessage('course_id must be a valid UUID'),
-    body('attemp_id')
+    body('attempt_id')
       .exists()
       .withMessage('attemp_id is required')
       .isUUID()
       .withMessage('attempt_id must be a valid UUID'),
+    body('message')
+      .exists()
+      .withMessage('message is required')
+      .isString()
+      .withMessage('message must be a string'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { student_id, attempt_id, message } = req.body;
+    const { attempt_id, message } = req.body;
 
     if (req.currentUser!.role !== UserRole.Teacher) {
       throw new NotAuthorizedError();
-    }
-
-    const student = await User.findByPk(student_id);
-    if (!student) {
-      throw new BadRequestError('Student not found');
     }
 
     const attempt = await Attempt.findByPk(attempt_id);
@@ -53,7 +47,7 @@ router.post(
       attemptId: attempt.id,
     });
 
-    res.send(feedback);
+    res.status(201).send(feedback);
   },
 );
 

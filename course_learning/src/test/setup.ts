@@ -10,7 +10,7 @@ import { User } from '../models/user';
 
 /* eslint-disable no-var */
 declare global {
-  var getAuthCookie: (gmail?: string) => Promise<string[]>;
+  var getAuthCookie: (gmail?: string, role?: UserRole) => Promise<string[]>;
 }
 
 let mongo: MongoMemoryServer;
@@ -44,11 +44,14 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-global.getAuthCookie = async (gmail: string = 'test@test.com') => {
+global.getAuthCookie = async (
+  gmail: string = 'test@test.com',
+  role: UserRole = UserRole.Teacher,
+) => {
   // Create a user in the database with this ID
   const user = await User.create({
     gmail: gmail,
-    role: UserRole.Teacher,
+    role: role,
     userName: 'test',
   });
   const payload = {

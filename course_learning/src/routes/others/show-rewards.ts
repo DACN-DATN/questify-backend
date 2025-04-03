@@ -6,8 +6,8 @@ import {
   NotFoundError,
 } from '@datn242/questify-common';
 import { param } from 'express-validator';
-import { User } from '../models/user';
-import { Reward } from '../models/reward';
+import { User } from '../../models/user';
+import { Reward } from '../../models/reward';
 
 const router = express.Router();
 

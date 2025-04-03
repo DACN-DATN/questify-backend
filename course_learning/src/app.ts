@@ -5,10 +5,10 @@ import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
 import { showLevelRouter } from './routes/level/show';
-import { showHintRouter } from './routes/show-hints';
-import { submitQuizRouter } from './routes/submit-quiz';
-import { showRewardsRouter } from './routes/show-rewards';
-import { showLeaderboardRouter } from './routes/show-leaderboard';
+import { showHintRouter } from './routes/others/show-hints';
+import { submitQuizRouter } from './routes/others/submit-quiz';
+import { showRewardsRouter } from './routes/others/show-rewards';
+import { showLeaderboardRouter } from './routes/others/show-leaderboard';
 import { createFeedbackRouter } from './routes/feedback/new';
 import { showFeedbackRouter } from './routes/feedback/show';
 import { showProgressRouter } from './routes/progress/show';

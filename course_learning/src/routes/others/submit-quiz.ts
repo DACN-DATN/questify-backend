@@ -6,8 +6,8 @@ import {
   ResourcePrefix,
   BadRequestError,
 } from '@datn242/questify-common';
-import { Challenge } from '../models/challenge';
-import { Minigame } from '../models/minigame';
+import { Challenge } from '../../models/challenge';
+import { Minigame } from '../../models/minigame';
 import { body, param } from 'express-validator';
 
 const router = express.Router();

@@ -44,7 +44,7 @@ const AttemptDefinition = {
 interface AttemptAttributes {
   id: string;
   userId: string;
-  answer: object;
+  answer?: object;
   point?: number;
   levelId: string;
 }
@@ -57,7 +57,7 @@ class Attempt
 {
   public id!: string;
   public userId!: string;
-  public answer!: object;
+  public answer?: object;
   public point?: number;
   public levelId!: string;
 
