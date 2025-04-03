@@ -12,6 +12,8 @@ import { showLeaderboardRouter } from './routes/show-leaderboard';
 import { createFeedbackRouter } from './routes/feedback/new';
 import { showFeedbackRouter } from './routes/feedback/show';
 import { showProgressRouter } from './routes/progress/show';
+import { showAllProgressRouter } from './routes/progress/show-all';
+import { showUserIslandRouter } from './routes/roadmap/show-user-island';
 
 const app = express();
 app.set('trust proxy', true);
@@ -32,6 +34,8 @@ app.use(showLeaderboardRouter);
 app.use(createFeedbackRouter);
 app.use(showFeedbackRouter);
 app.use(showProgressRouter);
+app.use(showAllProgressRouter);
+app.use(showUserIslandRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
