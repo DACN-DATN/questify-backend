@@ -29,8 +29,8 @@ it(`return ${RequestValidationError.statusCode} if the query input is invalid`, 
     .query({
       'level-id': fakeLevelId,
     })
+    .expect(RequestValidationError.statusCode)
     .expect((res) => {
-      expect(res.status).toBe(RequestValidationError.statusCode);
       expect(res.text).toContain('Error: Invalid request parameters');
     });
 
@@ -41,8 +41,8 @@ it(`return ${RequestValidationError.statusCode} if the query input is invalid`, 
       'student-id': 1,
       'level-id': fakeLevelId,
     })
+    .expect(RequestValidationError.statusCode)
     .expect((res) => {
-      expect(res.status).toBe(RequestValidationError.statusCode);
       expect(res.text).toContain('Error: Invalid request parameters');
     });
 
@@ -52,8 +52,8 @@ it(`return ${RequestValidationError.statusCode} if the query input is invalid`, 
     .query({
       'student-id': fakeStudentId,
     })
+    .expect(RequestValidationError.statusCode)
     .expect((res) => {
-      expect(res.status).toBe(RequestValidationError.statusCode);
       expect(res.text).toContain('Error: Invalid request parameters');
     });
   await request(app)
@@ -63,8 +63,8 @@ it(`return ${RequestValidationError.statusCode} if the query input is invalid`, 
       'student-id': fakeStudentId,
       'level-id': 2,
     })
+    .expect(RequestValidationError.statusCode)
     .expect((res) => {
-      expect(res.status).toBe(RequestValidationError.statusCode);
       expect(res.text).toContain('Error: Invalid request parameters');
     });
 });
@@ -139,8 +139,8 @@ describe('Already have course, island, level, student and attempt', () => {
         'student-id': fakeStudentId,
         'level-id': level.id,
       })
+      .expect(BadRequestError.statusCode)
       .expect((res) => {
-        expect(res.status).toBe(BadRequestError.statusCode);
         expect(res.text).toContain('Student not found');
       });
 
@@ -151,8 +151,8 @@ describe('Already have course, island, level, student and attempt', () => {
         'student-id': student.id,
         'level-id': fakeLevelId,
       })
+      .expect(BadRequestError.statusCode)
       .expect((res) => {
-        expect(res.status).toBe(BadRequestError.statusCode);
         expect(res.text).toContain('Level not found');
       });
   });
