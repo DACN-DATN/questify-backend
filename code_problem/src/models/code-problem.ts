@@ -40,18 +40,12 @@ type CodeProblemCreationAttributes = Optional<CodeProblemAttributes, 'id' | 'isD
 
 class CodeProblem
   extends Model<CodeProblemAttributes, CodeProblemCreationAttributes>
-  implements CodeProblemAttributes {
+  implements CodeProblemAttributes
+{
   public id!: string;
   public levelId!: string;
   public description?: string;
   public isDeleted!: boolean;
-
-  static async softDelete(where: Record<string, any>): Promise<void> {
-    await CodeProblem.update(
-      { isDeleted: true },
-      { where }
-    );
-  }
 }
 
 CodeProblem.init(CodeProblemDefinition, {

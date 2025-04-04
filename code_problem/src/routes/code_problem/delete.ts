@@ -7,7 +7,7 @@ import {
   ResourcePrefix,
 } from '@datn242/questify-common';
 import { Level } from '../../models/level';
-import { where } from 'sequelize';
+import { findByPkWithSoftDelete, softDelete } from '../../utils/model';
 
 const router = express.Router();
 
@@ -16,13 +16,13 @@ router.delete(
   requireAuth,
   async (req: Request, res: Response) => {
     const { code_problem_id } = req.params;
-    const code_problem = await CodeProblem.findByPk(code_problem_id);
+    const code_problem = await findByPkWithSoftDelete(CodeProblem, code_problem_id);
 
     if (!code_problem) {
       throw new NotFoundError();
     }
 
-    const level = await Level.findByPk(code_problem.levelId);
+    const level = await findByPkWithSoftDelete(Level, code_problem.levelId);
 
     if (!level) {
       throw new NotFoundError();
@@ -32,8 +32,8 @@ router.delete(
       throw new NotAuthorizedError();
     }
 
-    await CodeProblem.softDelete({ id: code_problem.id },);
-    res.status(201).send('Delete Successfully');
+    await softDelete(CodeProblem, { id: code_problem.id });
+    res.send({ message: 'Delete successfully' });
   },
 );
 

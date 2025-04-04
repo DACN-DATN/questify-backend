@@ -14,7 +14,7 @@ router.get(
       throw new NotFoundError();
     }
 
-    res.status(201).send(attempt)
+    res.send(attempt);
   },
 );
 

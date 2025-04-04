@@ -2,7 +2,21 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { CodeProblem } from '../../models/code-problem';
 import { Testcase } from '../../models/testcase';
-import { validateRequest, requireAuth, UserRole, NotAuthorizedError, BadRequestError, ResourcePrefix } from '@datn242/questify-common';
+import {
+  validateRequest,
+  requireAuth,
+  UserRole,
+  NotAuthorizedError,
+  BadRequestError,
+  ResourcePrefix,
+} from '@datn242/questify-common';
+import { findByPkWithSoftDelete } from '../../utils/model';
+
+interface TestcaseInput {
+  input: string[];
+  output: string[];
+  isShowed: boolean;
+}
 
 const router = express.Router();
 
@@ -13,20 +27,18 @@ router.post(
     body('testcases')
       .isArray({ min: 1 })
       .withMessage('testcases must be a non-empty array')
-      .custom((arr) =>
+      .custom((arr: TestcaseInput[]) =>
         arr.every(
-          (item: any) =>
+          (item) =>
             typeof item.input === 'object' &&
             Array.isArray(item.input) &&
-            item.input.every((inputItem: any) => typeof inputItem === 'string') &&
             typeof item.output === 'object' &&
             Array.isArray(item.output) &&
-            item.output.every((outputItem: any) => typeof outputItem === 'string') &&
-            typeof item.isShowed === 'boolean'
-        )
+            typeof item.isShowed === 'boolean',
+        ),
       )
       .withMessage(
-        'Each testcase must have input (array of strings), output (array of strings), and isShowed (boolean)'
+        'Each testcase must have input (array of strings), output (array of strings), and isShowed (boolean)',
       ),
   ],
   validateRequest,
@@ -38,12 +50,12 @@ router.post(
       throw new NotAuthorizedError();
     }
 
-    const code_problem = await CodeProblem.findByPk(code_problem_id);
+    const code_problem = await findByPkWithSoftDelete(CodeProblem, code_problem_id);
     if (!code_problem) {
       throw new BadRequestError('Code Problem not found');
     }
 
-    const formattedTestcases = testcases.map((testcase: any) => ({
+    const formattedTestcases = testcases.map((testcase: TestcaseInput) => ({
       codeProblemId: code_problem.id,
       input: testcase.input,
       output: testcase.output,

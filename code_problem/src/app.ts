@@ -11,7 +11,6 @@ import { deleteTestcaseRouter } from './routes/testcases/delete';
 import { createTestcaseRouter } from './routes/testcases/new';
 import { showTestcaseRouter } from './routes/testcases/show';
 import { updateTestcaseRouter } from './routes/testcases/update';
-import { uploadTestcaseRouter } from './routes/testcases/upload';
 import { indexAttemptRouter } from './routes/attempts';
 import { createAttemptRouter } from './routes/attempts/new';
 import { showAttemptRouter } from './routes/attempts/show';

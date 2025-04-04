@@ -8,6 +8,7 @@ import {
 } from '@datn242/questify-common';
 import { Level } from '../../models/level';
 import { Testcase } from '../../models/testcase';
+import { findByPkWithSoftDelete, softDelete } from '../../utils/model';
 
 const router = express.Router();
 
@@ -16,13 +17,13 @@ router.delete(
   requireAuth,
   async (req: Request, res: Response) => {
     const { code_problem_id, testcase_id } = req.params;
-    const code_problem = await CodeProblem.findByPk(code_problem_id);
+    const code_problem = await findByPkWithSoftDelete(CodeProblem, code_problem_id);
 
     if (!code_problem) {
       throw new NotFoundError();
     }
 
-    const level = await Level.findByPk(code_problem.levelId);
+    const level = await findByPkWithSoftDelete(Level, code_problem.levelId);
 
     if (!level) {
       throw new NotFoundError();
@@ -32,22 +33,19 @@ router.delete(
       throw new NotAuthorizedError();
     }
 
-    const testcase = await Testcase.findOne({
-      where: {
-        codeProblemId: code_problem_id,
-        id: testcase_id,
-      }
-    })
+    const testcase = await findByPkWithSoftDelete(Testcase, testcase_id, {
+      codeProblemId: code_problem_id,
+    });
 
     if (!testcase) {
       throw new NotFoundError();
     }
 
-    await Testcase.softDelete({
+    await softDelete(Testcase, {
       id: testcase.id,
-      code_problem_id: testcase.codeProblemId,
+      codeProblemId: testcase.codeProblemId,
     });
-    res.status(201).send('Delete Successfully');
+    res.send({ message: 'Delete successfully' });
   },
 );
 
