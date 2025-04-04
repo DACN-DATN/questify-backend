@@ -27,17 +27,12 @@ router.get(
       .exists()
       .withMessage('level-id is required')
       .isUUID()
-      .withMessage('student-id must be a valid UUID'),
+      .withMessage('level-id must be a valid UUID'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
     const student_id = req.query['student-id'] as string;
     const level_id = req.query['level-id'] as string;
-
-    if (!student_id) {
-      throw new BadRequestError('Student ID is required.');
-    }
-
     const student = await User.findByPk(student_id);
     if (!student) {
       throw new BadRequestError('Student not found');
