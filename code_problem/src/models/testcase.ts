@@ -19,44 +19,51 @@ const TestcaseDefinition = {
     },
   },
   input: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.ARRAY(DataTypes.STRING),
   },
   output: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.ARRAY(DataTypes.STRING),
-  },
-  explaination: {
-    allowNull: true,
-    type: DataTypes.STRING,
   },
   isShowed: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
+  },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
 };
 
 interface TestcaseAttributes {
   id: string;
   codeProblemId: string;
-  input?: string[];
-  output?: string[];
-  explaination?: string;
+  input: string[];
+  output: string[];
   isShowed: boolean;
+  isDeleted: boolean;
 }
 
-type TestcaseCreationAttributes = Optional<TestcaseAttributes, 'id'>;
+type TestcaseCreationAttributes = Optional<TestcaseAttributes, 'id' | 'isDeleted'>;
 
 class Testcase
   extends Model<TestcaseAttributes, TestcaseCreationAttributes>
-  implements TestcaseAttributes
-{
+  implements TestcaseAttributes {
   public id!: string;
   public codeProblemId!: string;
-  public input?: string[];
-  public output?: string[];
-  public explaination?: string;
+  public input!: string[];
+  public output!: string[];
   public isShowed!: boolean;
+  public isDeleted!: boolean;
+
+  static async softDelete(where: Record<string, any>): Promise<void> {
+    await Testcase.update(
+      { isDeleted: true },
+      { where }
+    );
+  }
 }
 
 Testcase.init(TestcaseDefinition, {

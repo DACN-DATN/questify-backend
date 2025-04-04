@@ -19,29 +19,39 @@ const CodeProblemDefinition = {
     },
   },
   description: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.TEXT,
-    validate: {
-      notEmpty: true,
-    },
+  },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: () => false,
   },
 };
 
 interface CodeProblemAttributes {
   id: string;
   levelId: string;
-  description: string;
+  description?: string;
+  isDeleted: boolean;
 }
 
-type CodeProblemCreationAttributes = Optional<CodeProblemAttributes, 'id'>;
+type CodeProblemCreationAttributes = Optional<CodeProblemAttributes, 'id' | 'isDeleted'>;
 
 class CodeProblem
   extends Model<CodeProblemAttributes, CodeProblemCreationAttributes>
-  implements CodeProblemAttributes
-{
+  implements CodeProblemAttributes {
   public id!: string;
   public levelId!: string;
-  public description!: string;
+  public description?: string;
+  public isDeleted!: boolean;
+
+  static async softDelete(where: Record<string, any>): Promise<void> {
+    await CodeProblem.update(
+      { isDeleted: true },
+      { where }
+    );
+  }
 }
 
 CodeProblem.init(CodeProblemDefinition, {

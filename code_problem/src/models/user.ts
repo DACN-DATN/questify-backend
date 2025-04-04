@@ -36,6 +36,11 @@ const UserDefinition = {
       isIn: [[UserStatus.Active, UserStatus.Suspended]],
     },
   },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 };
 
 interface UserAttributes {
@@ -44,9 +49,10 @@ interface UserAttributes {
   role: UserRole;
   userName: string;
   status: UserStatus;
+  isDeleted: boolean;
 }
 
-type UserCreationAttributes = Optional<UserAttributes, 'id'>;
+type UserCreationAttributes = Optional<UserAttributes, 'id' | 'isDeleted'>;
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: string;
@@ -54,6 +60,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public role!: UserRole;
   public userName!: string;
   public status!: UserStatus;
+  public isDeleted!: boolean;
 
   static readonly scopes: ModelScopeOptions = {};
 
