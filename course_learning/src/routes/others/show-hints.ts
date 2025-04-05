@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 import {
-  NotFoundError,
   requireAuth,
   validateRequest,
   ResourcePrefix,
+  BadRequestError,
 } from '@datn242/questify-common';
 import { query } from 'express-validator';
 import { Level } from '../../models/level';
@@ -28,7 +28,7 @@ router.get(
     const level = await Level.findByPk(level_id);
 
     if (!level) {
-      throw new NotFoundError();
+      throw new BadRequestError('Level not found');
     }
 
     const hints = await Hint.findAll({ where: { levelId: level_id } });
