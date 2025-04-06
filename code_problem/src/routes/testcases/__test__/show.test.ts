@@ -32,8 +32,8 @@ it('returns the testcase if the testcase is found', async () => {
     .send({
       testcases: [
         {
-          input: [1],
-          output: [2],
+          input: '1',
+          output: '2',
           isShowed: true,
         },
       ],
@@ -44,7 +44,7 @@ it('returns the testcase if the testcase is found', async () => {
     .get(`${ResourcePrefix.CodeProblem}/${code_problem.body.id}/testcases/${testcases.body[0].id}`)
     .send()
     .expect(200);
-  expect(response.body.input).toEqual([1]);
-  expect(response.body.output).toEqual([2]);
+  expect(response.body.input).toEqual('1');
+  expect(response.body.output).toEqual('2');
   expect(response.body.isShowed).toEqual(true);
 });

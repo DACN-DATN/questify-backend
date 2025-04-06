@@ -30,15 +30,13 @@ router.post(
       .custom((arr: TestcaseInput[]) =>
         arr.every(
           (item) =>
-            typeof item.input === 'object' &&
-            Array.isArray(item.input) &&
-            typeof item.output === 'object' &&
-            Array.isArray(item.output) &&
+            typeof item.input === 'string' &&
+            typeof item.output === 'string' &&
             typeof item.isShowed === 'boolean',
         ),
       )
       .withMessage(
-        'Each testcase must have input (array of strings), output (array of strings), and isShowed (boolean)',
+        'Each testcase must have input (string), output (string), and isShowed (boolean)',
       ),
   ],
   validateRequest,

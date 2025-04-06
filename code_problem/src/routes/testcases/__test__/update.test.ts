@@ -26,8 +26,8 @@ it('returns a NotFoundError if the provided testcase does not exist', async () =
     .patch(`${ResourcePrefix.CodeProblem}/${code_problem_id}/testcases/${testcase_id}`)
     .set('Cookie', cookie)
     .send({
-      input: [1],
-      output: [2],
+      input: '1',
+      output: '2',
       isShowed: true,
     })
     .expect(NotFoundError.statusCode);
@@ -53,8 +53,8 @@ it('returns a NotAuthorizedError if the user does not own the code problem', asy
     .send({
       testcases: [
         {
-          input: [1],
-          output: [2],
+          input: '1',
+          output: '2',
           isShowed: true,
         },
       ],
@@ -68,8 +68,8 @@ it('returns a NotAuthorizedError if the user does not own the code problem', asy
     )
     .set('Cookie', cookie2)
     .send({
-      input: [1],
-      output: [3],
+      input: '1',
+      output: '3',
       isShowed: false,
     })
     .expect(NotAuthorizedError.statusCode);
@@ -95,8 +95,8 @@ it('returns a RequestValidationError if the user provides an invalid description
     .send({
       testcases: [
         {
-          input: [1],
-          output: [2],
+          input: '1',
+          output: '2',
           isShowed: true,
         },
       ],
@@ -135,8 +135,8 @@ it('updates the code problem provided valid inpatchs', async () => {
     .send({
       testcases: [
         {
-          input: [1],
-          output: [2],
+          input: '1',
+          output: '2',
           isShowed: true,
         },
       ],
@@ -149,13 +149,13 @@ it('updates the code problem provided valid inpatchs', async () => {
     )
     .set('Cookie', cookie)
     .send({
-      input: [1],
-      output: [3],
+      input: '1',
+      output: '3',
       isShowed: false,
     })
     .expect(201);
 
-  expect(response.body.input).toEqual([1]);
-  expect(response.body.output).toEqual([3]);
+  expect(response.body.input).toEqual('1');
+  expect(response.body.output).toEqual('3');
   expect(response.body.isShowed).toEqual(false);
 });

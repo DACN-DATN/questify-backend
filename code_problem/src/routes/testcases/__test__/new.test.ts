@@ -32,8 +32,8 @@ it('return BadRequestError if code problem not found', async () => {
     .send({
       testcases: [
         {
-          input: [1],
-          output: [2],
+          input: '1',
+          output: '2',
           isShowed: true,
         },
       ],
@@ -87,13 +87,13 @@ it('creates an testcase with valid inputs', async () => {
     .send({
       testcases: [
         {
-          input: [1],
-          output: [2],
+          input: '1',
+          output: '2',
           isShowed: true,
         },
         {
-          input: ['0'],
-          output: ['1'],
+          input: '0',
+          output: '1',
           isShowed: false,
         },
       ],
@@ -102,10 +102,10 @@ it('creates an testcase with valid inputs', async () => {
 
   testcases = await Testcase.findAll();
   expect(testcases.length).toEqual(2);
-  expect(testcases[0].input).toEqual([1]);
-  expect(testcases[0].output).toEqual([2]);
+  expect(testcases[0].input).toEqual('1');
+  expect(testcases[0].output).toEqual('2');
   expect(testcases[0].isShowed).toEqual(true);
-  expect(testcases[1].input).toEqual(['0']);
-  expect(testcases[1].output).toEqual(['1']);
+  expect(testcases[1].input).toEqual('0');
+  expect(testcases[1].output).toEqual('1');
   expect(testcases[1].isShowed).toEqual(false);
 });

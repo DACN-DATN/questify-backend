@@ -44,8 +44,8 @@ it('returns a NotAuthorizedError if the user does not own the code problem', asy
     .send({
       testcases: [
         {
-          input: [1],
-          output: [2],
+          input: '1',
+          output: '2',
           isShowed: true,
         },
       ],
@@ -82,8 +82,8 @@ it('delete successfully', async () => {
     .send({
       testcases: [
         {
-          input: [1],
-          output: [2],
+          input: '1',
+          output: '2',
           isShowed: true,
         },
       ],

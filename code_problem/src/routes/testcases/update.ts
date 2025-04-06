@@ -18,8 +18,8 @@ router.patch(
   ResourcePrefix.CodeProblem + '/:code_problem_id/testcases/:testcase_id',
   requireAuth,
   [
-    body('input').isArray({ min: 1 }).withMessage('input must be a non-empty array of strings'),
-    body('output').isArray({ min: 1 }).withMessage('output must be a non-empty array of strings'),
+    body('input').isString().withMessage('input must be a string'),
+    body('output').isString().withMessage('output must be a string'),
     body('isShowed').isBoolean().withMessage('isShowed must be a boolean'),
   ],
   validateRequest,
