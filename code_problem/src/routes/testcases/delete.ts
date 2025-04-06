@@ -45,7 +45,7 @@ router.delete(
       id: testcase.id,
       codeProblemId: testcase.codeProblemId,
     });
-    res.send({ message: 'Delete successfully' });
+    res.send({ message: 'deleted successfully' });
   },
 );
 

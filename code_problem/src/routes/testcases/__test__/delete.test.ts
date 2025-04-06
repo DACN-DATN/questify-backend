@@ -62,7 +62,7 @@ it('returns a NotAuthorizedError if the user does not own the code problem', asy
     .expect(NotAuthorizedError.statusCode);
 });
 
-it('delete successfully', async () => {
+it('deleted successfully', async () => {
   const user_id = uuidv4();
   const cookie = await global.getAuthCookie(user_id);
   const level = await global.createLevel(user_id);
@@ -98,7 +98,7 @@ it('delete successfully', async () => {
     .send()
     .expect(200);
 
-  expect(response.body.message).toEqual('Delete successfully');
+  expect(response.body.message).toEqual('deleted successfully');
 
   await request(app)
     .get(`${ResourcePrefix.CodeProblem}/${code_problem.body.id}/testcases/${testcases.body[0].id}`)

@@ -33,7 +33,7 @@ router.delete(
     }
 
     await softDelete(CodeProblem, { id: code_problem.id });
-    res.send({ message: 'Delete successfully' });
+    res.send({ message: 'deleted successfully' });
   },
 );
 
