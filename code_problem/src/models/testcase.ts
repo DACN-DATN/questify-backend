@@ -2,9 +2,6 @@ import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { CodeProblem } from './code-problem';
 import { v4 as uuidv4 } from 'uuid';
-import { EnvStage } from '@datn242/questify-common';
-
-const isTest = process.env.NODE_ENV === EnvStage.Test;
 
 const TestcaseDefinition = {
   id: {
@@ -53,7 +50,8 @@ type TestcaseCreationAttributes = Optional<TestcaseAttributes, 'id' | 'isDeleted
 
 class Testcase
   extends Model<TestcaseAttributes, TestcaseCreationAttributes>
-  implements TestcaseAttributes {
+  implements TestcaseAttributes
+{
   public id!: string;
   public codeProblemId!: string;
   public input!: string;
