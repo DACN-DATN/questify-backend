@@ -5,7 +5,7 @@ import { Feedback } from '../feedback';
 import { User } from '../user';
 import { Review } from '../review';
 import { Reward } from '../reward';
-import { UserReward } from '../user-reward';
+import { StudentReward } from '../student-reward';
 import { Attempt } from '../attempt';
 import { Inventory } from '../inventory';
 import { UserCourse } from '../user-course';
@@ -19,7 +19,7 @@ const defineUserAssociations = () => {
   User.hasMany(Attempt, { foreignKey: 'userId' });
   User.hasMany(Inventory, { foreignKey: 'userId' });
   User.belongsToMany(Reward, {
-    through: UserReward,
+    through: StudentReward,
     foreignKey: 'userId',
     otherKey: 'rewardId',
     as: 'rewards',

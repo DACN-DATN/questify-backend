@@ -1,14 +1,14 @@
-const defineUserRewardAssociations = () => {
-  // UserReward.belongsTo(User, {
+const defineStudentRewardAssociations = () => {
+  // StudentReward.belongsTo(User, {
   //   foreignKey: 'userId',
   //   onDelete: 'CASCADE',
   //   onUpdate: 'CASCADE',
   // });
-  // UserReward.belongsTo(Reward, {
+  // StudentReward.belongsTo(Reward, {
   //   foreignKey: 'rewardId',
   //   onDelete: 'CASCADE',
   //   onUpdate: 'CASCADE',
   // });
 };
 
-export default defineUserRewardAssociations;
+export default defineStudentRewardAssociations;

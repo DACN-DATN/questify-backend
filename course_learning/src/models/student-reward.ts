@@ -4,7 +4,7 @@ import { sequelize } from '../config/db';
 // import { Reward } from './reward';
 import { v4 as uuidv4 } from 'uuid';
 
-const UserRewardDefinition = {
+const StudentRewardDefinition = {
   userId: {
     allowNull: false,
     type: DataTypes.UUID,
@@ -23,28 +23,28 @@ const UserRewardDefinition = {
   },
 };
 
-interface UserRewardAttributes {
+interface StudentRewardAttributes {
   id?: string;
   userId: string;
   rewardId: string;
 }
 
-type UserRewardCreationAttributes = Optional<UserRewardAttributes, 'id'>;
+type StudentRewardCreationAttributes = Optional<StudentRewardAttributes, 'id'>;
 
-class UserReward
-  extends Model<UserRewardAttributes, UserRewardCreationAttributes>
-  implements UserRewardAttributes
+class StudentReward
+  extends Model<StudentRewardAttributes, StudentRewardCreationAttributes>
+  implements StudentRewardAttributes
 {
   public userId!: string;
   public rewardId!: string;
 }
 
-UserReward.init(UserRewardDefinition, {
+StudentReward.init(StudentRewardDefinition, {
   sequelize,
-  tableName: 'user_reward',
+  tableName: 'student_reward',
   underscored: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export { UserReward };
+export { StudentReward };
