@@ -27,14 +27,12 @@ router.get(
         },
       ],
     });
-
     if (!student) {
       throw new NotFoundError();
     }
 
     const rewards = student.rewards || [];
-
-    res.send(rewards);
+    res.status(200).send(rewards);
   },
 );
 

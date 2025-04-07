@@ -6,7 +6,7 @@ import defineReviewAssociations from './review.associations';
 import defineRewardAssociations from './reward.associations';
 import defineSlideAssociations from './slide.associations';
 import defineSlideTemplateAssociations from './slide-template.associations';
-import defineStudentRewardAssociations from './student-reward.associations';
+import defineUserRewardAssociations from './user-reward.associations';
 import defineUserAssociations from './user.associations';
 import defineLevelAssociations from './level.associations';
 import definePrerequisiteIslandAssociations from './prerequisite-island.associations';
@@ -22,7 +22,7 @@ export const defineAssociations = () => {
   defineRewardAssociations();
   defineSlideAssociations();
   defineSlideTemplateAssociations();
-  defineStudentRewardAssociations();
+  defineUserRewardAssociations();
   defineUserAssociations();
   defineLevelAssociations();
   definePrerequisiteIslandAssociations();

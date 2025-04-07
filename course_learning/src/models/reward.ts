@@ -3,6 +3,7 @@ import { sequelize } from '../config/db';
 import { Course } from './course';
 import { Island } from './island';
 import { Level } from './level';
+import type { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
 
 const RewardDefinition = {
@@ -74,6 +75,9 @@ class Reward extends Model<RewardAttributes, RewardCreationAttributes> implement
   public courseId?: string;
   public islandId?: string;
   public levelId?: string;
+
+  declare addUser: (user: User) => Promise<void>;
+  declare getUsers: () => Promise<User[]>;
 }
 
 Reward.init(RewardDefinition, {
