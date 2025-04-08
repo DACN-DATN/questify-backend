@@ -6,7 +6,7 @@ import { sequelize } from '../config/db';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
 import { Level } from '../models/level';
-import '../models/associations'
+import '../models/associations';
 import { v4 as uuidv4 } from 'uuid';
 
 /* eslint-disable no-var */
