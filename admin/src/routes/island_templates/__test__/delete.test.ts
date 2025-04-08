@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   NotAuthorizedError,
   NotFoundError,
-  RequestValidationError,
+  BadRequestError,
   UserRole,
 } from '@datn242/questify-common';
 import { AdminIslandTemplateActionType } from '../../../models/admin-island-template';
@@ -52,7 +52,10 @@ describe('Delete Island Template API', () => {
       .send({
         reason: 'Obsolete template',
       })
-      .expect(NotFoundError.statusCode);
+      .expect((res) => {
+        expect(res.status).toBe(NotFoundError.statusCode);
+        expect(res.text).toContain('Route not found');
+      });
   });
 
   it('successfully marks a template as deleted', async () => {
@@ -86,7 +89,7 @@ describe('Delete Island Template API', () => {
     expect(updatedTemplate?.deletedAt).toBeDefined();
   });
 
-  it('cannot delete a template that is already deleted', async () => {
+  it('returns BadRequestError if template is already deleted', async () => {
     const adminCookie = await global.getAuthCookie();
 
     const template = await global.createIslandTemplate('Already Deleted');
@@ -100,6 +103,9 @@ describe('Delete Island Template API', () => {
       .send({
         reason: 'Second deletion attempt',
       })
-      .expect(400);
+      .expect((res) => {
+        expect(res.status).toBe(BadRequestError.statusCode);
+        expect(res.text).toContain('This template is already deleted');
+      });
   });
 });

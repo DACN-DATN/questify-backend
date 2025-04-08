@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   NotAuthorizedError,
   NotFoundError,
+  BadRequestError,
   RequestValidationError,
   UserRole,
   UserStatus,
@@ -60,9 +61,9 @@ describe('Update User Status API', () => {
 
   it('returns RequestValidationError if the status is invalid', async () => {
     const adminCookie = await global.getAuthCookie();
-
+  
     const testUser = await global.createUser();
-
+  
     await request(app)
       .patch(`${BASE_URL}/${testUser.id}`)
       .set('Cookie', adminCookie)
@@ -70,7 +71,10 @@ describe('Update User Status API', () => {
         status: 'invalid-status',
         reason: 'Violation of terms',
       })
-      .expect(RequestValidationError.statusCode);
+      .expect((res) => {
+        expect(res.status).toBe(RequestValidationError.statusCode);
+        expect(res.text).toContain('Invalid request parameters');
+      });
   });
 
   it('successfully suspends a user', async () => {
@@ -128,14 +132,14 @@ describe('Update User Status API', () => {
   it('prevents admin from suspending any admin', async () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
-
+  
     const anotherAdmin = await global.createUser(
       undefined,
       'admin2@test.com',
       'admin2',
       UserRole.Admin,
     );
-
+  
     await request(app)
       .patch(`${BASE_URL}/${anotherAdmin.id}`)
       .set('Cookie', adminCookie)
@@ -143,7 +147,10 @@ describe('Update User Status API', () => {
         status: UserStatus.Suspended,
         reason: 'Admin suspension test',
       })
-      .expect(400);
+      .expect((res) => {
+        expect(res.status).toBe(BadRequestError.statusCode); 
+        expect(res.text).toContain('Admins cannot suspend other admins');
+      });
   });
 
   it('allows suspending a user without a reason', async () => {

@@ -1,6 +1,5 @@
 import request from 'supertest';
 import { app } from '../../../app';
-import { v4 as uuidv4 } from 'uuid';
 import { NotAuthorizedError, UserRole } from '@datn242/questify-common';
 
 const BASE_URL = '/api/admin/island-templates';

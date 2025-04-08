@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from '../../../app';
 import { v4 as uuidv4 } from 'uuid';
-import { NotAuthorizedError, UserRole, UserStatus } from '@datn242/questify-common';
+import { NotAuthorizedError, UserRole } from '@datn242/questify-common';
 import { AdminActionType } from '../../../models/admin-user';
 
 const BASE_URL = '/api/admin/actions/users';

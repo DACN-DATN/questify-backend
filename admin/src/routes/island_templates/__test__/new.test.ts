@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from '../../../app';
 import { v4 as uuidv4 } from 'uuid';
-import { NotAuthorizedError, RequestValidationError, UserRole } from '@datn242/questify-common';
+import { NotAuthorizedError, RequestValidationError, BadRequestError, UserRole } from '@datn242/questify-common';
 import { AdminIslandTemplateActionType } from '../../../models/admin-island-template';
 
 const BASE_URL = '/api/admin/island-templates';
@@ -44,7 +44,10 @@ describe('Create Island Template API', () => {
       .send({
         imageUrl: 'https://example.com/image.png',
       })
-      .expect(RequestValidationError.statusCode);
+      .expect((res) => {
+        expect(res.status).toBe(RequestValidationError.statusCode);
+        expect(res.text).toContain('Invalid request parameters');
+      });
   });
 
   it('returns RequestValidationError if the imageUrl is missing', async () => {
@@ -56,7 +59,10 @@ describe('Create Island Template API', () => {
       .send({
         name: 'Test Template',
       })
-      .expect(RequestValidationError.statusCode);
+      .expect((res) => {
+        expect(res.status).toBe(RequestValidationError.statusCode);
+        expect(res.text).toContain('Invalid request parameters');
+      });
   });
 
   it('successfully creates an island template', async () => {
@@ -75,13 +81,11 @@ describe('Create Island Template API', () => {
       })
       .expect(201);
 
-    // Verify template is created with correct data
     expect(response.body.id).toBeDefined();
     expect(response.body.name).toEqual(templateName);
     expect(response.body.imageUrl).toEqual(templateImage);
     expect(response.body.isDeleted).toEqual(false);
 
-    // Verify admin action is recorded
     const { adminAction } = response.body;
     expect(adminAction).toBeDefined();
     expect(adminAction.adminId).toEqual(adminId);
@@ -89,13 +93,11 @@ describe('Create Island Template API', () => {
     expect(adminAction.actionType).toEqual(AdminIslandTemplateActionType.Add);
   });
 
-  it('returns an error if a template with the same name already exists', async () => {
+  it('returns BadRequestError if a template with the same name already exists', async () => {
     const adminCookie = await global.getAuthCookie();
 
-    // Create a template first
     await global.createIslandTemplate('Unique Template');
 
-    // Try to create another with the same name
     await request(app)
       .post(BASE_URL)
       .set('Cookie', adminCookie)
@@ -103,6 +105,9 @@ describe('Create Island Template API', () => {
         name: 'Unique Template',
         imageUrl: 'https://example.com/another-image.png',
       })
-      .expect(400); // Bad request
+      .expect((res) => {
+        expect(res.status).toBe(BadRequestError.statusCode);
+        expect(res.text).toContain('A template with this name already exists');
+      });
   });
 });
