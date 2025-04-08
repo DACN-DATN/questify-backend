@@ -3,7 +3,6 @@ import { body } from 'express-validator';
 import {
   requireAuth,
   validateRequest,
-  NotFoundError,
   BadRequestError,
   ResourcePrefix,
   requireAdmin,
