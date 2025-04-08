@@ -12,6 +12,9 @@ import { indexIslandTemplateRouter } from './routes/island_templates/index';
 import { deleteIslandTemplateRouter } from './routes/island_templates/delete';
 import { indexCourseRouter } from './routes/courses/index';
 import { updateCourseRouter } from './routes/courses/update';
+import { courseActionsRouter } from './routes/actions/courses';
+import { userActionsRouter } from './routes/actions/users';
+import { islandTemplateActionsRouter } from './routes/actions/island-templates';
 
 const app = express();
 app.set('trust proxy', true);
@@ -32,6 +35,9 @@ app.use(newIslandTemplateRouter);
 app.use(deleteIslandTemplateRouter);
 app.use(indexCourseRouter);
 app.use(updateCourseRouter);
+app.use(courseActionsRouter);
+app.use(userActionsRouter);
+app.use(islandTemplateActionsRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

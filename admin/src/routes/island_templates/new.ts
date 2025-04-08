@@ -9,7 +9,10 @@ import {
   requireAdmin,
 } from '@datn242/questify-common';
 import { IslandTemplate } from '../../models/island-template';
-import { AdminIslandTemplate, AdminIslandTemplateActionType } from '../../models/admin-island-template';
+import {
+  AdminIslandTemplate,
+  AdminIslandTemplateActionType,
+} from '../../models/admin-island-template';
 import { sequelize } from '../../config/db';
 
 const router = express.Router();
@@ -19,12 +22,8 @@ router.post(
   requireAuth,
   requireAdmin,
   [
-    body('name')
-      .notEmpty()
-      .withMessage('Name is required'),
-    body('imageUrl')
-      .notEmpty()
-      .withMessage('Image URL is required'),
+    body('name').notEmpty().withMessage('Name is required'),
+    body('imageUrl').notEmpty().withMessage('Image URL is required'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {

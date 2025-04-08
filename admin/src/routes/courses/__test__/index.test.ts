@@ -20,7 +20,7 @@ describe('List All Courses API', () => {
     await request(app)
       .get(BASE_URL)
       .set('Cookie', cookie)
-      
+
       .expect(NotAuthorizedError.statusCode);
   });
 
@@ -63,7 +63,6 @@ describe('List All Courses API', () => {
 
   it('returns only non-deleted courses', async () => {
     const adminCookie = await global.getAuthCookie();
-
 
     const teacher = await global.createUser(
       undefined,

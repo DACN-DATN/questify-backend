@@ -17,10 +17,7 @@ describe('List All Users API', () => {
       UserRole.Teacher,
     );
 
-    await request(app)
-      .get(BASE_URL)
-      .set('Cookie', cookie)
-      .expect(NotAuthorizedError.statusCode);
+    await request(app).get(BASE_URL).set('Cookie', cookie).expect(NotAuthorizedError.statusCode);
   });
 
   it('returns an empty array when no users exist', async () => {

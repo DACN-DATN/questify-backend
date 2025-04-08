@@ -100,6 +100,6 @@ describe('Delete Island Template API', () => {
       .send({
         reason: 'Second deletion attempt',
       })
-      .expect(400); 
+      .expect(400);
   });
 });

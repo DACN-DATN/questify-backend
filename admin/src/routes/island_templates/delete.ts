@@ -9,7 +9,10 @@ import {
   requireAdmin,
 } from '@datn242/questify-common';
 import { IslandTemplate } from '../../models/island-template';
-import { AdminIslandTemplate, AdminIslandTemplateActionType } from '../../models/admin-island-template';
+import {
+  AdminIslandTemplate,
+  AdminIslandTemplateActionType,
+} from '../../models/admin-island-template';
 import { sequelize } from '../../config/db';
 
 const router = express.Router();

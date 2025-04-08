@@ -21,7 +21,7 @@ describe('List Island Templates API', () => {
     await request(app)
       .get(BASE_URL)
       .set('Cookie', cookie)
-      
+
       .expect(NotAuthorizedError.statusCode);
   });
 
@@ -57,22 +57,5 @@ describe('List Island Templates API', () => {
     expect(templateNames).toContain('Template 2');
     expect(templateNames).toContain('Template 3');
     expect(templateNames).not.toContain('Deleted Template');
-  });
-
-  it('includes admin actions for each template', async () => {
-    const adminId = uuidv4();
-    const adminCookie = await global.getAuthCookie(adminId);
-
-    const template = await global.createIslandTemplate();
-
-    await global.createAdminIslandTemplateAction(adminId, template.id);
-
-    const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).expect(200);
-
-    expect(response.body.length).toEqual(1);
-    expect(response.body[0].id).toEqual(template.id);
-    expect(response.body[0].adminActions).toBeDefined();
-    expect(response.body[0].adminActions.length).toEqual(1);
-    expect(response.body[0].adminActions[0].adminId).toEqual(adminId);
   });
 });

@@ -67,7 +67,7 @@ router.patch(
         },
         { transaction },
       );
-      
+
       // Get admin user for the response
       const admin = await User.findByPk(adminId, {
         attributes: ['id', 'userName', 'gmail'],

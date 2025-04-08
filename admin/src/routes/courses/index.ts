@@ -20,18 +20,17 @@ router.get(
       },
     });
 
-    // Fetch teacher information for each course
     const coursesWithTeachers = await Promise.all(
       courses.map(async (course) => {
         const teacher = await User.findByPk(course.teacherId, {
           attributes: ['id', 'userName', 'gmail'],
         });
-        
+
         return {
           ...course.toJSON(),
           teacher: teacher ? teacher.toJSON() : null,
         };
-      })
+      }),
     );
 
     res.status(200).send(coursesWithTeachers);

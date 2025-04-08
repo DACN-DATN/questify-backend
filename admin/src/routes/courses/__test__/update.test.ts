@@ -184,6 +184,6 @@ describe('Update Course Status API', () => {
         status: CourseStatus.Rejected,
         reason: 'Attempt to reject approved course',
       })
-      .expect(400); 
+      .expect(400);
   });
 });
