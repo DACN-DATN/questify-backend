@@ -61,9 +61,9 @@ describe('Update User Status API', () => {
 
   it('returns RequestValidationError if the status is invalid', async () => {
     const adminCookie = await global.getAuthCookie();
-  
+
     const testUser = await global.createUser();
-  
+
     await request(app)
       .patch(`${BASE_URL}/${testUser.id}`)
       .set('Cookie', adminCookie)
@@ -132,14 +132,14 @@ describe('Update User Status API', () => {
   it('prevents admin from suspending any admin', async () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
-  
+
     const anotherAdmin = await global.createUser(
       undefined,
       'admin2@test.com',
       'admin2',
       UserRole.Admin,
     );
-  
+
     await request(app)
       .patch(`${BASE_URL}/${anotherAdmin.id}`)
       .set('Cookie', adminCookie)
@@ -148,7 +148,7 @@ describe('Update User Status API', () => {
         reason: 'Admin suspension test',
       })
       .expect((res) => {
-        expect(res.status).toBe(BadRequestError.statusCode); 
+        expect(res.status).toBe(BadRequestError.statusCode);
         expect(res.text).toContain('Admins cannot suspend other admins');
       });
   });
