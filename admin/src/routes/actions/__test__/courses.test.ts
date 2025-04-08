@@ -38,7 +38,6 @@ describe('List Admin Course Actions API', () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
 
-    // Create a teacher for the courses
     const teacher = await global.createUser(
       undefined,
       'teacher@test.com',
@@ -46,12 +45,10 @@ describe('List Admin Course Actions API', () => {
       UserRole.Teacher,
     );
 
-    // Create some courses
     const course1 = await global.createCourse(teacher.id, 'Course 1', 'Description 1');
 
     const course2 = await global.createCourse(teacher.id, 'Course 2', 'Description 2');
 
-    // Create admin actions
     await global.createAdminCourseAction(
       adminId,
       course1.id,
@@ -70,12 +67,10 @@ describe('List Admin Course Actions API', () => {
 
     expect(response.body.length).toEqual(2);
 
-    // Verify both action types are present
     const actionTypes = response.body.map((action: any) => action.actionType);
     expect(actionTypes).toContain(AdminCourseActionType.Approve);
     expect(actionTypes).toContain(AdminCourseActionType.Reject);
 
-    // Check relationships are included
     expect(response.body[0].admin).toBeDefined();
     expect(response.body[0].course).toBeDefined();
     expect(response.body[0].course.name).toBeDefined();

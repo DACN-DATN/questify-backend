@@ -10,6 +10,8 @@ import { updateUserRouter } from './routes/users/update';
 import { newIslandTemplateRouter } from './routes/island_templates/new';
 import { indexIslandTemplateRouter } from './routes/island_templates/index';
 import { deleteIslandTemplateRouter } from './routes/island_templates/delete';
+import { indexCourseRouter } from './routes/courses/index';
+import { updateCourseRouter } from './routes/courses/update';
 
 const app = express();
 app.set('trust proxy', true);
@@ -28,6 +30,8 @@ app.use(updateUserRouter);
 app.use(indexIslandTemplateRouter);
 app.use(newIslandTemplateRouter);
 app.use(deleteIslandTemplateRouter);
+app.use(indexCourseRouter);
+app.use(updateCourseRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

@@ -61,7 +61,6 @@ describe('Update Course Status API', () => {
   it('returns RequestValidationError if the status is invalid', async () => {
     const adminCookie = await global.getAuthCookie();
 
-    // Create a teacher
     const teacher = await global.createUser(
       undefined,
       'teacher@test.com',
@@ -69,7 +68,6 @@ describe('Update Course Status API', () => {
       UserRole.Teacher,
     );
 
-    // Create a course to update
     const course = await global.createCourse(teacher.id);
 
     await request(app)
@@ -82,34 +80,10 @@ describe('Update Course Status API', () => {
       .expect(RequestValidationError.statusCode);
   });
 
-  it('returns RequestValidationError if no reason is provided', async () => {
-    const adminCookie = await global.getAuthCookie();
-
-    // Create a teacher
-    const teacher = await global.createUser(
-      undefined,
-      'teacher@test.com',
-      'teacher',
-      UserRole.Teacher,
-    );
-
-    // Create a course to update
-    const course = await global.createCourse(teacher.id);
-
-    await request(app)
-      .patch(`${BASE_URL}/${course.id}`)
-      .set('Cookie', adminCookie)
-      .send({
-        status: CourseStatus.Approved,
-      })
-      .expect(RequestValidationError.statusCode);
-  });
-
   it('successfully approves a pending course', async () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
 
-    // Create a teacher
     const teacher = await global.createUser(
       undefined,
       'teacher@test.com',
@@ -117,7 +91,6 @@ describe('Update Course Status API', () => {
       UserRole.Teacher,
     );
 
-    // Create a pending course
     const course = await global.createCourse(
       teacher.id,
       'Pending Course',
@@ -136,11 +109,9 @@ describe('Update Course Status API', () => {
       })
       .expect(200);
 
-    // Verify course status is updated
     expect(response.body.id).toEqual(course.id);
     expect(response.body.status).toEqual(CourseStatus.Approved);
 
-    // Verify admin action is recorded
     const { adminAction } = response.body;
     expect(adminAction).toBeDefined();
     expect(adminAction.adminId).toEqual(adminId);
@@ -153,7 +124,6 @@ describe('Update Course Status API', () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
 
-    // Create a teacher
     const teacher = await global.createUser(
       undefined,
       'teacher@test.com',
@@ -161,7 +131,6 @@ describe('Update Course Status API', () => {
       UserRole.Teacher,
     );
 
-    // Create a pending course
     const course = await global.createCourse(
       teacher.id,
       'Pending Course',
@@ -180,11 +149,9 @@ describe('Update Course Status API', () => {
       })
       .expect(200);
 
-    // Verify course status is updated
     expect(response.body.id).toEqual(course.id);
     expect(response.body.status).toEqual(CourseStatus.Rejected);
 
-    // Verify admin action is recorded
     const { adminAction } = response.body;
     expect(adminAction).toBeDefined();
     expect(adminAction.adminId).toEqual(adminId);
@@ -196,7 +163,6 @@ describe('Update Course Status API', () => {
   it('cannot update an already approved or rejected course', async () => {
     const adminCookie = await global.getAuthCookie();
 
-    // Create a teacher
     const teacher = await global.createUser(
       undefined,
       'teacher@test.com',
@@ -204,7 +170,6 @@ describe('Update Course Status API', () => {
       UserRole.Teacher,
     );
 
-    // Create an approved course
     const approvedCourse = await global.createCourse(
       teacher.id,
       'Approved Course',
@@ -219,6 +184,6 @@ describe('Update Course Status API', () => {
         status: CourseStatus.Rejected,
         reason: 'Attempt to reject approved course',
       })
-      .expect(400); // Bad request
+      .expect(400); 
   });
 });

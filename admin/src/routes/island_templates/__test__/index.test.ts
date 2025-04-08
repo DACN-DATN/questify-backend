@@ -7,7 +7,7 @@ const BASE_URL = '/api/admin/island-templates';
 
 describe('List Island Templates API', () => {
   it('returns NotAuthorizedError if the user is not signed in', async () => {
-    await request(app).get(BASE_URL).send().expect(NotAuthorizedError.statusCode);
+    await request(app).get(BASE_URL).expect(NotAuthorizedError.statusCode);
   });
 
   it('returns NotAuthorizedError if the user is not an admin', async () => {
@@ -21,14 +21,14 @@ describe('List Island Templates API', () => {
     await request(app)
       .get(BASE_URL)
       .set('Cookie', cookie)
-      .send()
+      
       .expect(NotAuthorizedError.statusCode);
   });
 
   it('returns an empty array when no templates exist', async () => {
     const cookie = await global.getAuthCookie();
 
-    const response = await request(app).get(BASE_URL).set('Cookie', cookie).send().expect(200);
+    const response = await request(app).get(BASE_URL).set('Cookie', cookie).expect(200);
 
     expect(response.body.length).toEqual(0);
   });
@@ -48,7 +48,7 @@ describe('List Island Templates API', () => {
     deletedTemplate.deletedAt = new Date();
     await deletedTemplate.save();
 
-    const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).send().expect(200);
+    const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).expect(200);
 
     expect(response.body.length).toEqual(3);
 
@@ -67,7 +67,7 @@ describe('List Island Templates API', () => {
 
     await global.createAdminIslandTemplateAction(adminId, template.id);
 
-    const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).send().expect(200);
+    const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).expect(200);
 
     expect(response.body.length).toEqual(1);
     expect(response.body[0].id).toEqual(template.id);
