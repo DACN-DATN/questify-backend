@@ -36,12 +36,10 @@ describe('List Island Templates API', () => {
   it('returns a list of all non-deleted templates', async () => {
     const adminCookie = await global.getAuthCookie();
 
-    // Create several templates
     await global.createIslandTemplate('Template 1', 'https://example.com/template1.png');
     await global.createIslandTemplate('Template 2', 'https://example.com/template2.png');
     await global.createIslandTemplate('Template 3', 'https://example.com/template3.png');
 
-    // Create a deleted template
     const deletedTemplate = await global.createIslandTemplate(
       'Deleted Template',
       'https://example.com/deleted.png',
@@ -54,7 +52,6 @@ describe('List Island Templates API', () => {
 
     expect(response.body.length).toEqual(3);
 
-    // Verify the deleted template is not included
     const templateNames = response.body.map((template: any) => template.name);
     expect(templateNames).toContain('Template 1');
     expect(templateNames).toContain('Template 2');
@@ -66,10 +63,8 @@ describe('List Island Templates API', () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
 
-    // Create a template
     const template = await global.createIslandTemplate();
 
-    // Create an admin action for this template
     await global.createAdminIslandTemplateAction(adminId, template.id);
 
     const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).send().expect(200);

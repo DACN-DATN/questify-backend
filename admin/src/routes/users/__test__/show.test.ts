@@ -9,7 +9,7 @@ describe('Get User by ID API', () => {
   it('returns NotAuthorizedError if the user is not signed in', async () => {
     const userId = uuidv4();
 
-    await request(app).get(`${BASE_URL}/${userId}`).send().expect(NotAuthorizedError.statusCode);
+    await request(app).get(`${BASE_URL}/${userId}`).expect(NotAuthorizedError.statusCode);
   });
 
   it('returns NotAuthorizedError if the user is not an admin', async () => {
@@ -24,7 +24,6 @@ describe('Get User by ID API', () => {
     await request(app)
       .get(`${BASE_URL}/${userId}`)
       .set('Cookie', cookie)
-      .send()
       .expect(NotAuthorizedError.statusCode);
   });
 
@@ -35,7 +34,6 @@ describe('Get User by ID API', () => {
     await request(app)
       .get(`${BASE_URL}/${nonExistentUserId}`)
       .set('Cookie', adminCookie)
-      .send()
       .expect(NotFoundError.statusCode);
   });
 
@@ -52,7 +50,6 @@ describe('Get User by ID API', () => {
     const response = await request(app)
       .get(`${BASE_URL}/${testUser.id}`)
       .set('Cookie', adminCookie)
-      .send()
       .expect(200);
 
     expect(response.body.id).toEqual(testUser.id);

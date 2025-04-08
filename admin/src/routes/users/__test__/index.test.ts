@@ -6,7 +6,7 @@ const BASE_URL = '/api/admin/users';
 
 describe('List All Users API', () => {
   it('returns NotAuthorizedError if the user is not signed in', async () => {
-    await request(app).get(BASE_URL).send().expect(NotAuthorizedError.statusCode);
+    await request(app).get(BASE_URL).expect(NotAuthorizedError.statusCode);
   });
 
   it('returns NotAuthorizedError if the user is not an admin', async () => {
@@ -20,14 +20,13 @@ describe('List All Users API', () => {
     await request(app)
       .get(BASE_URL)
       .set('Cookie', cookie)
-      .send()
       .expect(NotAuthorizedError.statusCode);
   });
 
   it('returns an empty array when no users exist', async () => {
     const cookie = await global.getAuthCookie();
 
-    const response = await request(app).get(BASE_URL).set('Cookie', cookie).send().expect(200);
+    const response = await request(app).get(BASE_URL).set('Cookie', cookie).expect(200);
 
     expect(response.body.length).toEqual(1);
     expect(response.body[0].role).toEqual(UserRole.Admin);
@@ -48,7 +47,7 @@ describe('List All Users API', () => {
 
     await global.createUser(undefined, 'teacher@test.com', 'teacher', UserRole.Teacher);
 
-    const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).send().expect(200);
+    const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).expect(200);
 
     expect(response.body.length).toEqual(4);
 
