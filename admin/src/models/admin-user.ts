@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export enum AdminActionType {
   Suspend = 'suspend',
-  Unsuspend = 'unsuspend'
+  Unsuspend = 'unsuspend',
 }
 
 const AdminUserDefinition = {

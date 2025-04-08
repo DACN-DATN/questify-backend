@@ -1,12 +1,12 @@
 import request from 'supertest';
 import { app } from '../../../app';
 import { v4 as uuidv4 } from 'uuid';
-import { 
+import {
   NotAuthorizedError,
   NotFoundError,
   RequestValidationError,
   UserRole,
-  CourseStatus
+  CourseStatus,
 } from '@datn242/questify-common';
 import { AdminCourseActionType } from '../../../models/admin-course';
 
@@ -20,7 +20,7 @@ describe('Update Course Status API', () => {
       .patch(`${BASE_URL}/${courseId}`)
       .send({
         status: CourseStatus.Approved,
-        reason: 'Course meets standards'
+        reason: 'Course meets standards',
       })
       .expect(NotAuthorizedError.statusCode);
   });
@@ -28,10 +28,10 @@ describe('Update Course Status API', () => {
   it('returns NotAuthorizedError if the user is not an admin', async () => {
     const courseId = uuidv4();
     const cookie = await global.getAuthCookie(
-      undefined, 
-      'teacher@test.com', 
-      'teacher', 
-      UserRole.Teacher
+      undefined,
+      'teacher@test.com',
+      'teacher',
+      UserRole.Teacher,
     );
 
     await request(app)
@@ -39,7 +39,7 @@ describe('Update Course Status API', () => {
       .set('Cookie', cookie)
       .send({
         status: CourseStatus.Approved,
-        reason: 'Course meets standards'
+        reason: 'Course meets standards',
       })
       .expect(NotAuthorizedError.statusCode);
   });
@@ -53,22 +53,22 @@ describe('Update Course Status API', () => {
       .set('Cookie', adminCookie)
       .send({
         status: CourseStatus.Approved,
-        reason: 'Course meets standards'
+        reason: 'Course meets standards',
       })
       .expect(NotFoundError.statusCode);
   });
 
   it('returns RequestValidationError if the status is invalid', async () => {
     const adminCookie = await global.getAuthCookie();
-    
+
     // Create a teacher
     const teacher = await global.createUser(
-      undefined, 
-      'teacher@test.com', 
-      'teacher', 
-      UserRole.Teacher
+      undefined,
+      'teacher@test.com',
+      'teacher',
+      UserRole.Teacher,
     );
-    
+
     // Create a course to update
     const course = await global.createCourse(teacher.id);
 
@@ -77,22 +77,22 @@ describe('Update Course Status API', () => {
       .set('Cookie', adminCookie)
       .send({
         status: 'invalid-status',
-        reason: 'Course meets standards'
+        reason: 'Course meets standards',
       })
       .expect(RequestValidationError.statusCode);
   });
 
   it('returns RequestValidationError if no reason is provided', async () => {
     const adminCookie = await global.getAuthCookie();
-    
+
     // Create a teacher
     const teacher = await global.createUser(
-      undefined, 
-      'teacher@test.com', 
-      'teacher', 
-      UserRole.Teacher
+      undefined,
+      'teacher@test.com',
+      'teacher',
+      UserRole.Teacher,
     );
-    
+
     // Create a course to update
     const course = await global.createCourse(teacher.id);
 
@@ -100,7 +100,7 @@ describe('Update Course Status API', () => {
       .patch(`${BASE_URL}/${course.id}`)
       .set('Cookie', adminCookie)
       .send({
-        status: CourseStatus.Approved
+        status: CourseStatus.Approved,
       })
       .expect(RequestValidationError.statusCode);
   });
@@ -108,23 +108,23 @@ describe('Update Course Status API', () => {
   it('successfully approves a pending course', async () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
-    
+
     // Create a teacher
     const teacher = await global.createUser(
-      undefined, 
-      'teacher@test.com', 
-      'teacher', 
-      UserRole.Teacher
+      undefined,
+      'teacher@test.com',
+      'teacher',
+      UserRole.Teacher,
     );
-    
+
     // Create a pending course
     const course = await global.createCourse(
       teacher.id,
       'Pending Course',
       'Pending Course Description',
-      CourseStatus.Pending
+      CourseStatus.Pending,
     );
-    
+
     expect(course.status).toEqual(CourseStatus.Pending);
 
     const response = await request(app)
@@ -132,14 +132,14 @@ describe('Update Course Status API', () => {
       .set('Cookie', adminCookie)
       .send({
         status: CourseStatus.Approved,
-        reason: 'Course meets quality standards'
+        reason: 'Course meets quality standards',
       })
       .expect(200);
 
     // Verify course status is updated
     expect(response.body.id).toEqual(course.id);
     expect(response.body.status).toEqual(CourseStatus.Approved);
-    
+
     // Verify admin action is recorded
     const { adminAction } = response.body;
     expect(adminAction).toBeDefined();
@@ -152,23 +152,23 @@ describe('Update Course Status API', () => {
   it('successfully rejects a pending course', async () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
-    
+
     // Create a teacher
     const teacher = await global.createUser(
-      undefined, 
-      'teacher@test.com', 
-      'teacher', 
-      UserRole.Teacher
+      undefined,
+      'teacher@test.com',
+      'teacher',
+      UserRole.Teacher,
     );
-    
+
     // Create a pending course
     const course = await global.createCourse(
       teacher.id,
       'Pending Course',
       'Pending Course Description',
-      CourseStatus.Pending
+      CourseStatus.Pending,
     );
-    
+
     expect(course.status).toEqual(CourseStatus.Pending);
 
     const response = await request(app)
@@ -176,14 +176,14 @@ describe('Update Course Status API', () => {
       .set('Cookie', adminCookie)
       .send({
         status: CourseStatus.Rejected,
-        reason: 'Course does not meet minimum requirements'
+        reason: 'Course does not meet minimum requirements',
       })
       .expect(200);
 
     // Verify course status is updated
     expect(response.body.id).toEqual(course.id);
     expect(response.body.status).toEqual(CourseStatus.Rejected);
-    
+
     // Verify admin action is recorded
     const { adminAction } = response.body;
     expect(adminAction).toBeDefined();
@@ -195,29 +195,29 @@ describe('Update Course Status API', () => {
 
   it('cannot update an already approved or rejected course', async () => {
     const adminCookie = await global.getAuthCookie();
-    
+
     // Create a teacher
     const teacher = await global.createUser(
-      undefined, 
-      'teacher@test.com', 
-      'teacher', 
-      UserRole.Teacher
+      undefined,
+      'teacher@test.com',
+      'teacher',
+      UserRole.Teacher,
     );
-    
+
     // Create an approved course
     const approvedCourse = await global.createCourse(
       teacher.id,
       'Approved Course',
       'Approved Course Description',
-      CourseStatus.Approved
+      CourseStatus.Approved,
     );
-    
+
     await request(app)
       .patch(`${BASE_URL}/${approvedCourse.id}`)
       .set('Cookie', adminCookie)
       .send({
         status: CourseStatus.Rejected,
-        reason: 'Attempt to reject approved course'
+        reason: 'Attempt to reject approved course',
       })
       .expect(400); // Bad request
   });

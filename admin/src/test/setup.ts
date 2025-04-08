@@ -23,7 +23,7 @@ declare global {
     gmail?: string,
     userName?: string,
     role?: UserRole,
-    status?: UserStatus
+    status?: UserStatus,
   ) => Promise<string[]>;
 
   var createUser: (
@@ -31,40 +31,37 @@ declare global {
     gmail?: string,
     userName?: string,
     role?: UserRole,
-    status?: UserStatus
+    status?: UserStatus,
   ) => Promise<User>;
 
   var createCourse: (
     teacherId: string,
     name?: string,
     description?: string,
-    status?: CourseStatus
+    status?: CourseStatus,
   ) => Promise<Course>;
 
-  var createIslandTemplate: (
-    name?: string,
-    imageUrl?: string
-  ) => Promise<IslandTemplate>;
+  var createIslandTemplate: (name?: string, imageUrl?: string) => Promise<IslandTemplate>;
 
   var createAdminUserAction: (
     adminId: string,
     userId: string,
     actionType?: AdminActionType,
-    reason?: string
+    reason?: string,
   ) => Promise<AdminUser>;
 
   var createAdminCourseAction: (
     adminId: string,
     courseId: string,
     actionType?: AdminCourseActionType,
-    reason?: string
+    reason?: string,
   ) => Promise<AdminCourse>;
 
   var createAdminIslandTemplateAction: (
     adminId: string,
     islandTemplateId: string,
     actionType?: AdminIslandTemplateActionType,
-    reason?: string
+    reason?: string,
   ) => Promise<AdminIslandTemplate>;
 }
 
@@ -106,7 +103,7 @@ global.getAuthCookie = async (
   gmail: string = 'admin@test.com',
   userName: string = 'admin',
   role: UserRole = UserRole.Admin,
-  status: UserStatus = UserStatus.Active
+  status: UserStatus = UserStatus.Active,
 ) => {
   // Create a user in the database with this ID
   const user = await User.create({
@@ -116,7 +113,7 @@ global.getAuthCookie = async (
     userName: userName,
     status: status,
   });
-  
+
   const payload = {
     id: user.id,
     gmail: user.gmail,
@@ -124,12 +121,12 @@ global.getAuthCookie = async (
     userName: userName,
     status: status,
   };
-  
+
   const token = jwt.sign(payload, process.env.JWT_KEY!);
   const session = { jwt: token };
   const sessionJSON = JSON.stringify(session);
   const base64 = Buffer.from(sessionJSON).toString('base64');
-  
+
   return [`session=${base64}`];
 };
 
@@ -138,7 +135,7 @@ global.createUser = async (
   gmail: string = 'user@test.com',
   userName: string = 'testuser',
   role: UserRole = UserRole.Student,
-  status: UserStatus = UserStatus.Active
+  status: UserStatus = UserStatus.Active,
 ) => {
   const user = await User.create({
     id,
@@ -147,7 +144,7 @@ global.createUser = async (
     userName,
     status,
   });
-  
+
   return user;
 };
 
@@ -155,7 +152,7 @@ global.createCourse = async (
   teacherId: string,
   name: string = 'Test Course',
   description: string = 'Test Course Description',
-  status: CourseStatus = CourseStatus.Pending
+  status: CourseStatus = CourseStatus.Pending,
 ) => {
   const course = await Course.create({
     name,
@@ -163,19 +160,19 @@ global.createCourse = async (
     teacherId,
     status,
   });
-  
+
   return course;
 };
 
 global.createIslandTemplate = async (
   name: string = 'Test Island Template',
-  imageUrl: string = 'https://example.com/image.png'
+  imageUrl: string = 'https://example.com/image.png',
 ) => {
   const islandTemplate = await IslandTemplate.create({
     name,
     imageUrl,
   });
-  
+
   return islandTemplate;
 };
 
@@ -183,7 +180,7 @@ global.createAdminUserAction = async (
   adminId: string,
   userId: string,
   actionType: AdminActionType = AdminActionType.Suspend,
-  reason: string = 'Test reason'
+  reason: string = 'Test reason',
 ) => {
   const adminUserAction = await AdminUser.create({
     adminId,
@@ -191,7 +188,7 @@ global.createAdminUserAction = async (
     actionType,
     reason,
   });
-  
+
   return adminUserAction;
 };
 
@@ -199,7 +196,7 @@ global.createAdminCourseAction = async (
   adminId: string,
   courseId: string,
   actionType: AdminCourseActionType = AdminCourseActionType.Approve,
-  reason: string = 'Test reason'
+  reason: string = 'Test reason',
 ) => {
   const adminCourseAction = await AdminCourse.create({
     adminId,
@@ -207,7 +204,7 @@ global.createAdminCourseAction = async (
     actionType,
     reason,
   });
-  
+
   return adminCourseAction;
 };
 
@@ -215,7 +212,7 @@ global.createAdminIslandTemplateAction = async (
   adminId: string,
   islandTemplateId: string,
   actionType: AdminIslandTemplateActionType = AdminIslandTemplateActionType.Add,
-  reason: string = 'Test reason'
+  reason: string = 'Test reason',
 ) => {
   const adminIslandTemplateAction = await AdminIslandTemplate.create({
     adminId,
@@ -223,6 +220,6 @@ global.createAdminIslandTemplateAction = async (
     actionType,
     reason,
   });
-  
+
   return adminIslandTemplateAction;
 };

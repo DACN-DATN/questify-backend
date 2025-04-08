@@ -9,19 +9,16 @@ describe('Get User by ID API', () => {
   it('returns NotAuthorizedError if the user is not signed in', async () => {
     const userId = uuidv4();
 
-    await request(app)
-      .get(`${BASE_URL}/${userId}`)
-      .send()
-      .expect(NotAuthorizedError.statusCode);
+    await request(app).get(`${BASE_URL}/${userId}`).send().expect(NotAuthorizedError.statusCode);
   });
 
   it('returns NotAuthorizedError if the user is not an admin', async () => {
     const userId = uuidv4();
     const cookie = await global.getAuthCookie(
-      undefined, 
-      'teacher@test.com', 
-      'teacher', 
-      UserRole.Teacher
+      undefined,
+      'teacher@test.com',
+      'teacher',
+      UserRole.Teacher,
     );
 
     await request(app)
@@ -44,13 +41,12 @@ describe('Get User by ID API', () => {
 
   it('returns the user if found', async () => {
     const adminCookie = await global.getAuthCookie();
-    
-    // Create a user to fetch
+
     const testUser = await global.createUser(
-      undefined, 
-      'student@test.com', 
-      'student1', 
-      UserRole.Student
+      undefined,
+      'student@test.com',
+      'student1',
+      UserRole.Student,
     );
 
     const response = await request(app)

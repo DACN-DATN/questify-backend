@@ -1,12 +1,12 @@
 import request from 'supertest';
 import { app } from '../../../app';
 import { v4 as uuidv4 } from 'uuid';
-import { 
-  NotAuthorizedError, 
-  NotFoundError, 
-  RequestValidationError, 
-  UserRole, 
-  UserStatus 
+import {
+  NotAuthorizedError,
+  NotFoundError,
+  RequestValidationError,
+  UserRole,
+  UserStatus,
 } from '@datn242/questify-common';
 import { AdminActionType } from '../../../models/admin-user';
 
@@ -20,7 +20,7 @@ describe('Update User Status API', () => {
       .patch(`${BASE_URL}/${userId}`)
       .send({
         status: UserStatus.Suspended,
-        reason: 'Violation of terms'
+        reason: 'Violation of terms',
       })
       .expect(NotAuthorizedError.statusCode);
   });
@@ -28,10 +28,10 @@ describe('Update User Status API', () => {
   it('returns NotAuthorizedError if the user is not an admin', async () => {
     const userId = uuidv4();
     const cookie = await global.getAuthCookie(
-      undefined, 
-      'teacher@test.com', 
-      'teacher', 
-      UserRole.Teacher
+      undefined,
+      'teacher@test.com',
+      'teacher',
+      UserRole.Teacher,
     );
 
     await request(app)
@@ -39,7 +39,7 @@ describe('Update User Status API', () => {
       .set('Cookie', cookie)
       .send({
         status: UserStatus.Suspended,
-        reason: 'Violation of terms'
+        reason: 'Violation of terms',
       })
       .expect(NotAuthorizedError.statusCode);
   });
@@ -53,15 +53,14 @@ describe('Update User Status API', () => {
       .set('Cookie', adminCookie)
       .send({
         status: UserStatus.Suspended,
-        reason: 'Violation of terms'
+        reason: 'Violation of terms',
       })
       .expect(NotFoundError.statusCode);
   });
 
   it('returns RequestValidationError if the status is invalid', async () => {
     const adminCookie = await global.getAuthCookie();
-    
-    // Create a user to update
+
     const testUser = await global.createUser();
 
     await request(app)
@@ -69,22 +68,7 @@ describe('Update User Status API', () => {
       .set('Cookie', adminCookie)
       .send({
         status: 'invalid-status',
-        reason: 'Violation of terms'
-      })
-      .expect(RequestValidationError.statusCode);
-  });
-
-  it('returns RequestValidationError if no reason is provided for suspension', async () => {
-    const adminCookie = await global.getAuthCookie();
-    
-    // Create a user to update
-    const testUser = await global.createUser();
-
-    await request(app)
-      .patch(`${BASE_URL}/${testUser.id}`)
-      .set('Cookie', adminCookie)
-      .send({
-        status: UserStatus.Suspended
+        reason: 'Violation of terms',
       })
       .expect(RequestValidationError.statusCode);
   });
@@ -92,8 +76,7 @@ describe('Update User Status API', () => {
   it('successfully suspends a user', async () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
-    
-    // Create a user to suspend
+
     const testUser = await global.createUser();
     expect(testUser.status).toEqual(UserStatus.Active);
 
@@ -102,15 +85,13 @@ describe('Update User Status API', () => {
       .set('Cookie', adminCookie)
       .send({
         status: UserStatus.Suspended,
-        reason: 'Violation of terms'
+        reason: 'Violation of terms',
       })
       .expect(200);
 
-    // Verify user status is updated
     expect(response.body.id).toEqual(testUser.id);
     expect(response.body.status).toEqual(UserStatus.Suspended);
-    
-    // Verify admin action is recorded
+
     const { adminAction } = response.body;
     expect(adminAction).toBeDefined();
     expect(adminAction.adminId).toEqual(adminId);
@@ -122,14 +103,13 @@ describe('Update User Status API', () => {
   it('successfully reactivates a suspended user', async () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
-    
-    // Create a suspended user
+
     const testUser = await global.createUser(
       undefined,
       'suspended@test.com',
       'suspended',
       UserRole.Student,
-      UserStatus.Suspended
+      UserStatus.Suspended,
     );
     expect(testUser.status).toEqual(UserStatus.Suspended);
 
@@ -138,26 +118,50 @@ describe('Update User Status API', () => {
       .set('Cookie', adminCookie)
       .send({
         status: UserStatus.Active,
-        reason: 'User appeal approved'
       })
       .expect(200);
 
-    // Verify user status is updated
     expect(response.body.id).toEqual(testUser.id);
     expect(response.body.status).toEqual(UserStatus.Active);
   });
 
-  it('prevents an admin from suspending themselves', async () => {
+  it('prevents admin from suspending any admin', async () => {
     const adminId = uuidv4();
     const adminCookie = await global.getAuthCookie(adminId);
 
+    const anotherAdmin = await global.createUser(
+      undefined,
+      'admin2@test.com',
+      'admin2',
+      UserRole.Admin,
+    );
+
     await request(app)
-      .patch(`${BASE_URL}/${adminId}`)
+      .patch(`${BASE_URL}/${anotherAdmin.id}`)
       .set('Cookie', adminCookie)
       .send({
         status: UserStatus.Suspended,
-        reason: 'Self-suspension test'
+        reason: 'Admin suspension test',
       })
-      .expect(400); // Bad request
+      .expect(400);
+  });
+
+  it('allows suspending a user without a reason', async () => {
+    const adminId = uuidv4();
+    const adminCookie = await global.getAuthCookie(adminId);
+
+    const testUser = await global.createUser();
+    expect(testUser.status).toEqual(UserStatus.Active);
+
+    const response = await request(app)
+      .patch(`${BASE_URL}/${testUser.id}`)
+      .set('Cookie', adminCookie)
+      .send({
+        status: UserStatus.Suspended,
+      })
+      .expect(200);
+
+    expect(response.body.id).toEqual(testUser.id);
+    expect(response.body.status).toEqual(UserStatus.Suspended);
   });
 });

@@ -4,6 +4,10 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
+import { indexUserRouter } from './routes/users/index';
+import { showUserRouter } from './routes/users/show';
+import { updateUserRouter } from './routes/users/update';
+
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -14,6 +18,10 @@ app.use(
   }),
 );
 app.use(currentUser);
+
+app.use(indexUserRouter);
+app.use(showUserRouter);
+app.use(updateUserRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
