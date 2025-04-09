@@ -5,6 +5,7 @@ import {
   NotAuthorizedError,
   NotFoundError,
   RequestValidationError,
+  BadRequestError,
   UserRole,
   CourseStatus,
 } from '@datn242/questify-common';
@@ -77,7 +78,10 @@ describe('Update Course Status API', () => {
         status: 'invalid-status',
         reason: 'Course meets standards',
       })
-      .expect(RequestValidationError.statusCode);
+      .expect((res) => {
+        expect(res.status).toBe(RequestValidationError.statusCode);
+        expect(res.text).toContain('Invalid request parameters');
+      });
   });
 
   it('successfully approves a pending course', async () => {
@@ -160,7 +164,7 @@ describe('Update Course Status API', () => {
     expect(adminAction.reason).toEqual('Course does not meet minimum requirements');
   });
 
-  it('cannot update an already approved or rejected course', async () => {
+  it('returns BadRequestError when updating an already approved or rejected course', async () => {
     const adminCookie = await global.getAuthCookie();
 
     const teacher = await global.createUser(
@@ -184,6 +188,9 @@ describe('Update Course Status API', () => {
         status: CourseStatus.Rejected,
         reason: 'Attempt to reject approved course',
       })
-      .expect(400);
+      .expect((res) => {
+        expect(res.status).toBe(BadRequestError.statusCode);
+        expect(res.text).toContain('Only pending courses can be updated');
+      });
   });
 });

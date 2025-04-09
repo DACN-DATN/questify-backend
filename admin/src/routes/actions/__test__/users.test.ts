@@ -8,7 +8,7 @@ const BASE_URL = '/api/admin/actions/users';
 
 describe('List Admin User Actions API', () => {
   it('returns NotAuthorizedError if the user is not signed in', async () => {
-    await request(app).get(BASE_URL).send().expect(NotAuthorizedError.statusCode);
+    await request(app).get(BASE_URL).expect(NotAuthorizedError.statusCode);
   });
 
   it('returns NotAuthorizedError if the user is not an admin', async () => {
@@ -22,14 +22,14 @@ describe('List Admin User Actions API', () => {
     await request(app)
       .get(BASE_URL)
       .set('Cookie', cookie)
-      .send()
+
       .expect(NotAuthorizedError.statusCode);
   });
 
   it('returns an empty array when no actions exist', async () => {
     const cookie = await global.getAuthCookie();
 
-    const response = await request(app).get(BASE_URL).set('Cookie', cookie).send().expect(200);
+    const response = await request(app).get(BASE_URL).set('Cookie', cookie).expect(200);
 
     expect(response.body.length).toEqual(0);
   });
@@ -56,7 +56,7 @@ describe('List Admin User Actions API', () => {
       'Inappropriate content',
     );
 
-    const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).send().expect(200);
+    const response = await request(app).get(BASE_URL).set('Cookie', adminCookie).expect(200);
 
     expect(response.body.length).toEqual(2);
 
