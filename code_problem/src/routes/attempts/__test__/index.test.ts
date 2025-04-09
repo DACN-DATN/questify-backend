@@ -12,7 +12,6 @@ it('returns NotFoundError if the student is not found', async () => {
   await request(app)
     .get(`${ResourcePrefix.CodeProblem}/attempts/${student_id}/${level_id}`)
     .set('Cookie', cookie)
-    .send()
     .expect(NotFoundError.statusCode);
 });
 
@@ -24,7 +23,6 @@ it('returns NotFoundError if the level is not found', async () => {
   await request(app)
     .get(`${ResourcePrefix.CodeProblem}/attempts/${user_id}/${level_id}`)
     .set('Cookie', cookie)
-    .send()
     .expect(NotFoundError.statusCode);
 });
 
@@ -36,7 +34,6 @@ it('returns the attempt if the attempt is found', async () => {
   let response = await request(app)
     .get(`${ResourcePrefix.CodeProblem}/attempts/${user_id}/${level.id}`)
     .set('Cookie', cookie)
-    .send()
     .expect(200);
 
   expect(response.body.length).toEqual(0);
@@ -64,7 +61,6 @@ it('returns the attempt if the attempt is found', async () => {
   response = await request(app)
     .get(`${ResourcePrefix.CodeProblem}/attempts/${user_id}/${level.id}`)
     .set('Cookie', cookie)
-    .send()
     .expect(200);
   expect(response.body.length).toEqual(2);
   expect(response.body[0].answer).toEqual('First Answer');

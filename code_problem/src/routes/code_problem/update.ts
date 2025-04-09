@@ -20,13 +20,15 @@ router.patch(
   validateRequest,
   async (req: Request, res: Response) => {
     const { code_problem_id } = req.params;
-    const code_problem = await findByPkWithSoftDelete(CodeProblem, code_problem_id);
+    const code_problem = await findByPkWithSoftDelete(CodeProblem, code_problem_id, undefined, [
+      { model: Level },
+    ]);
 
     if (!code_problem) {
       throw new NotFoundError();
     }
 
-    const level = await findByPkWithSoftDelete(Level, code_problem.levelId);
+    const level = code_problem.get('Level') as Level;
 
     if (!level) {
       throw new NotFoundError();

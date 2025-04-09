@@ -38,6 +38,10 @@ router.post(
       throw new BadRequestError('Level not found');
     }
 
+    if (level.teacherId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
+    }
+
     const code_problem = await CodeProblem.create({
       levelId: level.id,
       description: description,

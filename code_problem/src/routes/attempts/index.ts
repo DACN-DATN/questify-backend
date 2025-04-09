@@ -6,7 +6,6 @@ import { User } from '../../models/user';
 
 const router = express.Router();
 
-// Support URL parameters (which work)
 router.get(
   `${ResourcePrefix.CodeProblem}/attempts/:student_id/:level_id`,
   requireAuth,

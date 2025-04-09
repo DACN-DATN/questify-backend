@@ -7,7 +7,6 @@ it('returns a NotAuthorizedError if the user is not signin', async () => {
   const code_problem_id = uuidv4();
   await request(app)
     .delete(`${ResourcePrefix.CodeProblem}/${code_problem_id}`)
-    .send()
     .expect(NotAuthorizedError.statusCode);
 });
 
@@ -17,7 +16,6 @@ it('returns a NotFoundError if the provided code_problem_id does not exist', asy
   await request(app)
     .delete(`${ResourcePrefix.CodeProblem}/${code_problem_id}`)
     .set('Cookie', cookie)
-    .send()
     .expect(NotFoundError.statusCode);
 });
 
@@ -39,7 +37,6 @@ it('returns a NotAuthorizedError if the user does not own the code problem', asy
   await request(app)
     .delete(`${ResourcePrefix.CodeProblem}/${code_problem.body.id}`)
     .set('Cookie', cookie2)
-    .send()
     .expect(NotAuthorizedError.statusCode);
 });
 
@@ -60,7 +57,6 @@ it('deleted successfully', async () => {
   const response = await request(app)
     .delete(`${ResourcePrefix.CodeProblem}/${code_problem.body.id}`)
     .set('Cookie', cookie)
-    .send()
     .expect(200);
 
   expect(response.body.message).toEqual('deleted successfully');
@@ -68,6 +64,5 @@ it('deleted successfully', async () => {
   await request(app)
     .get(`${ResourcePrefix.CodeProblem}/${code_problem.body.id}`)
     .set('Cookie', cookie)
-    .send()
     .expect(NotFoundError.statusCode);
 });

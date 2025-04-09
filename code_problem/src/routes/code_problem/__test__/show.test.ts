@@ -7,7 +7,6 @@ it('returns a NotFoundError if the code problem is not found', async () => {
   const code_problem_id = uuidv4();
   await request(app)
     .get(`${ResourcePrefix.CodeProblem}/${code_problem_id}`)
-    .send()
     .expect(NotFoundError.statusCode);
 });
 
@@ -27,7 +26,6 @@ it('returns the code problem if the code problem is found', async () => {
 
   const response = await request(app)
     .get(`${ResourcePrefix.CodeProblem}/${code_problem.body.id}`)
-    .send()
     .expect(200);
   expect(response.body.levelId).toEqual(level.id);
   expect(response.body.description).toEqual('Test Description');

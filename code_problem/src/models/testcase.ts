@@ -26,7 +26,7 @@ const TestcaseDefinition = {
     allowNull: false,
     type: DataTypes.TEXT,
   },
-  isShowed: {
+  hidden: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
   },
@@ -42,7 +42,7 @@ interface TestcaseAttributes {
   codeProblemId: string;
   input: string;
   output: string;
-  isShowed: boolean;
+  hidden: boolean;
   isDeleted: boolean;
 }
 
@@ -56,7 +56,7 @@ class Testcase
   public codeProblemId!: string;
   public input!: string;
   public output!: string;
-  public isShowed!: boolean;
+  public hidden!: boolean;
   public isDeleted!: boolean;
 }
 

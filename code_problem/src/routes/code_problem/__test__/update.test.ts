@@ -12,7 +12,6 @@ it('returns a NotAuthorizedError if the user is not signin', async () => {
   const code_problem_id = uuidv4();
   await request(app)
     .patch(`${ResourcePrefix.CodeProblem}/${code_problem_id}`)
-    .send()
     .expect(NotAuthorizedError.statusCode);
 });
 
@@ -72,7 +71,10 @@ it('returns a RequestValidationError if the user provides an invalid description
     .send({
       description: 1,
     })
-    .expect(RequestValidationError.statusCode);
+    .expect((res) => {
+      expect(res.status).toEqual(RequestValidationError.statusCode);
+      expect(res.text).toContain('Error: Invalid request parameters');
+    });
 
   await request(app)
     .patch(`${ResourcePrefix.CodeProblem}/${code_problem.body.id}`)
@@ -80,7 +82,10 @@ it('returns a RequestValidationError if the user provides an invalid description
     .send({
       description: true,
     })
-    .expect(RequestValidationError.statusCode);
+    .expect((res) => {
+      expect(res.status).toEqual(RequestValidationError.statusCode);
+      expect(res.text).toContain('Error: Invalid request parameters');
+    });
 });
 
 it('updates the code problem provided valid inpatchs', async () => {

@@ -8,7 +8,6 @@ it('returns a NotFoundError if the testcase is not found', async () => {
   const testcase_id = uuidv4();
   await request(app)
     .get(`${ResourcePrefix.CodeProblem}/${code_problem_id}/testcases/${testcase_id}`)
-    .send()
     .expect(NotFoundError.statusCode);
 });
 
@@ -34,7 +33,7 @@ it('returns the testcase if the testcase is found', async () => {
         {
           input: '1',
           output: '2',
-          isShowed: true,
+          hidden: true,
         },
       ],
     })
@@ -42,9 +41,8 @@ it('returns the testcase if the testcase is found', async () => {
 
   const response = await request(app)
     .get(`${ResourcePrefix.CodeProblem}/${code_problem.body.id}/testcases/${testcases.body[0].id}`)
-    .send()
     .expect(200);
   expect(response.body.input).toEqual('1');
   expect(response.body.output).toEqual('2');
-  expect(response.body.isShowed).toEqual(true);
+  expect(response.body.hidden).toEqual(true);
 });

@@ -1,7 +1,12 @@
 import request from 'supertest';
 import { app } from '../../../app';
 import { CodeProblem } from '../../../models/code-problem';
-import { NotAuthorizedError, BadRequestError, ResourcePrefix } from '@datn242/questify-common';
+import {
+  NotAuthorizedError,
+  BadRequestError,
+  ResourcePrefix,
+  RequestValidationError,
+} from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 
 it('can only be accessed if the user is signed in', async () => {
@@ -31,7 +36,26 @@ it('return BadRequestError if level not found', async () => {
       level_id: level_id,
       description: 'Test description',
     })
-    .expect(BadRequestError.statusCode);
+    .expect((res) => {
+      expect(res.status).toEqual(BadRequestError.statusCode);
+      expect(res.text).toContain('Level not found');
+    });
+});
+
+it('returns an error if the user does not have permission to create a code problem', async () => {
+  const user_id = uuidv4();
+  await global.getAuthCookie(user_id);
+  const level = await global.createLevel(user_id);
+
+  const cookie2 = await global.getAuthCookie(undefined, 'test2@gmail.com');
+  await request(app)
+    .post(ResourcePrefix.CodeProblem)
+    .set('Cookie', cookie2)
+    .send({
+      level_id: level.id,
+      description: 'Test description',
+    })
+    .expect(NotAuthorizedError.statusCode);
 });
 
 it('returns an error if an invalid description is provided', async () => {
@@ -43,10 +67,25 @@ it('returns an error if an invalid description is provided', async () => {
     .post(ResourcePrefix.CodeProblem)
     .set('Cookie', cookie)
     .send({
+      level_id: '',
+      description: 'Test description',
+    })
+    .expect((res) => {
+      expect(res.status).toEqual(RequestValidationError.statusCode);
+      expect(res.text).toContain('Error: Invalid request parameters');
+    });
+
+  await request(app)
+    .post(ResourcePrefix.CodeProblem)
+    .set('Cookie', cookie)
+    .send({
       level_id: level.id,
       description: 1,
     })
-    .expect(BadRequestError.statusCode);
+    .expect((res) => {
+      expect(res.status).toEqual(RequestValidationError.statusCode);
+      expect(res.text).toContain('Error: Invalid request parameters');
+    });
 
   await request(app)
     .post(ResourcePrefix.CodeProblem)
@@ -55,7 +94,10 @@ it('returns an error if an invalid description is provided', async () => {
       level_id: level.id,
       description: true,
     })
-    .expect(BadRequestError.statusCode);
+    .expect((res) => {
+      expect(res.status).toEqual(RequestValidationError.statusCode);
+      expect(res.text).toContain('Error: Invalid request parameters');
+    });
 });
 
 it('creates an Island with valid inputs', async () => {

@@ -1,6 +1,11 @@
 import request from 'supertest';
 import { app } from '../../../app';
-import { NotAuthorizedError, BadRequestError, ResourcePrefix } from '@datn242/questify-common';
+import {
+  NotAuthorizedError,
+  BadRequestError,
+  ResourcePrefix,
+  RequestValidationError,
+} from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 import { Attempt } from '../../../models/attempt';
 
@@ -49,7 +54,10 @@ it('return BadRequestError if level not found', async () => {
       level_id: level_id,
       answer: 'Answer',
     })
-    .expect(BadRequestError.statusCode);
+    .expect((res) => {
+      expect(res.status).toEqual(BadRequestError.statusCode);
+      expect(res.text).toContain('Level not found');
+    });
 });
 
 it('returns an error if an invalid attempt is provided', async () => {
@@ -65,7 +73,36 @@ it('returns an error if an invalid attempt is provided', async () => {
       level_id: level.id,
       answer: '',
     })
-    .expect(BadRequestError.statusCode);
+    .expect((res) => {
+      expect(res.status).toEqual(RequestValidationError.statusCode);
+      expect(res.text).toContain('Error: Invalid request parameters');
+    });
+
+  await request(app)
+    .post(`${ResourcePrefix.CodeProblem}/attempts`)
+    .set('Cookie', cookie)
+    .send({
+      student_id: '',
+      level_id: level.id,
+      answer: 'answer',
+    })
+    .expect((res) => {
+      expect(res.status).toEqual(RequestValidationError.statusCode);
+      expect(res.text).toContain('Error: Invalid request parameters');
+    });
+
+  await request(app)
+    .post(`${ResourcePrefix.CodeProblem}/attempts`)
+    .set('Cookie', cookie)
+    .send({
+      student_id: user_id,
+      level_id: '',
+      answer: 'answer',
+    })
+    .expect((res) => {
+      expect(res.status).toEqual(RequestValidationError.statusCode);
+      expect(res.text).toContain('Error: Invalid request parameters');
+    });
 });
 
 it('creates an attempt with valid inputs', async () => {

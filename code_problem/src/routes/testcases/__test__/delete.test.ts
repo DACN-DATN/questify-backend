@@ -8,7 +8,6 @@ it('returns a NotAuthorizedError if the user is not signin', async () => {
   const testcase_id = uuidv4();
   await request(app)
     .delete(`${ResourcePrefix.CodeProblem}/${code_problem_id}/testcases/${testcase_id}`)
-    .send()
     .expect(NotAuthorizedError.statusCode);
 });
 
@@ -20,7 +19,6 @@ it('returns a NotFoundError if the provided testcase does not exist', async () =
   await request(app)
     .delete(`${ResourcePrefix.CodeProblem}/${code_problem_id}/testcases/${testcase_id}`)
     .set('Cookie', cookie)
-    .send()
     .expect(NotFoundError.statusCode);
 });
 
@@ -46,7 +44,7 @@ it('returns a NotAuthorizedError if the user does not own the code problem', asy
         {
           input: '1',
           output: '2',
-          isShowed: true,
+          hidden: true,
         },
       ],
     })
@@ -58,7 +56,6 @@ it('returns a NotAuthorizedError if the user does not own the code problem', asy
       `${ResourcePrefix.CodeProblem}/${code_problem.body.id}/testcases/${testcases.body[0].id}`,
     )
     .set('Cookie', cookie2)
-    .send()
     .expect(NotAuthorizedError.statusCode);
 });
 
@@ -84,7 +81,7 @@ it('deleted successfully', async () => {
         {
           input: '1',
           output: '2',
-          isShowed: true,
+          hidden: true,
         },
       ],
     })
@@ -95,7 +92,6 @@ it('deleted successfully', async () => {
       `${ResourcePrefix.CodeProblem}/${code_problem.body.id}/testcases/${testcases.body[0].id}`,
     )
     .set('Cookie', cookie)
-    .send()
     .expect(200);
 
   expect(response.body.message).toEqual('deleted successfully');
@@ -103,6 +99,5 @@ it('deleted successfully', async () => {
   await request(app)
     .get(`${ResourcePrefix.CodeProblem}/${code_problem.body.id}/testcases/${testcases.body[0].id}`)
     .set('Cookie', cookie)
-    .send()
     .expect(NotFoundError.statusCode);
 });

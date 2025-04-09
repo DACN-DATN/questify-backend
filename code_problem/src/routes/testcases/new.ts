@@ -11,11 +11,12 @@ import {
   ResourcePrefix,
 } from '@datn242/questify-common';
 import { findByPkWithSoftDelete } from '../../utils/model';
+import { Level } from '../../models/level';
 
 interface TestcaseInput {
   input: string[];
   output: string[];
-  isShowed: boolean;
+  hidden: boolean;
 }
 
 const router = express.Router();
@@ -32,12 +33,10 @@ router.post(
           (item) =>
             typeof item.input === 'string' &&
             typeof item.output === 'string' &&
-            typeof item.isShowed === 'boolean',
+            typeof item.hidden === 'boolean',
         ),
       )
-      .withMessage(
-        'Each testcase must have input (string), output (string), and isShowed (boolean)',
-      ),
+      .withMessage('Each testcase must have input (string), output (string), and hidden (boolean)'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -48,16 +47,24 @@ router.post(
       throw new NotAuthorizedError();
     }
 
-    const code_problem = await findByPkWithSoftDelete(CodeProblem, code_problem_id);
+    const code_problem = await findByPkWithSoftDelete(CodeProblem, code_problem_id, undefined, [
+      { model: Level },
+    ]);
     if (!code_problem) {
       throw new BadRequestError('Code Problem not found');
+    }
+
+    const level = code_problem.get('Level') as Level;
+
+    if (level.teacherId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
     }
 
     const formattedTestcases = testcases.map((testcase: TestcaseInput) => ({
       codeProblemId: code_problem.id,
       input: testcase.input,
       output: testcase.output,
-      isShowed: testcase.isShowed,
+      hidden: testcase.hidden,
     }));
 
     const createdTestcases = await Testcase.bulkCreate(formattedTestcases);
