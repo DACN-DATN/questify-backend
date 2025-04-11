@@ -1,4 +1,4 @@
-import { UserRole, EnvStage, UserStatus, LevelContent } from '@datn242/questify-common';
+import { UserRole, EnvStage, UserStatus } from '@datn242/questify-common';
 process.env.POSTGRES_URI = 'sqlite::memory:';
 process.env.NODE_ENV = EnvStage.Test;
 
@@ -89,9 +89,7 @@ global.getAuthCookie = async (
   return [`session=${base64}`];
 };
 
-global.createLevel = async (
-  teacherId: string,
-) => {
+global.createLevel = async (teacherId: string) => {
   const level = await Level.create({
     teacherId: teacherId,
   });
