@@ -91,16 +91,9 @@ global.getAuthCookie = async (
 
 global.createLevel = async (
   teacherId: string,
-  name: string = 'test level',
-  description: string = 'test description',
-  position: number = 1,
 ) => {
   const level = await Level.create({
-    name: name,
     teacherId: teacherId,
-    description: description,
-    position: position,
-    content_type: LevelContent.CodeProblem,
   });
 
   return level;
