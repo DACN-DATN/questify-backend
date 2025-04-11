@@ -14,6 +14,7 @@ const defineLevelAssociations = () => {
     onUpdate: 'CASCADE',
   });
   Level.hasMany(UserLevel, { foreignKey: 'levelId' });
+  Level.belongsTo(User, { foreignKey: 'teacherId' });
 };
 
 export default defineLevelAssociations;
