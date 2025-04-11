@@ -2,7 +2,10 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Island } from '../../models/island';
 import { Level } from '../../models/level';
-import { validateRequest, requireAuth, BadRequestError } from '@datn242/questify-common';
+import { LevelCreatedPublisher } from '../../events/publishers/level-created-publisher';
+import { natsWrapper } from '../../nats-wrapper';
+import { validateRequest, requireAuth, BadRequestError, NotFoundError, NotAuthorizedError } from '@datn242/questify-common';
+import { Course } from '../../models/course';
 
 const router = express.Router();
 
@@ -20,10 +23,26 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const { island_id } = req.params;
-    const island = await Island.findByPk(island_id);
+    const island = await Island.findByPk(island_id, {
+      include: [
+        {
+          model: Course,
+        },
+      ],
+    });
 
     if (!island) {
       throw new BadRequestError('Island not found');
+    }
+
+    if (!island) {
+      throw new NotFoundError();
+    }
+
+    const course = island.get('Course') as Course;
+
+    if (course.teacherId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
     }
 
     const { name, description, position } = req.body;
@@ -35,6 +54,10 @@ router.post(
     });
 
     await level.save();
+    new LevelCreatedPublisher(natsWrapper.client).publish({
+      id: level.id,
+      teacherId: course.teacherId,
+    });
     res.status(201).send(level);
   },
 );
