@@ -26,7 +26,7 @@ it('can only be accessed if the user is signed in', async () => {
   await request(app).post(resource).send({}).expect(NotAuthorizedError.statusCode);
 });
 
-it('can only create feedback if the user is signed in as teacher', async () => {
+it('can only create feedback if the user is signed in as student', async () => {
   const cookie = await global.getAuthCookie(undefined, UserRole.Student);
   const response = await request(app).post(resource).set('Cookie', cookie).send({});
 
