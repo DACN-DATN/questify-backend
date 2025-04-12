@@ -5,9 +5,12 @@ import {
   validateRequest,
   ResourcePrefix,
   BadRequestError,
+  NotAuthorizedError,
 } from '@datn242/questify-common';
 import { Challenge } from '../../models/challenge';
 import { Minigame } from '../../models/minigame';
+import { Level } from '../../models/level';
+import { UserLevel } from '../../models/user-level';
 import { body, param } from 'express-validator';
 
 const router = express.Router();
@@ -27,9 +30,34 @@ router.post(
   async (req: Request, res: Response) => {
     const { challenge_id } = req.body;
     const { quiz_id } = req.params;
-    const challenge = await Challenge.findByPk(challenge_id);
+    //current: eager load + lazy load error -> normal query
+    //todo: may implement eager load here
+    const challenge = await Challenge.findOne({
+      where: { id: challenge_id },
+    });
     if (!challenge) {
       throw new BadRequestError('Challenge not found');
+    }
+
+    const level = await Level.findOne({
+      where: {
+        id: challenge.levelId,
+      },
+    });
+
+    if (!level) {
+      throw new BadRequestError('Level not found');
+    }
+
+    const progress = await UserLevel.findOne({
+      where: {
+        userId: req.currentUser!.id,
+        levelId: level.id,
+      },
+    });
+
+    if (!progress) {
+      throw new NotAuthorizedError();
     }
 
     const quiz = await Minigame.findOne({
@@ -45,7 +73,7 @@ router.post(
 
     //TODO: implement logic of submitting quiz here
 
-    res.status(201).send(quiz);
+    res.status(200).send(quiz);
   },
 );
 

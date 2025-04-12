@@ -11,7 +11,7 @@ const ChallengeDefinition = {
     defaultValue: () => uuidv4(),
   },
   description: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.STRING,
     validate: {
       notEmpty: true,
@@ -43,6 +43,11 @@ class Challenge
   public id!: string;
   public description!: string;
   public levelId!: string;
+
+  public readonly level?: Level;
+
+  public getLevel!: () => Promise<Level>;
+  public addLevel!: (level: Level) => Promise<void>;
 }
 
 Challenge.init(ChallengeDefinition, {

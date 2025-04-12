@@ -2,6 +2,8 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { Island } from './island';
 import { v4 as uuidv4 } from 'uuid';
+import type { User } from './user';
+import { Challenge } from './challenge';
 
 const LevelDefinition = {
   id: {
@@ -57,6 +59,12 @@ class Level extends Model<LevelAttributes, LevelCreationAttributes> implements L
   static readonly scopes: ModelScopeOptions = {};
 
   static readonly validations: ModelValidateOptions = {};
+
+  declare addUser: (user: User) => Promise<void>;
+  declare getUsers: () => Promise<User[]>;
+
+  declare addChallenge: (challenge: Challenge) => Promise<void>;
+  declare getChallenge: () => Promise<Challenge>;
 }
 
 Level.init(LevelDefinition, {

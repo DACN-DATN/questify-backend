@@ -3,6 +3,7 @@ import { sequelize } from '../config/db';
 import { UserRole } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 import type { Reward } from './reward';
+import type { Level } from './level';
 
 const UserDefinition = {
   id: {
@@ -55,6 +56,9 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
 
   declare addReward: (reward: Reward) => Promise<void>;
   declare getRewards: () => Promise<Reward[]>;
+
+  declare addLevel: (level: Level) => Promise<void>;
+  declare getLevels: () => Promise<Level[]>;
 }
 
 User.init(UserDefinition, {
