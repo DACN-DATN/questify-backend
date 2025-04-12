@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import { UserRole } from '@datn242/questify-common';
 import { validateRequest, BadRequestError, NotFoundError } from '@datn242/questify-common';
 import { User } from '../models/user';
+import { UserCreatedPublisher } from '../events/publishers/user-created-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -85,6 +87,13 @@ router.post(
     });
 
     await user.save();
+
+    // await new UserCreatedPublisher(natsWrapper.client).publish({
+    //   id: user.id,
+    //   gmail: user.email,
+    //   role: user.role,
+    //   status: user.status,
+    // });
 
     const userJwt = jwt.sign(
       {

@@ -33,7 +33,7 @@ const CourseDefinition = {
   },
   price: {
     allowNull: true,
-    type: DataTypes.NUMBER,
+    type: DataTypes.FLOAT,
     defaultValue: 0,
     validator: {
       min: 0,
@@ -90,7 +90,7 @@ interface CourseAttributes {
   name: string;
   description?: string;
   category?: string;
-  price?: string;
+  price?: number;
   learningObjectives?: string[];
   requirements?: string[];
   targetAudience?: string[];
@@ -108,7 +108,7 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public name!: string;
   public description?: string;
   public category?: string;
-  public price?: string;
+  public price?: number;
   public learningObjectives?: string[];
   public requirements?: string[];
   public targetAudience?: string[];

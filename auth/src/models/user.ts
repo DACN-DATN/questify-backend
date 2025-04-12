@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { Password } from '../services/password';
-import { UserRole } from '@datn242/questify-common';
+import { UserRole, UserStatus } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 
 // An TS interfact that describes the properties
@@ -23,12 +23,11 @@ interface UserModel extends mongoose.Model<UserDoc> {
 // An interface that describes the properties
 // that a User Document has
 interface UserDoc extends mongoose.Document {
-  firstName?: string;
-  lastName?: string;
   userName: string;
   email: string;
   password: string;
   role: UserRole;
+  status: UserStatus;
 }
 
 const userSchema = new mongoose.Schema(
@@ -36,14 +35,6 @@ const userSchema = new mongoose.Schema(
     _id: {
       type: String,
       default: () => uuidv4(),
-    },
-    firstName: {
-      type: String,
-      required: false,
-    },
-    lastName: {
-      type: String,
-      required: false,
     },
     userName: {
       type: String,
@@ -63,6 +54,12 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(UserRole),
       default: UserRole.Student,
     },
+    status: {
+      type: String,
+      required: true,
+      enum: Object.values(UserStatus),
+      default: UserStatus.Active,
+    }
   },
   {
     toJSON: {

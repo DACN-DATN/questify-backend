@@ -54,11 +54,11 @@ router.post(
     });
 
     await level.save();
-    new LevelCreatedPublisher(natsWrapper.client).publish({
-      id: level.id,
-      teacherId: course.teacherId,
-    });
-    res.status(201).send(level);
+    // await new LevelCreatedPublisher(natsWrapper.client).publish({
+    //   id: level.id,
+    //   teacherId: course.teacherId,
+    // });
+    // res.status(201).send(level);
   },
 );
 
