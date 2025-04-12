@@ -3,12 +3,10 @@ import { app } from '../../../app';
 import { User } from '../../../models/user';
 import { Reward } from '../../../models/reward';
 import { Course } from '../../../models/course';
-import { StudentReward } from '../../../models/student-reward';
 import {
   RequestValidationError,
   UserRole,
   ResourcePrefix,
-  BadRequestError,
   NotFoundError,
 } from '@datn242/questify-common';
 

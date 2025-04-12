@@ -6,9 +6,7 @@ import { Island } from '../../../models/island';
 import { User } from '../../../models/user';
 import { Attempt } from '../../../models/attempt';
 import {
-  NotAuthorizedError,
   RequestValidationError,
-  NotFoundError,
   UserRole,
   ResourcePrefix,
   BadRequestError,

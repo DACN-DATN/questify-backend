@@ -1,9 +1,7 @@
 import request from 'supertest';
 import { app } from '../../../app';
-import { Feedback } from '../../../models/feedback';
 import {
   NotAuthorizedError,
-  RequestValidationError,
   NotFoundError,
   ResourcePrefix,
   UserRole,
@@ -11,8 +9,6 @@ import {
 import { User } from '../../../models/user';
 import { Course } from '../../../models/course';
 import { Island } from '../../../models/island';
-import { Level } from '../../../models/level';
-import { Attempt } from '../../../models/attempt';
 import { UserIsland } from '../../../models/user-island';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -57,8 +53,7 @@ it(`returns a status other than ${NotAuthorizedError.statusCode} if the user is 
   expect(response.status).not.toEqual(NotAuthorizedError.statusCode);
 });
 
-describe('Already have course, island, and level; signin as student', () => {
-  let level: Level = undefined!;
+describe('Already have course, island; signin as student', () => {
   let cookie: string[] = undefined!;
   let course: Course = undefined!;
 
@@ -98,7 +93,7 @@ describe('Already have course, island, and level; signin as student', () => {
     });
   });
 
-  it('creates a Feedback with valid inputs', async () => {
+  it('creates a UserIslands with valid inputs', async () => {
     let UserIslands = await UserIsland.findAll();
     expect(UserIslands.length).toEqual(0);
 

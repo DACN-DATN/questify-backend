@@ -2,7 +2,6 @@ import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 // import { User } from './user';
 // import { Reward } from './reward';
-import { v4 as uuidv4 } from 'uuid';
 
 const StudentRewardDefinition = {
   userId: {

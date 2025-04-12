@@ -1,9 +1,7 @@
 import request from 'supertest';
 import { app } from '../../../app';
-import { Feedback } from '../../../models/feedback';
 import {
   NotAuthorizedError,
-  RequestValidationError,
   NotFoundError,
   ResourcePrefix,
   UserRole,
@@ -14,7 +12,6 @@ import { Island } from '../../../models/island';
 import { Level } from '../../../models/level';
 import { Challenge } from '../../../models/challenge';
 import { Minigame } from '../../../models/minigame';
-import { Attempt } from '../../../models/attempt';
 
 const resource = ResourcePrefix.CourseLearning + '/quizzes';
 
@@ -102,7 +99,7 @@ describe('Already have course, island, and level', () => {
     await student.addLevel(level);
     await level.addUser(student);
 
-    const response = await request(app)
+    await request(app)
       .post(resource + `/${quiz.id}`)
       .set('Cookie', cookie)
       .send({

@@ -12,9 +12,9 @@ router.post(
   ResourcePrefix.CourseLearning + '/roadmap/islands/:island_id',
   requireAuth,
   async (req: Request, res: Response) => {
-    const { course_id } = req.params;
+    const { island_id } = req.params;
 
-    const island = await Island.findByPk(course_id);
+    const island = await Island.findByPk(island_id);
     if (!island) {
       throw new BadRequestError('Island not found');
     }
