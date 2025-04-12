@@ -44,7 +44,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-global.getAuthCookie = async (gmail: string = 'test@test.com') => {
+global.getAuthCookie = async () => {
   // Create a user in the database with this ID
   const user = await User.create({
     role: UserRole.Teacher,
