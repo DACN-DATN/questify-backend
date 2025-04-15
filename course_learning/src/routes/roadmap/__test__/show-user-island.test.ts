@@ -33,7 +33,7 @@ it('returns a 404 if the course is not found', async () => {
     .expect(NotFoundError.statusCode);
 });
 
-describe('Already have course, island; signin as student', () => {
+describe('Already have course; signin as student', () => {
   let cookie: string[] = undefined!;
   let course: Course = undefined!;
 
@@ -70,7 +70,7 @@ describe('Already have course, island; signin as student', () => {
     expect(response.body.userIslands).toEqual([]);
   });
 
-  it('Return user-island if there is in db', async () => {
+  it('Return user-island if there is islands in db', async () => {
     await Island.create({
       name: 'test_island_1',
       position: 1,

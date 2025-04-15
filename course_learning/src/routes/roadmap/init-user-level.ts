@@ -40,16 +40,14 @@ router.post(
     const userLevels: UserLevel[] = [];
 
     for (const level of levels) {
-      const userLevel = UserLevel.build({
+      const userLevel = await UserLevel.create({
         userId: student.id,
         levelId: level.id,
         point: 0,
         completionStatus: CompletionStatus.Locked,
       });
-      await userLevel.save();
       userLevels.push(userLevel);
     }
-
     res.status(201).send({ userLevels });
   },
 );

@@ -1,5 +1,10 @@
 import express, { Request, Response } from 'express';
-import { BadRequestError, requireAuth, ResourcePrefix } from '@datn242/questify-common';
+import {
+  BadRequestError,
+  NotFoundError,
+  requireAuth,
+  ResourcePrefix,
+} from '@datn242/questify-common';
 import { User } from '../../models/user';
 import { UserLevel } from '../../models/user-level';
 import { Level } from '../../models/level';
@@ -16,7 +21,7 @@ router.get(
 
     const island = await Island.findByPk(island_id);
     if (!island) {
-      throw new BadRequestError('Course not found');
+      throw new NotFoundError();
     }
 
     const student = await User.findByPk(req.currentUser!.id);
@@ -29,8 +34,8 @@ router.get(
         islandId: island.id,
       },
     });
-    if (!levels) {
-      throw new BadRequestError('Levels not found');
+    if (levels.length === 0) {
+      res.send({ userLevels: [] });
     }
     const levelIds = levels.map((level) => level.id);
 
@@ -44,7 +49,6 @@ router.get(
       include: [
         {
           model: Level,
-          as: 'levels',
         },
       ],
     });

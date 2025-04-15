@@ -107,7 +107,13 @@ describe('Already have course, island; signin as student', () => {
       .send({})
       .expect(201);
 
-    UserIslands = await UserIsland.findAll();
+    UserIslands = await UserIsland.findAll({
+      include: [
+        {
+          model: Island,
+        },
+      ],
+    });
     expect(UserIslands.length).toEqual(3);
     for (let i: number = 0; i <= 2; i++) {
       expect(UserIslands[i].userId).toEqual(student.id);

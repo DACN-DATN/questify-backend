@@ -2,7 +2,9 @@ import express, { Request, Response } from 'express';
 import { BadRequestError, requireAuth, ResourcePrefix } from '@datn242/questify-common';
 import { User } from '../../models/user';
 import { UserIsland } from '../../models/user-island';
+import { UserLevel } from '../../models/user-level';
 import { Island } from '../../models/island';
+import { Level } from '../../models/level';
 import { Course } from '../../models/course';
 import { CompletionStatus } from '@datn242/questify-common';
 
@@ -40,16 +42,14 @@ router.post(
     const userIslands: UserIsland[] = [];
 
     for (const island of islands) {
-      const userIsland = UserIsland.build({
+      const userIsland = await UserIsland.create({
         userId: student.id,
         islandId: island.id,
         point: 0,
         completionStatus: CompletionStatus.Locked,
       });
-      await userIsland.save();
       userIslands.push(userIsland);
     }
-
     res.status(201).send({ userIslands });
   },
 );

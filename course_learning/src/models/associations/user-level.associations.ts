@@ -9,7 +9,7 @@ const defineUserLevelAssociations = () => {
     onUpdate: 'CASCADE',
   });
   UserLevel.belongsTo(Level, {
-    foreignKey: 'itemTemplateId',
+    foreignKey: 'levelId',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
