@@ -27,7 +27,7 @@ const defineIslandAssociations = () => {
   });
   Island.hasMany(Reward, { foreignKey: 'islandId' });
   Island.belongsToMany(User, {
-    through: 'UserIsland',
+    through: UserIsland,
     foreignKey: 'islandId',
     otherKey: 'userId',
     as: 'users',

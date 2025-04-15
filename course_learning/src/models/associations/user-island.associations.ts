@@ -9,7 +9,7 @@ const defineUserIslandAssociations = () => {
     onUpdate: 'CASCADE',
   });
   UserIsland.belongsTo(Island, {
-    foreignKey: 'itemTemplateId',
+    foreignKey: 'islandId',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
