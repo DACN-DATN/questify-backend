@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
 import { Course } from './course';
@@ -63,7 +63,12 @@ interface UserCourseAttributes {
   user?: User;
 }
 
-class UserCourse extends Model<UserCourseAttributes> implements UserCourseAttributes {
+type UserCourseCreationAttributes = Optional<UserCourseAttributes, 'id'>;
+
+class UserCourse
+  extends Model<UserCourseAttributes, UserCourseCreationAttributes>
+  implements UserCourseAttributes
+{
   public id!: string;
   public userId!: string;
   public courseId!: string;
