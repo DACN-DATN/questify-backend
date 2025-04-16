@@ -1,20 +1,20 @@
 import { Message } from 'node-nats-streaming';
-import { Listener, Subjects, UserCreatedEvent } from '@datn242/questify-common';
-import { queueGroupName } from './queue-group-name';
+import { Subjects, Listener, UserCreatedEvent } from '@datn242/questify-common';
 import { User } from '../../models/user';
+import { queueGroupName } from './queue-group-name';
 
 export class UserCreatedListener extends Listener<UserCreatedEvent> {
   subject: Subjects.UserCreated = Subjects.UserCreated;
   queueGroupName = queueGroupName;
 
   async onMessage(data: UserCreatedEvent['data'], msg: Message) {
-    const user = User.build({
-      id: data.id,
-      gmail: data.gmail,
-      role: data.role,
-      status: data.status,
-    })
+    const { id, role, status } = data;
 
+    const user = User.build({
+      id,
+      role,
+      status,
+    });
     await user.save();
 
     msg.ack();

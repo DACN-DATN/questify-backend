@@ -19,33 +19,34 @@ const TestcaseDefinition = {
     },
   },
   input: {
-    allowNull: true,
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: false,
+    type: DataTypes.TEXT,
   },
   output: {
-    allowNull: true,
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: false,
+    type: DataTypes.TEXT,
   },
-  explaination: {
-    allowNull: true,
-    type: DataTypes.STRING,
-  },
-  isShowed: {
+  hidden: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
+  },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
 };
 
 interface TestcaseAttributes {
   id: string;
   codeProblemId: string;
-  input?: string[];
-  output?: string[];
-  explaination?: string;
-  isShowed: boolean;
+  input: string;
+  output: string;
+  hidden: boolean;
+  isDeleted: boolean;
 }
 
-type TestcaseCreationAttributes = Optional<TestcaseAttributes, 'id'>;
+type TestcaseCreationAttributes = Optional<TestcaseAttributes, 'id' | 'isDeleted'>;
 
 class Testcase
   extends Model<TestcaseAttributes, TestcaseCreationAttributes>
@@ -53,10 +54,10 @@ class Testcase
 {
   public id!: string;
   public codeProblemId!: string;
-  public input?: string[];
-  public output?: string[];
-  public explaination?: string;
-  public isShowed!: boolean;
+  public input!: string;
+  public output!: string;
+  public hidden!: boolean;
+  public isDeleted!: boolean;
 }
 
 Testcase.init(TestcaseDefinition, {

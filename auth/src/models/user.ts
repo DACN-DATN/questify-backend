@@ -56,10 +56,10 @@ const userSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      required: true,
+      require: true,
       enum: Object.values(UserStatus),
-      default: UserStatus.Active,
-    }
+      default: () => UserStatus.Active,
+    },
   },
   {
     toJSON: {

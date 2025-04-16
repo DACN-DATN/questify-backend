@@ -10,14 +10,6 @@ const UserDefinition = {
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
   },
-  gmail: {
-    allowNull: false,
-    type: DataTypes.STRING,
-    unique: true,
-    validate: {
-      isEmail: true,
-    },
-  },
   role: {
     allowNull: false,
     type: DataTypes.STRING,
@@ -28,16 +20,14 @@ const UserDefinition = {
   status: {
     allowNull: false,
     type: DataTypes.STRING,
-    validat: {
-      isIn: [Object.values(UserStatus)]
+    validate: {
+      isIn: [Object.values(UserStatus)],
     },
-    default: UserStatus.Active,
-  }
+  },
 };
 
 interface UserAttributes {
   id: string;
-  gmail?: string;
   role: UserRole;
   status: UserStatus;
 }
@@ -46,7 +36,6 @@ type UserCreationAttributes = Optional<UserAttributes, 'id' | 'status' | 'role'>
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: string;
-  public gmail?: string;
   public role!: UserRole;
   public status!: UserStatus;
 

@@ -52,18 +52,16 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-global.getAuthCookie = async (gmail: string = 'test@test.com') => {
+global.getAuthCookie = async () => {
   // Create a user in the database with this ID
   const user = await User.create({
-    gmail: gmail,
     role: UserRole.Teacher,
     status: UserStatus.Active,
   });
   const payload = {
     id: user.id,
-    gmail: user.gmail,
     role: user.role,
-    status: user.status
+    status: user.status,
   };
   const token = jwt.sign(payload, process.env.JWT_KEY!);
   const session = { jwt: token };
