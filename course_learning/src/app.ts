@@ -17,6 +17,7 @@ import { showUserIslandRouter } from './routes/roadmap/show-user-island';
 import { showUserLevelRouter } from './routes/roadmap/show-user-level';
 import { initUserIslandRouter } from './routes/roadmap/init-user-island';
 import { initUserLevelRouter } from './routes/roadmap/init-user-level';
+import { updateProgressRouter } from './routes/progress/update';
 
 const app = express();
 app.set('trust proxy', true);
@@ -42,6 +43,7 @@ app.use(showUserIslandRouter);
 app.use(showUserLevelRouter);
 app.use(initUserIslandRouter);
 app.use(initUserLevelRouter);
+app.use(updateProgressRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

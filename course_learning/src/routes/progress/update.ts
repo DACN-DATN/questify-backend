@@ -4,6 +4,9 @@ import {
   BadRequestError,
   ResourcePrefix,
   validateRequest,
+  requireAuth,
+  currentUser,
+  NotAuthorizedError,
 } from '@datn242/questify-common';
 import { Course } from '../../models/course';
 import { Island } from '../../models/island';
@@ -18,6 +21,7 @@ const router = express.Router();
 
 router.patch(
   ResourcePrefix.CourseLearning + '/progress/students/:student_id/courses/:course_id',
+  requireAuth,
   [
     param('student_id').isUUID().withMessage('student_id must be a valid UUID'),
     param('course_id').isUUID().withMessage('course_id must be a valid UUID'),
@@ -35,8 +39,8 @@ router.patch(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const student_id = req.params['student-id'] as string;
-    const course_id = req.params['course-id'] as string;
+    const student_id = req.params['student_id'] as string;
+    const course_id = req.params['course_id'] as string;
     const { point, completion_status, finished_date } = req.body;
 
     const student = await User.findByPk(student_id);
@@ -60,6 +64,10 @@ router.patch(
       throw new BadRequestError('Progress not found');
     }
 
+    if (req.currentUser!.id !== progress.userId) {
+      throw new NotAuthorizedError();
+    }
+
     const updateFields: Partial<UserCourse> = {};
     if (point !== undefined) updateFields['point'] = point;
     if (completion_status !== undefined) updateFields['completionStatus'] = completion_status;
@@ -73,6 +81,7 @@ router.patch(
 
 router.patch(
   ResourcePrefix.CourseLearning + '/progress/students/:student_id/islands/:island_id',
+  requireAuth,
   [
     param('student_id').isUUID().withMessage('student_id must be a valid UUID'),
     param('island_id').isUUID().withMessage('island_id must be a valid UUID'),
@@ -90,8 +99,8 @@ router.patch(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const student_id = req.params['student-id'] as string;
-    const island_id = req.params['island-id'] as string;
+    const student_id = req.params['student_id'] as string;
+    const island_id = req.params['island_id'] as string;
     const { point, completion_status, finished_date } = req.body;
 
     const student = await User.findByPk(student_id);
@@ -115,6 +124,10 @@ router.patch(
       throw new BadRequestError('Progress not found');
     }
 
+    if (req.currentUser!.id !== progress.userId) {
+      throw new NotAuthorizedError();
+    }
+
     const updateFields: Partial<UserCourse> = {};
     if (point !== undefined) updateFields['point'] = point;
     if (completion_status !== undefined) updateFields['completionStatus'] = completion_status;
@@ -128,6 +141,7 @@ router.patch(
 
 router.patch(
   ResourcePrefix.CourseLearning + '/progress/students/:student_id/levels/:level_id',
+  requireAuth,
   [
     param('student_id').isUUID().withMessage('student_id must be a valid UUID'),
     param('level_id').isUUID().withMessage('level_id must be a valid UUID'),
@@ -145,8 +159,8 @@ router.patch(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const student_id = req.params['student-id'] as string;
-    const level_id = req.params['level-id'] as string;
+    const student_id = req.params['student_id'] as string;
+    const level_id = req.params['level_id'] as string;
     const { point, completion_status, finished_date } = req.body;
 
     const student = await User.findByPk(student_id);
@@ -168,6 +182,10 @@ router.patch(
 
     if (!progress) {
       throw new BadRequestError('Progress not found');
+    }
+
+    if (req.currentUser!.id !== progress.userId) {
+      throw new NotAuthorizedError();
     }
 
     const updateFields: Partial<UserCourse> = {};
