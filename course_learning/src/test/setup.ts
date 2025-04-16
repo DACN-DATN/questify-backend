@@ -3,8 +3,6 @@ process.env.POSTGRES_URI = 'sqlite::memory:';
 process.env.NODE_ENV = EnvStage.Test;
 import '../models/associations';
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
 import { sequelize } from '../config/db';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
@@ -14,34 +12,16 @@ declare global {
   var getAuthCookie: (gmail?: string, role?: UserRole) => Promise<string[]>;
 }
 
-let mongo: MongoMemoryServer;
-
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfdsa';
-  mongo = await MongoMemoryServer.create();
-  const mongoUri = mongo.getUri();
-  await mongoose.connect(mongoUri, {});
 });
 
 beforeEach(async () => {
-  if (mongoose.connection.db) {
-    const collections = await mongoose.connection.db.collections();
-
-    for (const collection of collections) {
-      await collection.deleteMany({});
-    }
-  }
-
   await sequelize.drop();
   await sequelize.sync();
 });
 
 afterAll(async () => {
-  if (mongo) {
-    await mongo.stop();
-  }
-  await mongoose.connection.close();
-
   await sequelize.close();
 });
 
