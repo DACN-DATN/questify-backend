@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { v4 as uuidv4 } from 'uuid';
-import { LevelContent } from '@datn242/questify-common';
+import { User } from './user';
 
 const LevelDefinition = {
   id: {
@@ -10,57 +10,33 @@ const LevelDefinition = {
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
   },
-  name: {
+  teacherId: {
     allowNull: false,
-    type: DataTypes.STRING,
-    validate: {
-      notEmpty: true,
-      max: 120,
-      min: 0,
+    type: DataTypes.UUID,
+    references: {
+      model: User,
+      key: 'id',
     },
   },
-  description: {
+  isDeleted: {
     allowNull: false,
-    type: DataTypes.STRING,
-    validate: {
-      notEmpty: true,
-      max: 120,
-      min: 0,
-    },
-  },
-  position: {
-    allowNull: true,
-    type: DataTypes.INTEGER,
-    validate: {
-      notEmpty: true,
-      min: 0,
-    },
-  },
-  content_type: {
-    allowNull: true,
-    type: DataTypes.STRING,
-    validate: {
-      isIn: [[LevelContent.Challenge, LevelContent.CodeProblem]],
-    },
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
 };
 
 interface LevelAttributes {
   id: string;
-  name: string;
-  description: string;
-  position: number;
-  content_type?: LevelContent;
+  teacherId: string;
+  isDeleted: boolean;
 }
 
-type LevelCreationAttributes = Optional<LevelAttributes, 'id'>;
+type LevelCreationAttributes = Optional<LevelAttributes, 'id' | 'isDeleted'>;
 
 class Level extends Model<LevelAttributes, LevelCreationAttributes> implements LevelAttributes {
   public id!: string;
-  public name!: string;
-  public description!: string;
-  public position!: number;
-  public content_type?: LevelContent;
+  public teacherId!: string;
+  public isDeleted!: boolean;
 
   static readonly scopes: ModelScopeOptions = {};
 
