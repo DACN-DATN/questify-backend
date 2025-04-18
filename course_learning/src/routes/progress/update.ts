@@ -5,7 +5,6 @@ import {
   ResourcePrefix,
   validateRequest,
   requireAuth,
-  currentUser,
   NotAuthorizedError,
 } from '@datn242/questify-common';
 import { Course } from '../../models/course';

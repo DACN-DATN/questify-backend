@@ -2,9 +2,7 @@ import express, { Request, Response } from 'express';
 import { BadRequestError, requireAuth, ResourcePrefix } from '@datn242/questify-common';
 import { User } from '../../models/user';
 import { UserIsland } from '../../models/user-island';
-import { UserLevel } from '../../models/user-level';
 import { Island } from '../../models/island';
-import { Level } from '../../models/level';
 import { Course } from '../../models/course';
 import { CompletionStatus } from '@datn242/questify-common';
 

@@ -1,10 +1,5 @@
 import express, { Request, Response } from 'express';
-import {
-  NotFoundError,
-  requireAuth,
-  validateRequest,
-  ResourcePrefix,
-} from '@datn242/questify-common';
+import { NotFoundError, validateRequest, ResourcePrefix } from '@datn242/questify-common';
 import { param } from 'express-validator';
 import { Course } from '../../models/course';
 import { User } from '../../models/user';
@@ -14,7 +9,6 @@ const router = express.Router();
 
 router.get(
   ResourcePrefix.CourseLearning + '/courses/:course_id/leaderboard',
-  requireAuth,
   [param('course_id').isUUID().withMessage('course_id must be a valid UUID')],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -33,11 +27,10 @@ router.get(
       include: [
         {
           model: User,
-          as: 'student',
           attributes: ['id', 'userName'],
         },
       ],
-      attributes: ['id', 'studentId', 'point'],
+      attributes: ['id', 'point'],
       order: [['point', 'DESC']],
     });
 
@@ -45,13 +38,13 @@ router.get(
     const rankedLeaderboard = leaderboard.map((progress) => {
       return {
         rank: rank++,
-        studentId: progress.userId,
-        studentName: progress.user!.userName,
+        studentId: progress.User!.id,
+        studentName: progress.User!.userName,
         points: progress.point,
       };
     });
 
-    res.send(rankedLeaderboard);
+    res.status(200).send(rankedLeaderboard);
   },
 );
 

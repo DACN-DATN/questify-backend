@@ -1,12 +1,6 @@
 import request from 'supertest';
 import { app } from '../../../app';
-import {
-  BadRequestError,
-  NotAuthorizedError,
-  NotFoundError,
-  ResourcePrefix,
-  UserRole,
-} from '@datn242/questify-common';
+import { BadRequestError, ResourcePrefix, UserRole } from '@datn242/questify-common';
 import { User } from '../../../models/user';
 import { Course } from '../../../models/course';
 import { Island } from '../../../models/island';

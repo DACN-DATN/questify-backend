@@ -3,7 +3,6 @@ import { app } from '../../../app';
 import {
   BadRequestError,
   NotAuthorizedError,
-  NotFoundError,
   ResourcePrefix,
   UserRole,
   CompletionStatus,

@@ -76,7 +76,7 @@ class UserCourse
   public completionStatus!: CompletionStatus;
   public finishedDate?: Date;
 
-  public user?: User;
+  public User?: User;
 }
 
 UserCourse.init(UserCourseDefinition, {
