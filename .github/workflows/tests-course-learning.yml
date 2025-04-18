@@ -1,4 +1,4 @@
-name: Test Course Management Service
+name: Test Course Learning Service
 
 on: pull_request
 
