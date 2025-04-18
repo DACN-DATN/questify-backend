@@ -70,8 +70,8 @@ export const recalculatePositions = async (
   });
 
   allPrereqs.forEach((prereq) => {
-    if (graph[prereq.islandId]) {
-      graph[prereq.islandId].push(prereq.prerequisiteIslandId);
+    if (graph[prereq.prerequisiteIslandId]) {
+      graph[prereq.prerequisiteIslandId].push(prereq.islandId);
     }
   });
 
@@ -99,21 +99,15 @@ export const recalculatePositions = async (
   while (queue.length > 0) {
     const currentId = queue.shift()!;
 
-    for (const [islandId, prereqList] of Object.entries(graph)) {
-      if (prereqList.includes(currentId)) {
-        inDegree[islandId]--;
+    for (const dependentId of graph[currentId]) {
+      inDegree[dependentId]--;
 
-        if (inDegree[islandId] === 0) {
-          queue.push(islandId);
-
-          const prereqLevels = graph[islandId].map((p) => levels[p] || 0);
-          levels[islandId] = 1 + Math.max(...prereqLevels, 0);
-        }
+      if (inDegree[dependentId] === 0) {
+        queue.push(dependentId);
+        levels[dependentId] = levels[currentId] + 1;
       }
     }
   }
-
-  console.log('Calculated levels:', levels);
 
   const updatePromises = islands.map((island) => {
     const newPosition = levels[island.id];

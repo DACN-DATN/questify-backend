@@ -19,7 +19,7 @@ router.get(
       include: [
         {
           model: Level,
-          as: 'Levels',
+          as: 'Level',
           required: false,
         },
       ],

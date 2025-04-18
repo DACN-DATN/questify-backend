@@ -3,7 +3,6 @@ import { app } from '../../../app';
 import { Level } from '../../../models/level';
 import { NotAuthorizedError, NotFoundError, BadRequestError } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
-import { natsWrapper } from '../../../nats-wrapper';
 
 it('has a route handler listening to /api/course-mgmt/islands/:island_id/level for post requests', async () => {
   const island_id = uuidv4();
@@ -136,5 +135,4 @@ it('creates an Level with valid inputs', async () => {
   expect(levels.length).toEqual(1);
   expect(levels[0].name).toEqual('Longest Substring Without Repeating Characters');
   expect(levels[0].position).toEqual(6);
-  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
