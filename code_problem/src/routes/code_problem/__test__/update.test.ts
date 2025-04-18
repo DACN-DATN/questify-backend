@@ -73,7 +73,7 @@ it('returns a RequestValidationError if the user provides an invalid description
     })
     .expect((res) => {
       expect(res.status).toEqual(RequestValidationError.statusCode);
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('description must be a string');
     });
 
   await request(app)
@@ -84,7 +84,7 @@ it('returns a RequestValidationError if the user provides an invalid description
     })
     .expect((res) => {
       expect(res.status).toEqual(RequestValidationError.statusCode);
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('description must be a string');
     });
 });
 

@@ -75,7 +75,7 @@ it('returns an error if an invalid attempt is provided', async () => {
     })
     .expect((res) => {
       expect(res.status).toEqual(RequestValidationError.statusCode);
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('answer is required');
     });
 
   await request(app)
@@ -88,7 +88,7 @@ it('returns an error if an invalid attempt is provided', async () => {
     })
     .expect((res) => {
       expect(res.status).toEqual(RequestValidationError.statusCode);
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('student_id must be a valid UUID');
     });
 
   await request(app)
@@ -101,7 +101,7 @@ it('returns an error if an invalid attempt is provided', async () => {
     })
     .expect((res) => {
       expect(res.status).toEqual(RequestValidationError.statusCode);
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('level_id must be a valid UUID');
     });
 });
 

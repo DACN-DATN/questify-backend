@@ -3,7 +3,6 @@ import { connectDb, closeDbConnection } from './config/db';
 import { syncModels } from './scripts/sync';
 import { natsWrapper } from './nats-wrapper';
 
-
 const start = async () => {
   await connectDb();
 

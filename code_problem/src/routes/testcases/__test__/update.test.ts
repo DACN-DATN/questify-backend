@@ -113,7 +113,7 @@ it('returns a RequestValidationError if the user provides an invalid testcases',
     })
     .expect((res) => {
       expect(res.status).toEqual(RequestValidationError.statusCode);
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('input must be a string');
     });
 });
 

@@ -101,7 +101,7 @@ it('returns an error if an invalid testcases is provided', async () => {
     })
     .expect((res) => {
       expect(res.status).toEqual(RequestValidationError.statusCode);
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('testcases must be a non-empty array');
     });
 });
 
