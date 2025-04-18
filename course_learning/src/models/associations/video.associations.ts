@@ -1,8 +1,8 @@
 import { Video } from '../video';
-import { Level } from '../level';
+import { Challenge } from '../challenge';
 
 const defineVideoAssociations = () => {
-  Video.belongsTo(Level, { foreignKey: 'levelId' });
+  Video.belongsTo(Challenge, { foreignKey: 'challengeId' });
 };
 
 export default defineVideoAssociations;

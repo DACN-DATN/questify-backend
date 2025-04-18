@@ -3,7 +3,7 @@ import { Island } from '../island';
 import { Level } from '../level';
 import { Reward } from '../reward';
 import { User } from '../user';
-import { StudentReward } from '../studentReward';
+import { StudentReward } from '../student-reward';
 
 const defineRewardAssociations = () => {
   Reward.belongsTo(Course, {
@@ -18,8 +18,8 @@ const defineRewardAssociations = () => {
   Reward.belongsToMany(User, {
     through: StudentReward,
     foreignKey: 'rewardId',
-    otherKey: 'studentId',
-    as: 'students',
+    otherKey: 'userId',
+    as: 'users',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });

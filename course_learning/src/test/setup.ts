@@ -1,60 +1,45 @@
 import { UserRole, EnvStage } from '@datn242/questify-common';
 process.env.POSTGRES_URI = 'sqlite::memory:';
 process.env.NODE_ENV = EnvStage.Test;
+import '../models/associations';
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
 import { sequelize } from '../config/db';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
 
 /* eslint-disable no-var */
 declare global {
-  var getAuthCookie: (gmail?: string) => Promise<string[]>;
+  var getAuthCookie: (gmail?: string, role?: UserRole) => Promise<string[]>;
 }
-
-let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfdsa';
-  mongo = await MongoMemoryServer.create();
-  const mongoUri = mongo.getUri();
-  await mongoose.connect(mongoUri, {});
 });
 
 beforeEach(async () => {
-  if (mongoose.connection.db) {
-    const collections = await mongoose.connection.db.collections();
-
-    for (const collection of collections) {
-      await collection.deleteMany({});
-    }
-  }
-
   await sequelize.drop();
   await sequelize.sync();
 });
 
 afterAll(async () => {
-  if (mongo) {
-    await mongo.stop();
-  }
-  await mongoose.connection.close();
-
   await sequelize.close();
 });
 
-global.getAuthCookie = async (gmail: string = 'test@test.com') => {
+global.getAuthCookie = async (
+  gmail: string = 'test@test.com',
+  role: UserRole = UserRole.Teacher,
+) => {
   // Create a user in the database with this ID
   const user = await User.create({
     gmail: gmail,
-    hashedPassword: 'hashed_password',
-    role: UserRole.Teacher,
+    role: role,
+    userName: 'test',
   });
   const payload = {
     id: user.id,
     gmail: user.gmail,
     role: user.role,
+    userName: user.userName,
   };
   const token = jwt.sign(payload, process.env.JWT_KEY!);
   const session = { jwt: token };

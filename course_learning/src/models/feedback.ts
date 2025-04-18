@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
-import { Progress } from './progress';
+import { Attempt } from './attempt';
 import { v4 as uuidv4 } from 'uuid';
 
 const FeedbackDefinition = {
@@ -11,9 +11,13 @@ const FeedbackDefinition = {
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
   },
-  description: {
-    allowNull: true,
+  message: {
+    allowNull: false,
     type: DataTypes.STRING,
+    validate: {
+      notEmpty: true,
+      len: [1, 1000] as [number, number],
+    },
   },
   teacherId: {
     allowNull: false,
@@ -23,11 +27,11 @@ const FeedbackDefinition = {
       key: 'id',
     },
   },
-  progressId: {
-    allowNull: true,
+  attemptId: {
+    allowNull: false,
     type: DataTypes.UUID,
     references: {
-      model: Progress,
+      model: Attempt,
       key: 'id',
     },
   },
@@ -35,9 +39,9 @@ const FeedbackDefinition = {
 
 interface FeedbackAttributes {
   id: string;
-  description?: string;
+  message: string;
   teacherId: string;
-  progressId?: string;
+  attemptId: string;
 }
 
 type FeedbackCreationAttributes = Optional<FeedbackAttributes, 'id'>;
@@ -47,9 +51,9 @@ class Feedback
   implements FeedbackAttributes
 {
   public id!: string;
-  public description?: string;
+  public message!: string;
   public teacherId!: string;
-  public progressId?: string;
+  public attemptId!: string;
 }
 
 Feedback.init(FeedbackDefinition, {

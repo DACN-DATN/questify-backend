@@ -4,17 +4,20 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
-// import { indexCourseRouter } from './routes/course/index';
-// import { showCourseRouter } from './routes/course/show';
-// import { createCourseRouter } from './routes/course/new';
-// import { updateCourseRouter } from './routes/course/update';
-// import { deleteCourseRouter } from './routes/course/delete';
-
-// import { createIslandRouter } from './routes/island/new';
-// import { showIslandRouter } from './routes/island/show';
-// import { updateIslandRouter } from './routes/island/update';
-
-// import { createLevelRouter } from './routes/level/new';
+import { showLevelRouter } from './routes/level/show';
+import { showHintRouter } from './routes/others/show-hints';
+import { submitQuizRouter } from './routes/others/submit-quiz';
+import { showRewardsRouter } from './routes/others/show-rewards';
+import { showLeaderboardRouter } from './routes/others/show-leaderboard';
+import { createFeedbackRouter } from './routes/feedback/new';
+import { showFeedbackRouter } from './routes/feedback/show';
+import { showProgressRouter } from './routes/progress/show';
+import { showAllProgressRouter } from './routes/progress/show-all';
+import { showUserIslandRouter } from './routes/roadmap/show-user-island';
+import { showUserLevelRouter } from './routes/roadmap/show-user-level';
+import { initUserIslandRouter } from './routes/roadmap/init-user-island';
+import { initUserLevelRouter } from './routes/roadmap/init-user-level';
+import { updateProgressRouter } from './routes/progress/update';
 
 const app = express();
 app.set('trust proxy', true);
@@ -27,17 +30,20 @@ app.use(
 );
 app.use(currentUser);
 
-// app.use(indexCourseRouter);
-// app.use(showCourseRouter);
-// app.use(createCourseRouter);
-// app.use(updateCourseRouter);
-// app.use(deleteCourseRouter);
-
-// app.use(createIslandRouter);
-// app.use(showIslandRouter);
-// app.use(updateIslandRouter);
-
-// app.use(createLevelRouter);
+app.use(showLevelRouter);
+app.use(showHintRouter);
+app.use(submitQuizRouter);
+app.use(showRewardsRouter);
+app.use(showLeaderboardRouter);
+app.use(createFeedbackRouter);
+app.use(showFeedbackRouter);
+app.use(showProgressRouter);
+app.use(showAllProgressRouter);
+app.use(showUserIslandRouter);
+app.use(showUserLevelRouter);
+app.use(initUserIslandRouter);
+app.use(initUserLevelRouter);
+app.use(updateProgressRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

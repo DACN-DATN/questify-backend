@@ -1,5 +1,5 @@
 import { Slide } from '../slide';
-import { SlideTemplate } from '../slideTemplate';
+import { SlideTemplate } from '../slide-template';
 
 const defineSlideTemplateAssociations = () => {
   SlideTemplate.hasMany(Slide, { foreignKey: 'slideTemplateId' });

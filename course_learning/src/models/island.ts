@@ -57,6 +57,8 @@ class Island extends Model<IslandAttributes, IslandCreationAttributes> implement
   public backgroundImage?: string;
   public courseId!: string;
 
+  public getCourse!: () => Promise<Course>;
+
   static readonly scopes: ModelScopeOptions = {};
 
   static readonly validations: ModelValidateOptions = {};

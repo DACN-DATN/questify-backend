@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
-import { Level } from './level';
+import { Challenge } from './challenge';
 import { v4 as uuidv4 } from 'uuid';
 
 type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];
@@ -16,7 +16,7 @@ const MinigameDefinition = {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
-      model: Level,
+      model: Challenge,
       key: 'id',
     },
   },
@@ -43,7 +43,6 @@ const MinigameDefinition = {
       min: 0,
     },
     defaultValue: 0,
-    unique: true,
   },
 };
 
@@ -76,6 +75,12 @@ Minigame.init(MinigameDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['position'],
+    },
+  ],
 });
 
 export { Minigame };

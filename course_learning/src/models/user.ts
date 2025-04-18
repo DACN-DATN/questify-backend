@@ -2,6 +2,8 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { UserRole } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
+import type { Reward } from './reward';
+import type { Level } from './level';
 
 const UserDefinition = {
   id: {
@@ -46,9 +48,17 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public role!: UserRole;
   public userName!: string;
 
+  public readonly rewards?: Reward[];
+
   static readonly scopes: ModelScopeOptions = {};
 
   static readonly validations: ModelValidateOptions = {};
+
+  declare addReward: (reward: Reward) => Promise<void>;
+  declare getRewards: () => Promise<Reward[]>;
+
+  declare addLevel: (level: Level) => Promise<void>;
+  declare getLevels: () => Promise<Level[]>;
 }
 
 User.init(UserDefinition, {

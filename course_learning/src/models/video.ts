@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
-import { Level } from './level';
+import { Challenge } from './challenge';
 import { v4 as uuidv4 } from 'uuid';
 
 const VideoDefinition = {
@@ -10,11 +10,11 @@ const VideoDefinition = {
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
   },
-  levelId: {
+  challengeId: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
-      model: Level,
+      model: Challenge,
       key: 'id',
     },
   },
@@ -36,13 +36,12 @@ const VideoDefinition = {
       min: 0,
     },
     defaultValue: 0,
-    unique: true,
   },
 };
 
 interface VideoAttributes {
   id: string;
-  levelId: string;
+  challengeId: string;
   url: string;
   position: number;
 }
@@ -51,7 +50,7 @@ type VideoCreationAttributes = Optional<VideoAttributes, 'id'>;
 
 class Video extends Model<VideoAttributes, VideoCreationAttributes> implements VideoAttributes {
   public id!: string;
-  public levelId!: string;
+  public challengeId!: string;
   public url!: string;
   public position!: number;
 }
@@ -62,6 +61,12 @@ Video.init(VideoDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['position'],
+    },
+  ],
 });
 
 export { Video };

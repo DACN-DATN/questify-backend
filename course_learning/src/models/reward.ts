@@ -3,6 +3,7 @@ import { sequelize } from '../config/db';
 import { Course } from './course';
 import { Island } from './island';
 import { Level } from './level';
+import type { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
 
 const RewardDefinition = {
@@ -20,8 +21,16 @@ const RewardDefinition = {
     allowNull: true,
     type: DataTypes.STRING,
   },
-  courseId: {
+  rewardTarget: {
     allowNull: false,
+    type: DataTypes.ENUM('course', 'island', 'level'),
+    validate: {
+      notEmpty: true,
+      isIn: [['course', 'island', 'level']],
+    },
+  },
+  courseId: {
+    allowNull: true,
     type: DataTypes.UUID,
     references: {
       model: Course,
@@ -29,7 +38,7 @@ const RewardDefinition = {
     },
   },
   islandId: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.UUID,
     references: {
       model: Island,
@@ -37,7 +46,7 @@ const RewardDefinition = {
     },
   },
   levelId: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.UUID,
     references: {
       model: Level,
@@ -50,9 +59,10 @@ interface RewardAttributes {
   id: string;
   description?: string;
   requirement?: string;
-  courseId: string;
-  islandId: string;
-  levelId: string;
+  rewardTarget: 'course' | 'island' | 'level';
+  courseId?: string;
+  islandId?: string;
+  levelId?: string;
 }
 
 type RewardCreationAttributes = Optional<RewardAttributes, 'id'>;
@@ -61,9 +71,13 @@ class Reward extends Model<RewardAttributes, RewardCreationAttributes> implement
   public id!: string;
   public description?: string;
   public requirement?: string;
-  public courseId!: string;
-  public islandId!: string;
-  public levelId!: string;
+  public rewardTarget!: 'course' | 'island' | 'level';
+  public courseId?: string;
+  public islandId?: string;
+  public levelId?: string;
+
+  declare addUser: (user: User) => Promise<void>;
+  declare getUsers: () => Promise<User[]>;
 }
 
 Reward.init(RewardDefinition, {
