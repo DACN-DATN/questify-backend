@@ -1,8 +1,8 @@
 import { Minigame } from '../minigame';
-import { Level } from '../level';
+import { Challenge } from '../challenge';
 
 const defineMinigameAssociations = () => {
-  Minigame.belongsTo(Level, { foreignKey: 'levelId' });
+  Minigame.belongsTo(Challenge, { foreignKey: 'challengeId' });
 };
 
 export default defineMinigameAssociations;

@@ -1,6 +1,7 @@
 import { UserRole, EnvStage, UserStatus } from '@datn242/questify-common';
 process.env.POSTGRES_URI = 'sqlite::memory:';
 process.env.NODE_ENV = EnvStage.Test;
+import '../models/associations';
 
 import { sequelize } from '../config/db';
 import jwt from 'jsonwebtoken';

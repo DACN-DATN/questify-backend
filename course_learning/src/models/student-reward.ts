@@ -1,45 +1,40 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
-import { User } from './user';
-import { Reward } from './reward';
-import { v4 as uuidv4 } from 'uuid';
+// import { User } from './user';
+// import { Reward } from './reward';
 
 const StudentRewardDefinition = {
-  id: {
+  userId: {
     allowNull: false,
-    primaryKey: true,
-    type: DataTypes.UUID,
-    defaultValue: () => uuidv4(),
-  },
-  studentId: {
-    allowNull: false,
-    primaryKey: true,
     type: DataTypes.UUID,
     references: {
-      model: User,
+      model: 'users',
       key: 'id',
     },
   },
   rewardId: {
     allowNull: false,
-    primaryKey: true,
     type: DataTypes.UUID,
     references: {
-      model: Reward,
+      model: 'rewards',
       key: 'id',
     },
   },
 };
 
 interface StudentRewardAttributes {
-  id: string;
-  studentId: string;
+  id?: string;
+  userId: string;
   rewardId: string;
 }
 
-class StudentReward extends Model<StudentRewardAttributes> implements StudentRewardAttributes {
-  public id!: string;
-  public studentId!: string;
+type StudentRewardCreationAttributes = Optional<StudentRewardAttributes, 'id'>;
+
+class StudentReward
+  extends Model<StudentRewardAttributes, StudentRewardCreationAttributes>
+  implements StudentRewardAttributes
+{
+  public userId!: string;
   public rewardId!: string;
 }
 

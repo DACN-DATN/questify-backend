@@ -1,10 +1,10 @@
 import { User } from '../user';
 import { Feedback } from '../feedback';
-import { Progress } from '../progress';
+import { Attempt } from '../attempt';
 
 const defineFeedbackAssociations = () => {
   Feedback.belongsTo(User, { foreignKey: 'userId' });
-  Feedback.belongsTo(Progress, { foreignKey: 'progressId' });
+  Feedback.belongsTo(Attempt, { foreignKey: 'attemptId' });
 };
 
 export default defineFeedbackAssociations;

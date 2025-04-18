@@ -1,5 +1,5 @@
 import { Island } from '../island';
-import { PrerequisiteIsland } from '../prerequisiteIsland';
+import { PrerequisiteIsland } from '../prerequisite-island';
 
 const definePrerequisiteIslandAssociations = () => {
   PrerequisiteIsland.belongsTo(Island, {

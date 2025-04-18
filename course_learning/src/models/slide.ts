@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Level } from './level';
-import { SlideTemplate } from './slideTemplate';
+import { SlideTemplate } from './slide-template';
 import { v4 as uuidv4 } from 'uuid';
 
 type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];
@@ -42,7 +42,6 @@ const SlideDefinition = {
       min: 0,
     },
     defaultValue: 0,
-    unique: true,
   },
 };
 
@@ -70,6 +69,12 @@ Slide.init(SlideDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['position'],
+    },
+  ],
 });
 
 export { Slide };
