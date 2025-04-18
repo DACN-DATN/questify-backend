@@ -27,7 +27,7 @@ it('check testcase associations', async () => {
 });
 
 it('check user level associations', async () => {
-  expect(Object.keys(UserLevel.associations)).toEqual(['student', 'level']);
+  expect(Object.keys(UserLevel.associations)).toEqual(['User', 'Level']);
 });
 
 it('check user associations', async () => {
