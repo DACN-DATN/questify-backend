@@ -11,3 +11,6 @@ spec:
   resources:
     requests:
       storage: 10Gi
+  selector: # Add this section
+    matchLabels:
+      pv-name: admin-postgres-volume

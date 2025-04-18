@@ -25,15 +25,21 @@ spec:
           ports:
             - containerPort: 5432
           envFrom:
-            - configMapRef:
+            - secretRef:
                 name: admin-postgres-secret
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: admin-postgresdata
+            - mountPath: /docker-entrypoint-initdb.d
+              name: init-script
       volumes:
         - name: admin-postgresdata
           persistentVolumeClaim:
             claimName: admin-postgres-volume-claim
+        - name: init-script
+          configMap:
+            name: admin-postgres-init
+            defaultMode: 0777
 ---
 apiVersion: v1
 kind: Service

@@ -25,15 +25,21 @@ spec:
           ports:
             - containerPort: 5432
           envFrom:
-            - configMapRef:
+            - secretRef:
                 name: code-problem-postgres-secret
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: code-problem-postgresdata
+            - mountPath: /docker-entrypoint-initdb.d
+              name: init-script
       volumes:
         - name: code-problem-postgresdata
           persistentVolumeClaim:
             claimName: code-problem-postgres-volume-claim
+        - name: init-script
+          configMap:
+            name: code-problem-postgres-init
+            defaultMode: 0777
 ---
 apiVersion: v1
 kind: Service
