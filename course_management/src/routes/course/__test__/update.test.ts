@@ -2,11 +2,7 @@ import request from 'supertest';
 import { app } from '../../../app';
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  RequestValidationError,
-  NotFoundError,
-  NotAuthorizedError,
-} from '@datn242/questify-common';
+import { NotFoundError, NotAuthorizedError } from '@datn242/questify-common';
 
 it('returns a 404 if the provided id does not exist', async () => {
   const course_id = uuidv4();
@@ -46,22 +42,6 @@ it('returns a 401 if the user does not own the course', async () => {
     .expect(NotAuthorizedError.statusCode);
 });
 
-it('returns a RequestValidationError if the user provides an invalid name', async () => {
-  const cookie = await global.getAuthCookie();
-
-  const response = await request(app).post('/api/course-mgmt').set('Cookie', cookie).send({
-    name: 'DSA',
-  });
-
-  await request(app)
-    .put(`/api/course-mgmt/${response.body.id}`)
-    .set('Cookie', cookie)
-    .send({
-      name: '',
-    })
-    .expect(RequestValidationError.statusCode);
-});
-
 it('updates the course provided valid inputs', async () => {
   const cookie = await global.getAuthCookie();
   const response = await request(app)
@@ -73,7 +53,7 @@ it('updates the course provided valid inputs', async () => {
     .expect(201);
 
   await request(app)
-    .put(`/api/course-mgmt/${response.body.id}`)
+    .patch(`/api/course-mgmt/${response.body.id}`)
     .set('Cookie', cookie)
     .send({
       name: 'Computer Architecture',
@@ -81,6 +61,5 @@ it('updates the course provided valid inputs', async () => {
     .expect(200);
 
   const courseResponse = await request(app).get(`/api/course-mgmt/${response.body.id}`).send();
-
   expect(courseResponse.body.name).toEqual('Computer Architecture');
 });

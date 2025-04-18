@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../app';
 
+jest.mock('../nats-wrapper');
 /* eslint-disable no-var */
 declare global {
   var signin: () => Promise<string[]>;

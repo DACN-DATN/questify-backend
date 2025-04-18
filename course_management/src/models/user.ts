@@ -32,7 +32,7 @@ interface UserAttributes {
   status: UserStatus;
 }
 
-type UserCreationAttributes = Optional<UserAttributes, 'id'>;
+type UserCreationAttributes = Optional<UserAttributes, 'id' | 'status' | 'role'>;
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: string;

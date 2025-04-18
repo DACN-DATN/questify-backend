@@ -7,6 +7,7 @@ import {
   UserRole,
 } from '@datn242/questify-common';
 import { User } from '../../models/user';
+import { natsWrapper } from '../../nats-wrapper';
 
 describe('1st signup page: validate userName and email', () => {
   it('return RequestValidationError when input invalid userName or email', async () => {
@@ -152,5 +153,6 @@ describe('2nd signup page: complete signup', () => {
     expect(response.get('Set-Cookie')).toBeDefined();
     expect(response.body.email).toEqual('test@datn242.com');
     expect(response.body.userName).toEqual('test');
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
   });
 });
