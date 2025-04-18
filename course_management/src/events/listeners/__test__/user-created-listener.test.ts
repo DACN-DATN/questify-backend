@@ -12,12 +12,11 @@ const setup = async () => {
   // Create the fake data event
   const data: UserCreatedEvent['data'] = {
     id: uuidv4(),
-    gmail: 'user@test.com',
     role: UserRole.Student,
     status: UserStatus.Active,
   };
 
-  // @ts-ignore
+  // @ts-expect-error: mock Message only needs ack for this test
   const msg: Message = {
     ack: jest.fn(),
   };
@@ -33,7 +32,6 @@ it('creates and saves a user', async () => {
   const user = await User.findByPk(data.id);
 
   expect(user!.id).toEqual(data.id);
-  expect(user!.gmail).toEqual(data.gmail);
   expect(user!.role).toEqual(data.role);
   expect(user!.status).toEqual(data.status);
 });
@@ -44,4 +42,3 @@ it('acks the message', async () => {
 
   expect(msg.ack).toHaveBeenCalled();
 });
-

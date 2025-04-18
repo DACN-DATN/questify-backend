@@ -53,6 +53,11 @@ spec:
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_URI
               value: 'postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@course-mgmt-postgres-srv:5432/$(POSTGRES_DB)'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service

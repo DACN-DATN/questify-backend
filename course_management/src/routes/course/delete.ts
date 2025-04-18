@@ -1,6 +1,11 @@
 import express, { Request, Response } from 'express';
 import { Course } from '../../models/course';
-import { NotAuthorizedError, requireAuth, NotFoundError, BadRequestError } from '@datn242/questify-common';
+import {
+  NotAuthorizedError,
+  requireAuth,
+  NotFoundError,
+  BadRequestError,
+} from '@datn242/questify-common';
 
 const router = express.Router();
 

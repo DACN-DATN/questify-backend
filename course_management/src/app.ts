@@ -13,11 +13,13 @@ import { deleteCourseRouter } from './routes/course/delete';
 import { createIslandRouter } from './routes/island/new';
 import { showIslandRouter } from './routes/island/show';
 import { updateIslandRouter } from './routes/island/update';
+import { deleteIslandRouter } from './routes/island/delete';
 
 import { createLevelRouter } from './routes/level/new';
 import { indexIslandRouter } from './routes/island';
 import { indexLevelRouter } from './routes/level';
 import { updateLevelRouter } from './routes/level/update';
+import { deleteLevelRouter } from './routes/level/delete';
 
 const app = express();
 app.set('trust proxy', true);
@@ -40,10 +42,12 @@ app.use(createIslandRouter);
 app.use(showIslandRouter);
 app.use(updateIslandRouter);
 app.use(indexIslandRouter);
+app.use(deleteIslandRouter);
 
 app.use(createLevelRouter);
 app.use(indexLevelRouter);
 app.use(updateLevelRouter);
+app.use(deleteLevelRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

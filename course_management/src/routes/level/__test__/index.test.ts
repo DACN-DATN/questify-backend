@@ -72,7 +72,10 @@ it('can fetch a list of levels', async () => {
     })
     .expect(201);
 
-  const response = await request(app).get(`/api/course-mgmt/islands/${island.body.id}/levels`).set('Cookie', cookie).expect(200);
+  const response = await request(app)
+    .get(`/api/course-mgmt/islands/${island.body.id}/levels`)
+    .set('Cookie', cookie)
+    .expect(200);
 
   expect(response.body.length).toEqual(3);
 });

@@ -30,31 +30,25 @@ it('can fetch a list of islands', async () => {
   const course = await request(app).post('/api/course-mgmt').set('Cookie', cookie).send({
     name: 'dsa',
   });
-  await request(app)
-    .post(`/api/course-mgmt/${course.body.id}/islands`)
-    .set('Cookie', cookie)
-    .send({
-      name: 'Linked List',
-      position: 1,
-    });
+  await request(app).post(`/api/course-mgmt/${course.body.id}/islands`).set('Cookie', cookie).send({
+    name: 'Linked List',
+    position: 1,
+  });
 
-  await request(app)
-    .post(`/api/course-mgmt/${course.body.id}/islands`)
-    .set('Cookie', cookie)
-    .send({
-      name: 'Linked List',
-      position: 2,
-    });
+  await request(app).post(`/api/course-mgmt/${course.body.id}/islands`).set('Cookie', cookie).send({
+    name: 'Linked List',
+    position: 2,
+  });
 
-  await request(app)
-    .post(`/api/course-mgmt/${course.body.id}/islands`)
-    .set('Cookie', cookie)
-    .send({
-      name: 'Linked List',
-      position: 3,
-    });
+  await request(app).post(`/api/course-mgmt/${course.body.id}/islands`).set('Cookie', cookie).send({
+    name: 'Linked List',
+    position: 3,
+  });
 
-  const response = await request(app).get(`/api/course-mgmt/${course.body.id}/islands`).set('Cookie', cookie).expect(200);
+  const response = await request(app)
+    .get(`/api/course-mgmt/${course.body.id}/islands`)
+    .set('Cookie', cookie)
+    .expect(200);
 
   expect(response.body.length).toEqual(3);
 });

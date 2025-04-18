@@ -11,39 +11,33 @@ import { CourseCategory } from '@datn242/questify-common';
 
 const router = express.Router();
 
-router.put(
+router.patch(
   '/api/course-mgmt/:course_id',
   requireAuth,
   [
-    body('name')
-      .optional()
-      .notEmpty()
-      .withMessage('Course name is required'),
+    body('name').optional().notEmpty().withMessage('Course name is required'),
     body('category')
       .optional()
       .isIn(Object.values(CourseCategory))
       .withMessage('Invalid course category'),
-    body('price')
-      .optional()
-      .isFloat({ min: 0 })
-      .withMessage('Price must be a positive number'),
+    body('price').optional().isFloat({ min: 0 }).withMessage('Price must be a positive number'),
     body('learningObjectives')
       .optional()
       .isArray()
       .withMessage('Learning objectives must be an array of strings')
-      .custom((arr) => arr.every((item: any) => typeof item === 'string'))
+      .custom((arr: unknown[]) => arr.every((item): item is string => typeof item === 'string'))
       .withMessage('All learning objectives must be strings'),
     body('requirements')
       .optional()
       .isArray()
       .withMessage('Requirements must be an array of strings')
-      .custom((arr) => arr.every((item: any) => typeof item === 'string'))
+      .custom((arr: unknown[]) => arr.every((item): item is string => typeof item === 'string'))
       .withMessage('All requirements must be strings'),
     body('targetAudience')
       .optional()
       .isArray()
       .withMessage('Target audience must be an array of strings')
-      .custom((arr) => arr.every((item: any) => typeof item === 'string'))
+      .custom((arr: unknown[]) => arr.every((item): item is string => typeof item === 'string'))
       .withMessage('All target audience values must be strings'),
   ],
   validateRequest,
@@ -84,7 +78,7 @@ router.put(
 
     await course.save();
     res.send(course);
-  }
+  },
 );
 
 export { router as updateCourseRouter };

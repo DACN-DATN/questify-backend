@@ -2,9 +2,13 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Island } from '../../models/island';
 import { Level } from '../../models/level';
-import { LevelCreatedPublisher } from '../../events/publishers/level-created-publisher';
-import { natsWrapper } from '../../nats-wrapper';
-import { validateRequest, requireAuth, BadRequestError, NotFoundError, NotAuthorizedError } from '@datn242/questify-common';
+import {
+  validateRequest,
+  requireAuth,
+  BadRequestError,
+  NotFoundError,
+  NotAuthorizedError,
+} from '@datn242/questify-common';
 import { Course } from '../../models/course';
 
 const router = express.Router();
@@ -24,11 +28,11 @@ router.post(
   async (req: Request, res: Response) => {
     const { island_id } = req.params;
     const island = await Island.findByPk(island_id, {
-      include: [
-        {
-          model: Course,
-        },
-      ],
+      include: [{
+        model: Course,
+        as: 'Course',
+        required: false,
+      }],
     });
 
     if (!island) {
@@ -58,7 +62,7 @@ router.post(
     //   id: level.id,
     //   teacherId: course.teacherId,
     // });
-    // res.status(201).send(level);
+    res.status(201).send(level);
   },
 );
 

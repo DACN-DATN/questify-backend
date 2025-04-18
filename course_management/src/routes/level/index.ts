@@ -9,11 +9,11 @@ const router = express.Router();
 router.get('/api/course-mgmt/islands/:island_id/levels', async (req: Request, res: Response) => {
   const islandId = req.params.island_id;
   const island = await Island.findByPk(islandId, {
-    include: [
-      {
-        model: Course,
-      },
-    ],
+    include: [{
+      model: Course,
+      as: 'Course',
+      required: false,
+    }],
   });
   if (!island) {
     throw new NotFoundError();
@@ -28,8 +28,8 @@ router.get('/api/course-mgmt/islands/:island_id/levels', async (req: Request, re
   const levels = await Level.findAll({
     where: {
       islandId: island.id,
-    }
-  })
+    },
+  });
 
   res.send(levels);
 });

@@ -2,9 +2,9 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
-import { CourseCategory, CourseStatus, EnvStage, } from '@datn242/questify-common';
+import { CourseCategory, CourseStatus, EnvStage } from '@datn242/questify-common';
 
-const isTest = process.env.NODE_ENV === EnvStage.Test
+const isTest = process.env.NODE_ENV === EnvStage.Test;
 
 const CourseDefinition = {
   id: {
@@ -29,7 +29,7 @@ const CourseDefinition = {
     type: DataTypes.STRING,
     validator: {
       isIn: [Object.values(CourseCategory)],
-    }
+    },
   },
   price: {
     allowNull: true,
@@ -72,7 +72,7 @@ const CourseDefinition = {
     validator: {
       isIn: [Object.values(CourseStatus)],
     },
-    defaultValue: CourseStatus.Draft
+    defaultValue: CourseStatus.Draft,
   },
   isDeleted: {
     allowNull: false,
@@ -101,7 +101,17 @@ interface CourseAttributes {
   deletedAt?: Date;
 }
 
-type CourseCreationAttributes = Optional<CourseAttributes, 'id' | 'isDeleted' | 'deletedAt' | 'price' | 'learningObjectives' | 'requirements' | 'targetAudience' | 'status'>;
+type CourseCreationAttributes = Optional<
+  CourseAttributes,
+  | 'id'
+  | 'isDeleted'
+  | 'deletedAt'
+  | 'price'
+  | 'learningObjectives'
+  | 'requirements'
+  | 'targetAudience'
+  | 'status'
+>;
 
 class Course extends Model<CourseAttributes, CourseCreationAttributes> implements CourseAttributes {
   public id!: string;
@@ -129,6 +139,11 @@ Course.init(CourseDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: Course.scopes,
   validate: Course.validations,
 });

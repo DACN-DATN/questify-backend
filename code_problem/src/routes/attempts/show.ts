@@ -16,7 +16,11 @@ router.get(
   async (req: Request, res: Response) => {
     const { attempt_id } = req.params;
     const attempt = await Attempt.findByPk(attempt_id, {
-      include: [{ model: Level }],
+      include: [{
+        model: Level,
+        as: 'Levels',
+        required: false,
+      }],
     });
 
     if (!attempt) {

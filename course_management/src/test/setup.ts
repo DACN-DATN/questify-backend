@@ -2,7 +2,6 @@ import { UserRole, EnvStage, UserStatus } from '@datn242/questify-common';
 process.env.POSTGRES_URI = 'sqlite::memory:';
 process.env.NODE_ENV = EnvStage.Test;
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { sequelize } from '../config/db';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
@@ -14,8 +13,6 @@ jest.mock('../nats-wrapper');
 declare global {
   var getAuthCookie: (gmail?: string) => Promise<string[]>;
 }
-
-let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfdsa';
