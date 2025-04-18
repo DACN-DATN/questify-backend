@@ -54,10 +54,7 @@ router.delete(
 
         await PrerequisiteIsland.destroy({
           where: {
-            [Op.or]: [
-              { islandId: island_id },
-              { prerequisiteIslandId: island_id }
-            ]
+            [Op.or]: [{ islandId: island_id }, { prerequisiteIslandId: island_id }],
           },
           transaction,
         });
@@ -72,15 +69,17 @@ router.delete(
 
       res.send(result);
     } catch (error) {
-      if (error instanceof NotFoundError ||
+      if (
+        error instanceof NotFoundError ||
         error instanceof NotAuthorizedError ||
-        error instanceof BadRequestError) {
+        error instanceof BadRequestError
+      ) {
         throw error;
       }
       console.error('Error deleting island:', error);
       throw new BadRequestError('Failed to delete island');
     }
-  }
+  },
 );
 
 export { router as deleteIslandRouter };

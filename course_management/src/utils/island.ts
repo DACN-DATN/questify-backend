@@ -4,7 +4,7 @@ import { Transaction } from 'sequelize';
 
 export async function detectCycle(
   startIslandId: string,
-  transaction?: any
+  transaction?: Transaction,
 ): Promise<boolean> {
   const visited: Set<string> = new Set();
   const path: Set<string> = new Set();
@@ -42,12 +42,12 @@ export async function detectCycle(
 export const recalculatePositions = async (
   courseId: string,
   transaction?: Transaction,
-  includeDeleted: boolean = false
+  includeDeleted: boolean = false,
 ): Promise<void> => {
-  const whereClause = { courseId };
+  const whereClause: { courseId: string; isDeleted?: boolean } = { courseId };
 
   if (!includeDeleted) {
-    Object.assign(whereClause, { isDeleted: false });
+    whereClause.isDeleted = false;
   }
 
   const islands = await Island.findAll({
@@ -55,7 +55,7 @@ export const recalculatePositions = async (
     transaction,
   });
 
-  const islandIds = islands.map(island => island.id);
+  const islandIds = islands.map((island) => island.id);
 
   const allPrereqs = await PrerequisiteIsland.findAll({
     where: {
@@ -65,24 +65,24 @@ export const recalculatePositions = async (
   });
 
   const graph: Record<string, string[]> = {};
-  islands.forEach(island => {
+  islands.forEach((island) => {
     graph[island.id] = [];
   });
 
-  allPrereqs.forEach(prereq => {
+  allPrereqs.forEach((prereq) => {
     if (graph[prereq.islandId]) {
       graph[prereq.islandId].push(prereq.prerequisiteIslandId);
     }
   });
 
   const inDegree: Record<string, number> = {};
-  islands.forEach(island => {
+  islands.forEach((island) => {
     inDegree[island.id] = 0;
   });
 
-  for (const [islandId, prereqIds] of Object.entries(graph)) {
+  for (const prereqIds of Object.values(graph)) {
     for (const prereqId of prereqIds) {
-      inDegree[islandId] = (inDegree[islandId] || 0) + 1;
+      inDegree[prereqId] = (inDegree[prereqId] || 0) + 1;
     }
   }
 
@@ -106,7 +106,7 @@ export const recalculatePositions = async (
         if (inDegree[islandId] === 0) {
           queue.push(islandId);
 
-          const prereqLevels = graph[islandId].map(prereqId => levels[prereqId] || 0);
+          const prereqLevels = graph[islandId].map((p) => levels[p] || 0);
           levels[islandId] = 1 + Math.max(...prereqLevels, 0);
         }
       }
@@ -115,7 +115,7 @@ export const recalculatePositions = async (
 
   console.log('Calculated levels:', levels);
 
-  const updatePromises = islands.map(island => {
+  const updatePromises = islands.map((island) => {
     const newPosition = levels[island.id];
     if (newPosition !== undefined && newPosition !== island.position) {
       island.position = newPosition;

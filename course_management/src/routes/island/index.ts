@@ -22,18 +22,23 @@ router.get('/api/course-mgmt/:course_id/islands', async (req: Request, res: Resp
     where: {
       courseId: course.id,
     },
-    include: [{
-      model: Level,
-      as: 'Levels',
-      required: false,
-    },
-    {
-      model: Island,
-      as: 'prerequisites',
-      required: false,
-    }
+    include: [
+      {
+        model: Level,
+        as: 'Levels',
+        required: false,
+      },
+      {
+        model: Island,
+        as: 'prerequisites',
+        required: false,
+        attributes: ['id', 'name'],
+      },
     ],
-    order: [['position', 'ASC'], ['created_at', 'DESC']],
+    order: [
+      ['position', 'ASC'],
+      ['created_at', 'DESC'],
+    ],
   });
 
   res.send(islands);

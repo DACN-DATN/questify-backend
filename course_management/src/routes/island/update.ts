@@ -93,7 +93,7 @@ router.patch(
 
             if (prereqIslands.length !== prerequisiteIslandIds.length) {
               throw new BadRequestError(
-                'One or more prerequisite islands do not exist or do not belong to this course'
+                'One or more prerequisite islands do not exist or do not belong to this course',
               );
             }
 
@@ -103,8 +103,8 @@ router.patch(
                   islandId: island_id,
                   prerequisiteIslandId: prereqId,
                 },
-                { transaction }
-              )
+                { transaction },
+              ),
             );
 
             await Promise.all(prereqPromises);
@@ -116,17 +116,20 @@ router.patch(
               });
 
               if (oldPrereqs.length > 0) {
-                const restorePromises = oldPrereqs.map(oldPrereq =>
-                  PrerequisiteIsland.create({
-                    islandId: oldPrereq.islandId,
-                    prerequisiteIslandId: oldPrereq.prerequisiteIslandId
-                  }, { transaction })
+                const restorePromises = oldPrereqs.map((oldPrereq) =>
+                  PrerequisiteIsland.create(
+                    {
+                      islandId: oldPrereq.islandId,
+                      prerequisiteIslandId: oldPrereq.prerequisiteIslandId,
+                    },
+                    { transaction },
+                  ),
                 );
                 await Promise.all(restorePromises);
               }
 
               throw new BadRequestError(
-                'Adding these prerequisites would create a cycle in the island dependencies'
+                'Adding these prerequisites would create a cycle in the island dependencies',
               );
             }
           }
@@ -141,15 +144,17 @@ router.patch(
 
       res.send(result);
     } catch (error) {
-      if (error instanceof NotFoundError ||
+      if (
+        error instanceof NotFoundError ||
         error instanceof NotAuthorizedError ||
-        error instanceof BadRequestError) {
+        error instanceof BadRequestError
+      ) {
         throw error;
       }
       console.error('Error updating island:', error);
       throw new BadRequestError('Failed to update island');
     }
-  }
+  },
 );
 
 export { router as updateIslandRouter };

@@ -17,11 +17,13 @@ router.delete(
   async (req: Request, res: Response) => {
     const { island_id, level_id } = req.params;
     const island = await Island.findByPk(island_id, {
-      include: [{
-        model: Course,
-        as: 'Course',
-        required: false,
-      }],
+      include: [
+        {
+          model: Course,
+          as: 'Course',
+          required: false,
+        },
+      ],
     });
 
     if (!island) {
