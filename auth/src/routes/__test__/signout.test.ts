@@ -1,17 +1,29 @@
 import request from 'supertest';
 import { app } from '../../app';
-import { UserRole } from '@datn242/questify-common';
 
-it('clears the cookie after signing out', async () => {
-  await request(app)
-    .post('/api/users/signup')
+const signUp = async () => {
+  const firstResponse = await request(app)
+    .post('/api/users/validate-credentials')
     .send({
       userName: 'test',
-      email: 'test@test.com',
+      email: 'test@datn242.com',
+    })
+    .expect(200);
+
+  const cookies = firstResponse.get('Set-Cookie');
+
+  return await request(app)
+    .post('/api/users/complete-signup')
+    .set('Cookie', cookies || [])
+    .send({
       password: 'password',
-      role: UserRole.Student,
+      confirmedPassword: 'password',
     })
     .expect(201);
+};
+
+it('clears the cookie after signing out', async () => {
+  await signUp();
 
   const response = await request(app).post('/api/users/signout').send({}).expect(200);
 

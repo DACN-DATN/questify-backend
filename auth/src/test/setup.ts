@@ -2,13 +2,15 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../app';
-import { UserRole } from '@datn242/questify-common';
 
+/* eslint-disable no-var */
 declare global {
   var signin: () => Promise<string[]>;
 }
 
-let mongo: any;
+jest.mock('../nats-wrapper');
+
+let mongo: MongoMemoryServer;
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfdsa';
   mongo = await MongoMemoryServer.create();
@@ -20,7 +22,7 @@ beforeEach(async () => {
   if (mongoose.connection.db) {
     const collections = await mongoose.connection.db.collections();
 
-    for (let collection of collections) {
+    for (const collection of collections) {
       await collection.deleteMany({});
     }
   }
@@ -37,15 +39,23 @@ global.signin = async () => {
   const userName = 'test';
   const email = 'test@test.com';
   const password = 'password';
-  const role = UserRole.Student;
+
+  const firstResponse = await request(app)
+    .post('/api/users/validate-credentials')
+    .send({
+      userName: userName,
+      email: email,
+    })
+    .expect(200);
+
+  const cookies = firstResponse.get('Set-Cookie');
 
   const response = await request(app)
-    .post('/api/users/signup')
+    .post('/api/users/complete-signup')
+    .set('Cookie', cookies || [])
     .send({
-      userName,
-      email,
-      password,
-      role,
+      password: password,
+      confirmedPassword: password,
     })
     .expect(201);
 

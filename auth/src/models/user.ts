@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Password } from '../services/password';
-import { UserRole } from '@datn242/questify-common';
+import { UserRole, UserStatus } from '@datn242/questify-common';
+import { v4 as uuidv4 } from 'uuid';
 
 // An TS interfact that describes the properties
 // that are required to create a new User
@@ -22,23 +23,18 @@ interface UserModel extends mongoose.Model<UserDoc> {
 // An interface that describes the properties
 // that a User Document has
 interface UserDoc extends mongoose.Document {
-  firstName?: string;
-  lastName?: string;
   userName: string;
   email: string;
   password: string;
   role: UserRole;
+  status: UserStatus;
 }
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: {
+    _id: {
       type: String,
-      required: false,
-    },
-    lastName: {
-      type: String,
-      required: false,
+      default: () => uuidv4(),
     },
     userName: {
       type: String,
@@ -57,6 +53,12 @@ const userSchema = new mongoose.Schema(
       required: true,
       enum: Object.values(UserRole),
       default: UserRole.Student,
+    },
+    status: {
+      type: String,
+      require: true,
+      enum: Object.values(UserStatus),
+      default: () => UserStatus.Active,
     },
   },
   {

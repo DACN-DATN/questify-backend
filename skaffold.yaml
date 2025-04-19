@@ -17,6 +17,38 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: questify/course-mgmt
+      context: course_management
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: questify/course-learning
+      context: course_learning
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: questify/code-problem
+      context: code_problem
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: questify/admin
+      context: admin
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
     - image: questify/client
       context: ../questify-frontend
       docker:
