@@ -5,7 +5,7 @@ metadata:
   labels:
     app: course-learning-postgres
 type: Opaque
-stringData:  # Using stringData to avoid manual base64 encoding
+stringData: # Using stringData to avoid manual base64 encoding
   POSTGRES_DB: course_learning_ps_db
-  POSTGRES_USER: course_learning_ps_user     # Official postgres user
+  POSTGRES_USER: course_learning_ps_user # Official postgres user
   POSTGRES_PASSWORD: CourseLearningSecurePassword
