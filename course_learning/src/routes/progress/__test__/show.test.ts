@@ -124,16 +124,13 @@ describe('Already have course, island, level; signin as student', () => {
       point: 0,
       completionStatus: CompletionStatus.InProgress,
     });
-    try {
-      await UserLevel.create({
-        userId: student!.id,
-        levelId: level.id,
-        point: 0,
-        completionStatus: CompletionStatus.InProgress,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+
+    await UserLevel.create({
+      userId: student!.id,
+      levelId: level.id,
+      point: 0,
+      completionStatus: CompletionStatus.InProgress,
+    });
 
     const response = await request(app)
       .get(resource)
