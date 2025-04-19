@@ -6,7 +6,7 @@ import { validateRequest, requireAuth, ResourcePrefix } from '@datn242/questify-
 const router = express.Router();
 
 router.post(
-  ResourcePrefix.CourseManagement,
+  ResourcePrefix.CourseManagement + '/:course_id/reviews',
   requireAuth,
   [body('name').notEmpty().withMessage('Course name is required').trim()],
   validateRequest,
