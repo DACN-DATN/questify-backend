@@ -18,7 +18,6 @@ export async function initializeUserIslands(
   if (!student) {
     throw new BadRequestError('Current student not found');
   }
-
   if (student.role !== 'student') {
     throw new BadRequestError('Only student can init user island');
   }
@@ -34,7 +33,6 @@ export async function initializeUserIslands(
   }
 
   const userIslands: UserIsland[] = [];
-
   for (const island of islands) {
     const userIsland = await UserIsland.create({
       userId: student.id,
