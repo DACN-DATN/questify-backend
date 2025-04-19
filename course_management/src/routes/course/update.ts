@@ -11,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.put(
+router.patch(
   ResourcePrefix.CourseManagement + '/:course_id',
   requireAuth,
   [body('name').optional().notEmpty().withMessage('Course name is required')],

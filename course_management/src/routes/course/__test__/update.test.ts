@@ -12,7 +12,7 @@ it('returns a 404 if the provided id does not exist', async () => {
   const course_id = uuidv4();
   const cookie = await global.getAuthCookie();
   await request(app)
-    .put(`/api/course-mgmt/${course_id}`)
+    .patch(`/api/course-mgmt/${course_id}`)
     .set('Cookie', cookie)
     .send({
       name: 'dsa',
@@ -23,7 +23,7 @@ it('returns a 404 if the provided id does not exist', async () => {
 it('returns a 401 if the user is not authorized', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .put(`/api/course-mgmt/${id}`)
+    .patch(`/api/course-mgmt/${id}`)
     .send({
       title: 'aslkdfj',
       price: 20,
@@ -38,10 +38,10 @@ it('returns a 401 if the user does not own the course', async () => {
   });
   const cookie2 = await global.getAuthCookie('test2@gmail.com');
   await request(app)
-    .put(`/api/course-mgmt/${response.body.id}`)
+    .patch(`/api/course-mgmt/${response.body.id}`)
     .set('Cookie', cookie2)
     .send({
-      name: 'Computer Architecture',
+      name: 'Compatcher Architecture',
     })
     .expect(NotAuthorizedError.statusCode);
 });
@@ -54,7 +54,7 @@ it('returns a RequestValidationError if the user provides an invalid name', asyn
   });
 
   await request(app)
-    .put(`/api/course-mgmt/${response.body.id}`)
+    .patch(`/api/course-mgmt/${response.body.id}`)
     .set('Cookie', cookie)
     .send({
       name: '',
@@ -62,7 +62,7 @@ it('returns a RequestValidationError if the user provides an invalid name', asyn
     .expect(RequestValidationError.statusCode);
 });
 
-it('updates the course provided valid inputs', async () => {
+it('updates the course provided valid inpatchs', async () => {
   const cookie = await global.getAuthCookie();
   const response = await request(app)
     .post('/api/course-mgmt')
@@ -73,14 +73,14 @@ it('updates the course provided valid inputs', async () => {
     .expect(201);
 
   await request(app)
-    .put(`/api/course-mgmt/${response.body.id}`)
+    .patch(`/api/course-mgmt/${response.body.id}`)
     .set('Cookie', cookie)
     .send({
-      name: 'Computer Architecture',
+      name: 'Compatcher Architecture',
     })
     .expect(200);
 
   const courseResponse = await request(app).get(`/api/course-mgmt/${response.body.id}`).send();
 
-  expect(courseResponse.body.name).toEqual('Computer Architecture');
+  expect(courseResponse.body.name).toEqual('Compatcher Architecture');
 });

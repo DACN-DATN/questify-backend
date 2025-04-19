@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.put(
+router.delete(
   ResourcePrefix.CourseManagement + '/:course_id',
   requireAuth,
   async (req: Request, res: Response) => {

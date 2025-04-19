@@ -12,7 +12,7 @@ import { Island } from '../../models/island';
 
 const router = express.Router();
 
-router.put(
+router.patch(
   ResourcePrefix.CourseManagement + '/:course_id/islands/:island_id',
   requireAuth,
   [
