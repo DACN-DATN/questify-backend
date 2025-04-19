@@ -2,12 +2,17 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Island } from '../../models/island';
 import { Level } from '../../models/level';
-import { validateRequest, requireAuth, BadRequestError } from '@datn242/questify-common';
+import {
+  validateRequest,
+  requireAuth,
+  BadRequestError,
+  ResourcePrefix,
+} from '@datn242/questify-common';
 
 const router = express.Router();
 
 router.post(
-  '/api/course-mgmt/islands/:island_id/level',
+  ResourcePrefix.CourseManagement + '/islands/:island_id/level',
   requireAuth,
   [
     body('name').notEmpty().withMessage('Level name is required'),
