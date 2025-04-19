@@ -6,13 +6,14 @@ import {
   NotFoundError,
   requireAuth,
   validateRequest,
+  ResourcePrefix,
 } from '@datn242/questify-common';
 import { Island } from '../../models/island';
 
 const router = express.Router();
 
-router.put(
-  '/api/course-mgmt/:course_id/islands/:island_id',
+router.patch(
+  ResourcePrefix.CourseManagement + '/:course_id/islands/:island_id',
   requireAuth,
   [
     body('name').optional().notEmpty().withMessage('Island name is required'),

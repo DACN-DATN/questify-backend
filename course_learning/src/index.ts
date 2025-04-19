@@ -2,6 +2,7 @@ import { app } from './app';
 import { connectDb, closeDbConnection } from './config/db';
 import { natsWrapper } from './nats-wrapper';
 import { syncModels } from './scripts/sync';
+import { UserCourseCreatedListener } from './events/listeners/user-course-created-listener';
 
 const start = async () => {
   await connectDb();
@@ -39,6 +40,9 @@ const start = async () => {
       console.log('NATS connection closed!');
       process.exit();
     });
+
+    new UserCourseCreatedListener(natsWrapper.client).listen();
+
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
   } catch (err) {

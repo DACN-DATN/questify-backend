@@ -1,4 +1,4 @@
-import { UserRole, EnvStage } from '@datn242/questify-common';
+import { UserRole, EnvStage, UserStatus } from '@datn242/questify-common';
 process.env.POSTGRES_URI = 'sqlite::memory:';
 process.env.NODE_ENV = EnvStage.Test;
 import '../models/associations';
@@ -34,12 +34,15 @@ global.getAuthCookie = async (
     gmail: gmail,
     role: role,
     userName: 'test',
+    status: UserStatus.Active,
   });
+
   const payload = {
     id: user.id,
     gmail: user.gmail,
     role: user.role,
     userName: user.userName,
+    status: user.status,
   };
   const token = jwt.sign(payload, process.env.JWT_KEY!);
   const session = { jwt: token };
