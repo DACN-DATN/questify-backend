@@ -1,10 +1,6 @@
 import express, { Request, Response } from 'express';
-import { BadRequestError, requireAuth, ResourcePrefix } from '@datn242/questify-common';
-import { User } from '../../models/user';
-import { UserIsland } from '../../models/user-island';
-import { Island } from '../../models/island';
-import { Course } from '../../models/course';
-import { CompletionStatus } from '@datn242/questify-common';
+import { requireAuth, ResourcePrefix } from '@datn242/questify-common';
+import { initializeUserIslands } from '../../services/init-user-island.service';
 
 const router = express.Router();
 
@@ -13,41 +9,8 @@ router.post(
   requireAuth,
   async (req: Request, res: Response) => {
     const { course_id } = req.params;
+    const userIslands = await initializeUserIslands(course_id, req.currentUser!.id);
 
-    const course = await Course.findByPk(course_id);
-    if (!course) {
-      throw new BadRequestError('Course not found');
-    }
-
-    const student = await User.findByPk(req.currentUser!.id);
-    if (!student) {
-      throw new BadRequestError('Current student not found');
-    }
-
-    if (student.role !== 'student') {
-      throw new BadRequestError('Only student can init user island');
-    }
-
-    const islands = await Island.findAll({
-      where: {
-        courseId: course.id,
-      },
-    });
-    if (!islands) {
-      throw new BadRequestError('Islands not found');
-    }
-
-    const userIslands: UserIsland[] = [];
-
-    for (const island of islands) {
-      const userIsland = await UserIsland.create({
-        userId: student.id,
-        islandId: island.id,
-        point: 0,
-        completionStatus: CompletionStatus.Locked,
-      });
-      userIslands.push(userIsland);
-    }
     res.status(201).send({ userIslands });
   },
 );

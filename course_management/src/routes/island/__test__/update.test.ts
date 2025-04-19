@@ -11,7 +11,7 @@ it('returns a NotAuthorizedError if the user is not signin', async () => {
   const course_id = uuidv4();
   const island_id = uuidv4();
   await request(app)
-    .put(`/api/course-mgmt/${course_id}/islands/${island_id}`)
+    .patch(`/api/course-mgmt/${course_id}/islands/${island_id}`)
     .send()
     .expect(NotAuthorizedError.statusCode);
 });
@@ -21,7 +21,7 @@ it('returns a NotFoundError if the provided course_id does not exist', async () 
   const course_id = uuidv4();
   const island_id = uuidv4();
   await request(app)
-    .put(`/api/course-mgmt/${course_id}/islands/${island_id}`)
+    .patch(`/api/course-mgmt/${course_id}/islands/${island_id}`)
     .set('Cookie', cookie)
     .send()
     .expect(NotFoundError.statusCode);
@@ -35,10 +35,10 @@ it('returns a NotAuthorizedError if the user does not own the course', async () 
   const cookie2 = await global.getAuthCookie('test2@gmail.com');
   const island_id = uuidv4();
   await request(app)
-    .put(`/api/course-mgmt/${response.body.id}/islands/${island_id}`)
+    .patch(`/api/course-mgmt/${response.body.id}/islands/${island_id}`)
     .set('Cookie', cookie2)
     .send({
-      name: 'Computer Architecture',
+      name: 'Compatcher Architecture',
     })
     .expect(NotAuthorizedError.statusCode);
 });
@@ -54,7 +54,7 @@ it('returns a NotFoundError if the provided island_id does not exist', async () 
     .expect(201);
   const island_id = uuidv4();
   await request(app)
-    .put(`/api/course-mgmt/${courseRes.body.id}/islands/${island_id}`)
+    .patch(`/api/course-mgmt/${courseRes.body.id}/islands/${island_id}`)
     .set('Cookie', cookie)
     .send()
     .expect(NotFoundError.statusCode);
@@ -81,7 +81,7 @@ it('returns a RequestValidationError if the user provides an invalid position or
     .expect(201);
 
   await request(app)
-    .put(`/api/course-mgmt/${courseRes.body.id}/islands/${islandRes.body.id}`)
+    .patch(`/api/course-mgmt/${courseRes.body.id}/islands/${islandRes.body.id}`)
     .set('Cookie', cookie)
     .send({
       name: '',
@@ -89,7 +89,7 @@ it('returns a RequestValidationError if the user provides an invalid position or
     .expect(RequestValidationError.statusCode);
 
   await request(app)
-    .put(`/api/course-mgmt/${courseRes.body.id}/islands/${islandRes.body.id}`)
+    .patch(`/api/course-mgmt/${courseRes.body.id}/islands/${islandRes.body.id}`)
     .set('Cookie', cookie)
     .send({
       position: '999rand',
@@ -97,7 +97,7 @@ it('returns a RequestValidationError if the user provides an invalid position or
     .expect(RequestValidationError.statusCode);
 });
 
-it('updates the course provided valid inputs', async () => {
+it('updates the course provided valid inpatchs', async () => {
   const cookie = await global.getAuthCookie();
 
   const courseRes = await request(app)
@@ -118,7 +118,7 @@ it('updates the course provided valid inputs', async () => {
     .expect(201);
 
   const response = await request(app)
-    .put(`/api/course-mgmt/${courseRes.body.id}/islands/${islandRes.body.id}`)
+    .patch(`/api/course-mgmt/${courseRes.body.id}/islands/${islandRes.body.id}`)
     .set('Cookie', cookie)
     .send({
       name: 'Sliding window',

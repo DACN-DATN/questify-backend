@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Course } from '../../models/course';
+import { Review } from '../../models/review';
 import {
   NotAuthorizedError,
   requireAuth,
@@ -11,10 +12,11 @@ import {
 const router = express.Router();
 
 router.delete(
-  ResourcePrefix.CourseManagement + '/:course_id',
+  ResourcePrefix.CourseManagement + '/:course_id/reviews/:review_id',
   requireAuth,
   async (req: Request, res: Response) => {
     const courseId = req.params.course_id;
+    const reviewId = req.params.review_id;
 
     const course = await Course.findByPk(courseId);
 
@@ -22,23 +24,29 @@ router.delete(
       throw new NotFoundError();
     }
 
-    if (course.teacherId !== req.currentUser!.id) {
+    const review = await Review.findByPk(reviewId);
+
+    if (!review) {
+      throw new NotFoundError();
+    }
+
+    if (review.studentId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
 
-    if (course.isDeleted) {
-      throw new BadRequestError('Course is already deleted');
+    if (review.isDeleted) {
+      throw new BadRequestError('Review is already deleted');
     }
 
-    course.set({
+    review.set({
       isDeleted: true,
       deletedAt: new Date(),
     });
 
-    await course.save();
+    await review.save();
 
-    res.send(course);
+    res.send(review);
   },
 );
 
-export { router as deleteCourseRouter };
+export { router as deleteReviewRouter };

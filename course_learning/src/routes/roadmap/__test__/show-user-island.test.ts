@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '../../../app';
 import {
+  BadRequestError,
   NotAuthorizedError,
   NotFoundError,
   ResourcePrefix,
@@ -60,14 +61,7 @@ describe('Already have course; signin as student', () => {
       .post(resource + '/' + course.id)
       .set('Cookie', cookie)
       .send({})
-      .expect(201);
-
-    const response = await request(app)
-      .get(resource + '/' + course.id)
-      .set('Cookie', cookie)
-      .send({})
-      .expect(200);
-    expect(response.body.userIslands).toEqual([]);
+      .expect(BadRequestError.statusCode);
   });
 
   it('Return user-island if there is islands in db', async () => {
