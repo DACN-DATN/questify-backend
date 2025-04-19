@@ -23,7 +23,7 @@ it(`return ${RequestValidationError.statusCode} if the query input is invalid`, 
     .set('Cookie', cookie)
     .expect(RequestValidationError.statusCode)
     .expect((res) => {
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('level_id must be a valid UUID');
     });
 });
 

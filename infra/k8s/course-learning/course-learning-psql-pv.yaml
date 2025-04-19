@@ -11,5 +11,9 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: course-learning-postgres-volume-claim
   hostPath:
     path: /data/course-learning-postgresql
