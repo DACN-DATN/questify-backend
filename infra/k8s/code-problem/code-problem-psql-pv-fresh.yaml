@@ -11,8 +11,8 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain # Added to match your existing setup
-  claimRef: # Add this section
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
     namespace: default
     name: code-problem-postgres-volume-claim
   hostPath:

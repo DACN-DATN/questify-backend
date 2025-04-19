@@ -5,7 +5,7 @@ metadata:
   labels:
     app: course-mgmt-postgres
 type: Opaque
-stringData: # Using stringData to avoid manual base64 encoding
+stringData:
   POSTGRES_DB: course_mgmt_ps_db
-  POSTGRES_USER: postgres # Official postgres user
+  POSTGRES_USER: postgres
   POSTGRES_PASSWORD: CourseMgmtSecurePassword
