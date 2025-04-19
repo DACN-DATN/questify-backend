@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import { Course } from '../../models/course';
 import { User } from '../../models/user';
 import { UserCourse } from '../../models/user-course';
+import { UserCourseCreatedPublisher } from '../../events/publishers/user-course-created-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 import {
   requireAuth,
@@ -47,6 +49,14 @@ router.post(
       courseId: course.id,
       point: 0,
       completionStatus: CompletionStatus.InProgress,
+    });
+
+    new UserCourseCreatedPublisher(natsWrapper.client).publish({
+      id: enrolledUserCourse.id,
+      studentId: enrolledUserCourse.studentId,
+      courseId: enrolledUserCourse.courseId,
+      point: enrolledUserCourse.point,
+      completionStatus: enrolledUserCourse.completionStatus,
     });
 
     res.status(201).send(enrolledUserCourse);
