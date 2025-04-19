@@ -3,10 +3,17 @@ import { Island } from '../../island';
 import { Level } from '../../level';
 import { PrerequisiteIsland } from '../../prerequisiteIsland';
 import { Review } from '../../review';
+import { UserCourse } from '../../user-course';
 import { User } from '../../user';
 
 it('check course associations', async () => {
-  expect(Object.keys(Course.associations)).toEqual(['User', 'Islands', 'Reviews']);
+  expect(Object.keys(Course.associations)).toEqual([
+    'teacher',
+    'Islands',
+    'Reviews',
+    'students',
+    'UserCourses',
+  ]);
 });
 
 it('check island associations', async () => {
@@ -30,6 +37,15 @@ it('check review associations', async () => {
   expect(Object.keys(Review.associations)).toEqual(['User', 'Course']);
 });
 
+it('check user-course associations', async () => {
+  expect(Object.keys(UserCourse.associations)).toEqual(['User', 'Course']);
+});
+
 it('check user associations', async () => {
-  expect(Object.keys(User.associations)).toEqual(['Courses', 'Reviews']);
+  expect(Object.keys(User.associations)).toEqual([
+    'teacherCourses',
+    'Reviews',
+    'enrolledCourses',
+    'UserCourses',
+  ]);
 });
