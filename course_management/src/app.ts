@@ -16,6 +16,11 @@ import { updateIslandRouter } from './routes/island/update';
 
 import { createLevelRouter } from './routes/level/new';
 
+import { createReviewRouter } from './routes/course/new-review';
+import { showReviewRouter } from './routes/course/show-review';
+import { updateReviewRouter } from './routes/course/update-review';
+import { deleteReviewRouter } from './routes/course/delete-review';
+
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -38,6 +43,11 @@ app.use(showIslandRouter);
 app.use(updateIslandRouter);
 
 app.use(createLevelRouter);
+
+app.use(createReviewRouter);
+app.use(showReviewRouter);
+app.use(updateReviewRouter);
+app.use(deleteReviewRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

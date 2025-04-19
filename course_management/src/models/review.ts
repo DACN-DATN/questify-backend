@@ -47,10 +47,14 @@ const ReviewDefinition = {
       },
     },
   },
-  reviewDate: {
+  isDeleted: {
     allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  deletedAt: {
+    allowNull: true,
     type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
   },
 };
 
@@ -60,10 +64,11 @@ interface ReviewAttributes {
   courseId: string;
   comment?: string;
   rating: number;
-  reviewDate: Date;
+  isDeleted: boolean;
+  deletedAt?: Date;
 }
 
-type ReviewCreationAttributes = Optional<ReviewAttributes, 'id' | 'reviewDate'>;
+type ReviewCreationAttributes = Optional<ReviewAttributes, 'id'>;
 
 class Review extends Model<ReviewAttributes, ReviewCreationAttributes> implements ReviewAttributes {
   public id!: string;
@@ -71,7 +76,8 @@ class Review extends Model<ReviewAttributes, ReviewCreationAttributes> implement
   public courseId!: string;
   public comment?: string;
   public rating!: number;
-  public reviewDate!: Date;
+  public isDeleted!: boolean;
+  public deletedAt?: Date;
 }
 
 Review.init(ReviewDefinition, {
