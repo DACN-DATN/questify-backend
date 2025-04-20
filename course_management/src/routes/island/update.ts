@@ -12,7 +12,7 @@ import { Island } from '../../models/island';
 import { PrerequisiteIsland } from '../../models/prerequisiteIsland';
 import { Op } from 'sequelize';
 import { sequelize } from '../../config/db';
-import { detectCycle, recalculatePositions } from '../../utils/island';
+import { detectCycle, recalculatePositions } from '../../services/island';
 
 const router = express.Router();
 
