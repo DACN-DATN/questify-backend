@@ -2,7 +2,11 @@ import request from 'supertest';
 import { app } from '../../../app';
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { NotFoundError, NotAuthorizedError, RequestValidationError } from '@datn242/questify-common';
+import {
+  NotFoundError,
+  NotAuthorizedError,
+  RequestValidationError,
+} from '@datn242/questify-common';
 
 it('returns a 404 if the provided id does not exist', async () => {
   const course_id = uuidv4();
