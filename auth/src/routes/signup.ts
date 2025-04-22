@@ -93,6 +93,13 @@ router.post(
       status: user.status,
     });
 
+    // await new UserCreatedPublisher(natsWrapper.client).publish({
+    //   id: user.id,
+    //   gmail: user.email,
+    //   role: user.role,
+    //   status: user.status,
+    // });
+
     const userJwt = jwt.sign(
       {
         id: user.id,
