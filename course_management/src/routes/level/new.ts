@@ -8,13 +8,14 @@ import {
   BadRequestError,
   NotFoundError,
   NotAuthorizedError,
+  ResourcePrefix,
 } from '@datn242/questify-common';
 import { Course } from '../../models/course';
 
 const router = express.Router();
 
 router.post(
-  '/api/course-mgmt/islands/:island_id/level',
+  ResourcePrefix.CourseManagement + '/islands/:island_id/level',
   requireAuth,
   [
     body('name').notEmpty().withMessage('Level name is required'),

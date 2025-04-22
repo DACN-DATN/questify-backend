@@ -25,15 +25,21 @@ spec:
           ports:
             - containerPort: 5432
           envFrom:
-            - configMapRef:
+            - secretRef:
                 name: course-learning-postgres-secret
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: course-learning-postgresdata
+            - mountPath: /docker-entrypoint-initdb.d
+              name: init-script
       volumes:
         - name: course-learning-postgresdata
           persistentVolumeClaim:
             claimName: course-learning-postgres-volume-claim
+        - name: init-script
+          configMap:
+            name: course-learning-postgres-init
+            defaultMode: 0777
 ---
 apiVersion: v1
 kind: Service

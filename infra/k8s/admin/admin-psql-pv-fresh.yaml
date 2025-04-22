@@ -5,11 +5,16 @@ metadata:
   labels:
     type: local
     app: admin-postgres
+    pv-name: admin-postgres-volume
 spec:
   storageClassName: manual
   capacity:
     storage: 10Gi
   accessModes:
     - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: admin-postgres-volume-claim
   hostPath:
     path: /data/admin-postgresql-fresh

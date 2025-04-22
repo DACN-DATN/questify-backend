@@ -3,15 +3,20 @@ import { body } from 'express-validator';
 import { Course } from '../../models/course';
 import { Island } from '../../models/island';
 import { PrerequisiteIsland } from '../../models/prerequisiteIsland';
-import { validateRequest, requireAuth, BadRequestError } from '@datn242/questify-common';
 import { Op } from 'sequelize';
 import { sequelize } from '../../config/db';
 import { detectCycle, recalculatePositions } from '../../services/island';
+import {
+  validateRequest,
+  requireAuth,
+  BadRequestError,
+  ResourcePrefix,
+} from '@datn242/questify-common';
 
 const router = express.Router();
 
 router.post(
-  '/api/course-mgmt/:course_id/islands',
+  ResourcePrefix.CourseManagement + '/:course_id/islands',
   requireAuth,
   [
     body('name').notEmpty().withMessage('Island name is required'),

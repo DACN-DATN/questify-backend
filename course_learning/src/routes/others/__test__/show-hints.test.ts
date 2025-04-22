@@ -27,7 +27,7 @@ it(`return ${RequestValidationError.statusCode} if the query input is invalid`, 
     })
     .expect(RequestValidationError.statusCode)
     .expect((res) => {
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('level-id must be a valid UUID');
     });
   await request(app)
     .get(resource)
@@ -35,7 +35,7 @@ it(`return ${RequestValidationError.statusCode} if the query input is invalid`, 
     .query({})
     .expect(RequestValidationError.statusCode)
     .expect((res) => {
-      expect(res.text).toContain('Error: Invalid request parameters');
+      expect(res.text).toContain('level-id is required');
     });
 });
 

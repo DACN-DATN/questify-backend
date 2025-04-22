@@ -38,7 +38,7 @@ it('returns a NotAuthorizedError if the user does not own the course', async () 
     .patch(`/api/course-mgmt/${response.body.id}/islands/${island_id}`)
     .set('Cookie', cookie2)
     .send({
-      name: 'Computer Architecture',
+      name: 'Compatcher Architecture',
     })
     .expect(NotAuthorizedError.statusCode);
 });
@@ -96,7 +96,7 @@ it('returns a RequestValidationError if the user provides an invalid position or
     .expect(RequestValidationError.statusCode);
 });
 
-it('updates the course provided valid inputs', async () => {
+it('updates the course provided valid inpatchs', async () => {
   const cookie = await global.getAuthCookie();
 
   const courseRes = await request(app)

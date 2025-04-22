@@ -6,13 +6,14 @@ import {
   NotFoundError,
   validateRequest,
   requireAuth,
+  ResourcePrefix,
 } from '@datn242/questify-common';
 import { CourseCategory } from '@datn242/questify-common';
 
 const router = express.Router();
 
 router.patch(
-  '/api/course-mgmt/:course_id',
+  ResourcePrefix.CourseManagement + '/:course_id',
   requireAuth,
   [
     body('name').optional().notEmpty().withMessage('Course name is required'),

@@ -1,13 +1,12 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Course } from '../../models/course';
-import { validateRequest, requireAuth } from '@datn242/questify-common';
-import { CourseCategory } from '@datn242/questify-common';
+import { validateRequest, requireAuth, ResourcePrefix, CourseCategory } from '@datn242/questify-common';
 
 const router = express.Router();
 
 router.post(
-  '/api/course-mgmt',
+  ResourcePrefix.CourseManagement,
   requireAuth,
   [
     body('name').notEmpty().withMessage('Course name is required').trim(),
