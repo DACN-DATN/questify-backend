@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: course-mgmt-postgres-volume-claim
+  name: auth-mongo-claim
   labels:
-    app: course-mgmt-postgres
+    app: auth-mongo
 spec:
   storageClassName: manual
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi
+      storage: 5Gi
   selector:
     matchLabels:
-      pv-name: course-mgmt-postgres-volume
+      pv-name: auth-mongo-volume
