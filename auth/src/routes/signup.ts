@@ -91,6 +91,8 @@ router.post(
       id: user.id,
       role: user.role,
       status: user.status,
+      gmail: user.email,
+      userName: user.userName,
     });
 
     // await new UserCreatedPublisher(natsWrapper.client).publish({
