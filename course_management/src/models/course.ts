@@ -95,7 +95,7 @@ interface CourseAttributes {
   requirements?: string[];
   targetAudience?: string[];
   backgroundImage?: string;
-  status?: string;
+  status?: CourseStatus;
   teacherId: string;
   isDeleted: boolean;
   deletedAt?: Date;
@@ -123,7 +123,7 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public requirements?: string[];
   public targetAudience?: string[];
   public backgroundImage?: string;
-  public status?: string;
+  public status?: CourseStatus;
   public teacherId!: string;
   public isDeleted!: boolean;
   public deletedAt?: Date;

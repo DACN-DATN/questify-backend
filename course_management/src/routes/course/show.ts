@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { NotFoundError, ResourcePrefix } from '@datn242/questify-common';
 import { Course } from '../../models/course';
+import { Island } from '../../models/island';
 
 const router = express.Router();
 
@@ -11,7 +12,14 @@ router.get(ResourcePrefix.CourseManagement + '/:course_id', async (req: Request,
     throw new NotFoundError();
   }
 
-  res.send(course);
+  const islandCount = await Island.count({ where: { courseId: course.id } });
+
+  const courseData = course.toJSON();
+
+  res.send({
+    ...courseData,
+    islandCount,
+  });
 });
 
 export { router as showCourseRouter };

@@ -1,5 +1,6 @@
 import { app } from './app';
 import { connectDb, closeDbConnection } from './config/db';
+import { UserCreatedListener } from './events/listeners/user-created-listener';
 import { natsWrapper } from './nats-wrapper';
 import { syncModels } from './scripts/sync';
 
@@ -41,6 +42,8 @@ const start = async () => {
     });
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
+
+    new UserCreatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
   }
