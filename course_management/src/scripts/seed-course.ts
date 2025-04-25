@@ -18,7 +18,8 @@ async function seed() {
         'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL.',
       category: CourseCategory.ITSoftware,
       price: 49.99,
-      backgroundImage: 'https://cdn.builder.io/api/v1/image/assets/TEMP/dfb32da73c8310560baa7041ffee9d62e89ca8f3',
+      backgroundImage:
+        'https://cdn.builder.io/api/v1/image/assets/TEMP/dfb32da73c8310560baa7041ffee9d62e89ca8f3',
       learningObjectives: [
         'Understand REST APIs',
         'Work with databases',
