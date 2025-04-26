@@ -9,3 +9,10 @@ Backend of Questify
 - path
   -- mac: /etc/hosts
   -- win: C:\Windows\System32\drivers\etc
+
+3. Connect to db from terminal:
+   kubectl port-forward svc/course-mgmt-postgres-srv 5432:5432
+
+# After setting up port-forwarding
+
+PGPASSWORD=CourseMgmtSecurePassword psql -h localhost -p 5432 -U postgres -d course_mgmt_ps_db

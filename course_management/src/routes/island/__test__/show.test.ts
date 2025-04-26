@@ -44,7 +44,6 @@ it('returns the island if the island is found', async () => {
     .set('Cookie', cookie)
     .send({
       name: 'Linked List',
-      position: 1,
     })
     .expect(201);
 
@@ -53,5 +52,5 @@ it('returns the island if the island is found', async () => {
     .send()
     .expect(200);
   expect(response.body.name).toEqual('Linked List');
-  expect(response.body.position).toEqual(1);
+  expect(response.body.position).toEqual(0);
 });

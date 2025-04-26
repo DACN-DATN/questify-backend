@@ -69,23 +69,6 @@ it('returns an error if an invalid name is provided', async () => {
       position: 1,
     })
     .expect(BadRequestError.statusCode);
-
-  await request(app)
-    .post(`/api/course-mgmt/${course_res.body.id}/islands`)
-    .set('Cookie', cookie)
-    .send({
-      name: 'Linked List',
-      position: 'Baby Im Real',
-    })
-    .expect(BadRequestError.statusCode);
-
-  await request(app)
-    .post(`/api/course-mgmt/${course_res.body.id}/islands`)
-    .set('Cookie', cookie)
-    .send({
-      name: 'Linked List',
-    })
-    .expect(BadRequestError.statusCode);
 });
 
 it('creates an Island with valid inputs', async () => {
@@ -105,12 +88,11 @@ it('creates an Island with valid inputs', async () => {
     .set('Cookie', cookie)
     .send({
       name: 'Linked List',
-      position: 1,
     })
     .expect(201);
 
   Islands = await Island.findAll();
   expect(Islands.length).toEqual(1);
   expect(Islands[0].name).toEqual('Linked List');
-  expect(Islands[0].position).toEqual(1);
+  expect(Islands[0].position).toEqual(0);
 });

@@ -33,6 +33,11 @@ const LevelDefinition = {
       key: 'id',
     },
   },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 };
 
 interface LevelAttributes {
@@ -41,9 +46,10 @@ interface LevelAttributes {
   description?: string;
   position: number;
   islandId: string;
+  isDeleted: boolean;
 }
 
-type LevelCreationAttributes = Optional<LevelAttributes, 'id'>;
+type LevelCreationAttributes = Optional<LevelAttributes, 'id' | 'isDeleted'>;
 
 class Level extends Model<LevelAttributes, LevelCreationAttributes> implements LevelAttributes {
   public id!: string;
@@ -51,6 +57,7 @@ class Level extends Model<LevelAttributes, LevelCreationAttributes> implements L
   public description?: string;
   public position!: number;
   public islandId!: string;
+  public isDeleted!: boolean;
 
   static readonly scopes: ModelScopeOptions = {};
 
@@ -63,6 +70,11 @@ Level.init(LevelDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: Level.scopes,
   validate: Level.validations,
 });

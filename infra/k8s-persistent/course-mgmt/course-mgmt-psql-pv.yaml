@@ -5,6 +5,7 @@ metadata:
   labels:
     type: local
     app: course-mgmt-postgres
+    pv-name: course-mgmt-postgres-volume
 spec:
   storageClassName: manual
   capacity:
@@ -12,8 +13,5 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: default
-    name: course-mgmt-postgres-volume-claim
   hostPath:
     path: /data/course-mgmt-postgresql
