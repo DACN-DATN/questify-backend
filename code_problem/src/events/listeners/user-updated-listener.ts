@@ -10,15 +10,17 @@ export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
   async onMessage(data: UserUpdatedEvent['data'], msg: Message) {
     const { id, role, status, gmail, userName } = data;
 
-    await User.update({
-      role,
-      status,
-      gmail,
-      userName,
-    },
+    await User.update(
+      {
+        role,
+        status,
+        gmail,
+        userName,
+      },
       {
         where: { id },
-      });
+      },
+    );
 
     msg.ack();
   }

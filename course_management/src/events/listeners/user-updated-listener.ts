@@ -8,15 +8,17 @@ export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: UserUpdatedEvent['data'], msg: Message) {
-    const { id, role, status, } = data;
+    const { id, role, status } = data;
 
-    await User.update({
-      role,
-      status,
-    },
+    await User.update(
+      {
+        role,
+        status,
+      },
       {
         where: { id },
-      });
+      },
+    );
 
     msg.ack();
   }

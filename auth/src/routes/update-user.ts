@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import {
-  requireAuth,
   validateRequest,
   NotFoundError,
   BadRequestError,
@@ -23,7 +22,10 @@ router.patch(
       .isLength({ min: 3 })
       .withMessage('Username must be at least 3 characters'),
     body('imageUrl').optional().isURL().withMessage('Image URL must be a valid URL'),
-    body('role').optional().isIn([UserRole.Student, UserRole.Teacher]).withMessage('Role must be Student or Teacher'),
+    body('role')
+      .optional()
+      .isIn([UserRole.Student, UserRole.Teacher])
+      .withMessage('Role must be Student or Teacher'),
     body().custom((body) => {
       if (!body.userName && !body.imageUrl && !body.role) {
         throw new Error('You must provide either userName or imageUrl or role to update');
@@ -72,7 +74,6 @@ router.patch(
       gmail: user.email,
       userName: user.userName,
     });
-
 
     await user.save();
 
