@@ -7,6 +7,7 @@ import { UserCreatedListener } from './events/listeners/user-created-listener';
 import { CourseCreatedListener } from './events/listeners/course-created-listener';
 import { IslandCreatedListener } from './events/listeners/island-created-listener';
 import { IslandUpdatedListener } from './events/listeners/island-updated-listener';
+import { UserUpdatedListener } from './events/listeners/user-updated-listener';
 
 const start = async () => {
   await connectDb();
@@ -47,6 +48,7 @@ const start = async () => {
 
     new UserCourseCreatedListener(natsWrapper.client).listen();
     new UserCreatedListener(natsWrapper.client).listen();
+    new UserUpdatedListener(natsWrapper.client).listen();
     new CourseCreatedListener(natsWrapper.client).listen();
     new IslandCreatedListener(natsWrapper.client).listen();
     new IslandUpdatedListener(natsWrapper.client).listen();
