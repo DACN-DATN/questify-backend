@@ -1,33 +1,11 @@
-import axios from 'axios';
-import { UserRole, CourseCategory } from '@datn242/questify-common';
-import https from 'https';
+import apiService from '../services/api-service';
+import { UserRole, CourseCategory, ResourcePrefix } from '@datn242/questify-common';
 
-const api = axios.create({
-  baseURL: 'https://questify.dev/api',
-  withCredentials: true,
-  httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-});
-
-let cookies = '';
-
-api.interceptors.response.use((response) => {
-  const setCookieHeader = response.headers['set-cookie'];
-  if (setCookieHeader) {
-    cookies = Array.isArray(setCookieHeader) ? setCookieHeader.join('; ') : setCookieHeader;
-  }
-  return response;
-});
-
-api.interceptors.request.use((config) => {
-  if (cookies) {
-    config.headers.Cookie = cookies;
-  }
-  return config;
-});
+const api = apiService.instance;
 
 async function seed() {
   try {
-    let teacherResponse = await api.post('/users/validate-credentials', {
+    let teacherResponse = await api.post(ResourcePrefix.Auth + '/validate-credentials', {
       email: 'teacher@example.com',
       userName: 'Teacher',
     });
@@ -35,7 +13,7 @@ async function seed() {
 
     await new Promise((resolve) => setTimeout(resolve, 500));
 
-    teacherResponse = await api.post('/users/complete-signup', {
+    teacherResponse = await api.post(ResourcePrefix.Auth + '/complete-signup', {
       password: '12345aB@',
       confirmedPassword: '12345aB@',
     });
@@ -47,7 +25,7 @@ async function seed() {
 
     console.log('Teacher user seeded successfully.');
 
-    const courseResponse = await api.post('/course-mgmt', {
+    const courseResponse = await api.post(ResourcePrefix.CourseManagement, {
       name: 'Introduction to Backend Development',
       description:
         'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL.',
@@ -70,27 +48,33 @@ async function seed() {
     const course = courseResponse.data;
     console.log('Course seeded successfully:', course.id);
 
-    const island1Response = await api.post(`/course-mgmt/${course.id}/islands`, {
-      name: '1',
-      description: 'First Island',
-    });
+    const island1Response = await api.post(
+      ResourcePrefix.CourseManagement + `/${course.id}/islands`,
+      {
+        name: '1',
+        description: 'First Island',
+      },
+    );
 
     const island1 = island1Response.data;
 
-    const island2Response = await api.post(`/course-mgmt/${course.id}/islands`, {
-      name: '2',
-      description: 'Second Island',
-    });
+    const island2Response = await api.post(
+      ResourcePrefix.CourseManagement + `/${course.id}/islands`,
+      {
+        name: '2',
+        description: 'Second Island',
+      },
+    );
 
     const island2 = island2Response.data;
 
-    await api.post(`/course-mgmt/${course.id}/islands`, {
+    await api.post(ResourcePrefix.CourseManagement + `/${course.id}/islands`, {
       name: '3',
       description: 'Third Island',
       prerequisiteIslandIds: [island1.id, island2.id],
     });
 
-    await api.post(`/course-mgmt/${course.id}/islands`, {
+    await api.post(ResourcePrefix.CourseManagement + `/${course.id}/islands`, {
       name: '4',
       description: 'Fourth Island',
       prerequisiteIslandIds: [island1.id],
@@ -98,12 +82,12 @@ async function seed() {
 
     console.log('Islands seeded successfully.');
 
-    cookies = '';
-    await api.post('/users/signout', {});
+    apiService.clearCookies();
+    await api.post(ResourcePrefix.Auth + '/signout', {});
     console.log('Signed out successfully');
 
-    cookies = '';
-    await api.post('/users/validate-credentials', {
+    apiService.clearCookies();
+    await api.post(ResourcePrefix.Auth + '/validate-credentials', {
       email: 'student@example.com',
       userName: 'Student',
     });
@@ -111,14 +95,14 @@ async function seed() {
 
     await new Promise((resolve) => setTimeout(resolve, 500));
 
-    await api.post('/users/complete-signup', {
+    await api.post(ResourcePrefix.Auth + '/complete-signup', {
       password: '12345aB@',
       confirmedPassword: '12345aB@',
     });
 
     console.log('Student user seeded successfully.');
 
-    await api.post(`/course-mgmt/${course.id}/enrollment`, {});
+    await api.post(ResourcePrefix.CourseManagement + `/${course.id}/enrollment`, {});
     console.log(`Enroll successfully in course ${course.id}`);
   } catch (error) {
     console.error('Error seeding data:', error.response?.data || error.message);
