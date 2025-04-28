@@ -3,45 +3,50 @@ process.env.POSTGRES_URI = 'sqlite::memory:';
 process.env.NODE_ENV = EnvStage.Test;
 import '../models/associations';
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
 import { sequelize } from '../config/db';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
+import '../models/associations';
+
+jest.mock('../nats-wrapper');
 
 /* eslint-disable no-var */
 declare global {
   var getAuthCookie: (gmail?: string) => Promise<string[]>;
 }
 
-let mongo: MongoMemoryServer;
-
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfdsa';
-  mongo = await MongoMemoryServer.create();
-  const mongoUri = mongo.getUri();
-  await mongoose.connect(mongoUri, {});
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync({ force: true });
+  } catch (err) {
+    console.error('Error initializing SQLite:', err);
+    throw err;
+  }
 });
 
 beforeEach(async () => {
-  if (mongoose.connection.db) {
-    const collections = await mongoose.connection.db.collections();
+  try {
+    // Disable foreign key constraints
+    await sequelize.query('PRAGMA foreign_keys = OFF;');
 
-    for (const collection of collections) {
-      await collection.deleteMany({});
-    }
+    // This will truncate tables but not drop/recreate them
+    await Promise.all(
+      Object.values(sequelize.models).map((model) =>
+        model.destroy({ truncate: true, cascade: true }),
+      ),
+    );
+
+    // Re-enable foreign key constraints
+    await sequelize.query('PRAGMA foreign_keys = ON;');
+  } catch (err) {
+    console.error('Error clearing SQLite tables:', err);
+    throw err;
   }
-
-  await sequelize.drop();
-  await sequelize.sync();
 });
 
 afterAll(async () => {
-  if (mongo) {
-    await mongo.stop();
-  }
-  await mongoose.connection.close();
-
   await sequelize.close();
 });
 

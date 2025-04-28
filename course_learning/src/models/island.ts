@@ -37,6 +37,11 @@ const IslandDefinition = {
       key: 'id',
     },
   },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 };
 
 interface IslandAttributes {
@@ -46,9 +51,10 @@ interface IslandAttributes {
   position: number;
   backgroundImage?: string;
   courseId: string;
+  isDeleted: boolean;
 }
 
-type IslandCreationAttributes = Optional<IslandAttributes, 'id'>;
+type IslandCreationAttributes = Optional<IslandAttributes, 'id' | 'isDeleted'>;
 class Island extends Model<IslandAttributes, IslandCreationAttributes> implements IslandAttributes {
   public id!: string;
   public name!: string;
@@ -56,6 +62,7 @@ class Island extends Model<IslandAttributes, IslandCreationAttributes> implement
   public position!: number;
   public backgroundImage?: string;
   public courseId!: string;
+  public isDeleted!: boolean;
 
   public getCourse!: () => Promise<Course>;
 

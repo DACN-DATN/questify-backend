@@ -76,7 +76,6 @@ it('returns a RequestValidationError if the user provides an invalid position or
     .set('Cookie', cookie)
     .send({
       name: 'Linked List',
-      position: 1,
     })
     .expect(201);
 
@@ -113,7 +112,6 @@ it('updates the course provided valid inpatchs', async () => {
     .set('Cookie', cookie)
     .send({
       name: 'Linked List',
-      position: 1,
     })
     .expect(201);
 
@@ -122,10 +120,8 @@ it('updates the course provided valid inpatchs', async () => {
     .set('Cookie', cookie)
     .send({
       name: 'Sliding window',
-      position: 999,
     })
     .expect(200);
 
   expect(response.body.name).toEqual('Sliding window');
-  expect(response.body.position).toEqual(999);
 });

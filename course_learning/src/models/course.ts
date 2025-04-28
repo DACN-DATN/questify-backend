@@ -2,6 +2,7 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
+import { CourseStatus } from '@datn242/questify-common';
 
 const CourseDefinition = {
   id: {
@@ -34,6 +35,14 @@ const CourseDefinition = {
       key: 'id',
     },
   },
+  status: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    validator: {
+      isIn: [Object.values(CourseStatus)],
+    },
+    defaultValue: CourseStatus.Draft,
+  },
   isDeleted: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
@@ -51,6 +60,7 @@ interface CourseAttributes {
   description?: string;
   backgroundImage?: string;
   teacherId: string;
+  status?: CourseStatus;
   isDeleted: boolean;
   deletedAt?: Date;
 }
@@ -63,6 +73,7 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public description?: string;
   public backgroundImage?: string;
   public teacherId!: string;
+  public status?: CourseStatus;
   public isDeleted!: boolean;
   public deletedAt?: Date;
 
