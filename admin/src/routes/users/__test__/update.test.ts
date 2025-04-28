@@ -73,7 +73,7 @@ describe('Update User Status API', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(RequestValidationError.statusCode);
-        expect(res.text).toContain('Invalid request parameters');
+        expect(res.text).toContain('Status must be either Active or Suspended');
       });
   });
 

@@ -14,6 +14,8 @@ const setup = async () => {
     id: uuidv4(),
     role: UserRole.Student,
     status: UserStatus.Active,
+    gmail: 'test@gmail.com',
+    userName: 'test',
   };
 
   // @ts-expect-error: mock Message only needs ack for this test

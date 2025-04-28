@@ -2,6 +2,9 @@ import { app } from './app';
 import { connectDb, closeDbConnection } from './config/db';
 import { syncModels } from './scripts/sync';
 import { natsWrapper } from './nats-wrapper';
+import { UserCreatedListener } from './events/listeners/user-created-listener';
+import { CourseCreatedListener } from './events/listeners/course-created-listener';
+import { UserUpdatedListener } from './events/listeners/user-updated-listener';
 
 const start = async () => {
   await connectDb();
@@ -41,6 +44,10 @@ const start = async () => {
     });
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
+
+    new UserCreatedListener(natsWrapper.client).listen();
+    new UserUpdatedListener(natsWrapper.client).listen();
+    new CourseCreatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
   }

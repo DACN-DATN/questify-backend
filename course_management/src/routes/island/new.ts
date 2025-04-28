@@ -12,6 +12,8 @@ import {
   BadRequestError,
   ResourcePrefix,
 } from '@datn242/questify-common';
+import { IslandCreatedPublisher } from '../../events/publishers/island-created-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -88,7 +90,14 @@ router.post(
 
         return island;
       });
-
+      new IslandCreatedPublisher(natsWrapper.client).publish({
+        id: result.id,
+        courseId: result.courseId,
+        name: result.name,
+        description: result.description,
+        position: result.position,
+        backgroundImage: result.backgroundImage,
+      });
       res.status(201).send(result);
     } catch (error) {
       if (error instanceof BadRequestError) {

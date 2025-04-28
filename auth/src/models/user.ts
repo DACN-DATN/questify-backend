@@ -6,12 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 // An TS interfact that describes the properties
 // that are required to create a new User
 interface UserAttrs {
-  firstName?: string;
-  lastName?: string;
   userName: string;
   email: string;
   password: string;
   role: UserRole;
+  imageUrl?: string;
 }
 
 // An interface that describes the properties
@@ -28,6 +27,7 @@ interface UserDoc extends mongoose.Document {
   password: string;
   role: UserRole;
   status: UserStatus;
+  imageUrl?: string;
 }
 
 const userSchema = new mongoose.Schema(
@@ -59,6 +59,10 @@ const userSchema = new mongoose.Schema(
       require: true,
       enum: Object.values(UserStatus),
       default: () => UserStatus.Active,
+    },
+    imageUrl: {
+      type: String,
+      required: false,
     },
   },
   {
