@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'course-mgmt/**'
+      - 'course_mgmt/**'
 
 jobs:
   build:
