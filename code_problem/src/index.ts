@@ -1,5 +1,7 @@
 import { app } from './app';
 import { connectDb, closeDbConnection } from './config/db';
+import { LevelCreatedListener } from './events/listeners/level-created-listener';
+import { LevelUpdatedListener } from './events/listeners/level-updated-listener';
 import { natsWrapper } from './nats-wrapper';
 import { syncModels } from './scripts/sync';
 
@@ -39,6 +41,10 @@ const start = async () => {
       console.log('NATS connection closed!');
       process.exit();
     });
+
+    new LevelCreatedListener(natsWrapper.client).listen();
+    new LevelUpdatedListener(natsWrapper.client).listen();
+
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
   } catch (err) {

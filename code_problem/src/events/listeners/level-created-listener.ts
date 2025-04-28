@@ -1,0 +1,21 @@
+import { Message } from 'node-nats-streaming';
+import { Subjects, Listener, LevelCreatedEvent } from '@datn242/questify-common';
+import { queueGroupName } from './queue-group-name';
+import { Level } from '../../models/level';
+
+export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
+  subject: Subjects.LevelCreated = Subjects.LevelCreated;
+  queueGroupName = queueGroupName;
+
+  async onMessage(data: LevelCreatedEvent['data'], msg: Message) {
+    const { id, teacherId } = data;
+
+    const level = Level.build({
+      id,
+      teacherId,
+    });
+    await level.save();
+
+    msg.ack();
+  }
+}

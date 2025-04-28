@@ -11,6 +11,13 @@ import {
 } from '@datn242/questify-common';
 import { Level } from '../../models/level';
 import { findByPkWithSoftDelete } from '../../utils/model';
+import { Testcase } from '../../models/testcase';
+
+interface TestcaseInput {
+  input: string[];
+  output: string[];
+  hidden: boolean;
+}
 
 const router = express.Router();
 
@@ -24,10 +31,11 @@ router.post(
       .isUUID()
       .withMessage('level_id must be a valid UUID'),
     body('description').isString().withMessage('description must be a string'),
+    body('testcases').optional().isArray().withMessage('testcases must be an array'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { level_id, description } = req.body;
+    const { level_id, description, testcases } = req.body;
 
     if (req.currentUser!.role !== UserRole.Teacher) {
       throw new NotAuthorizedError();
@@ -44,10 +52,28 @@ router.post(
 
     const code_problem = await CodeProblem.create({
       levelId: level.id,
-      description: description,
+      description,
     });
 
-    res.status(201).send(code_problem);
+    if (testcases && testcases.length > 0) {
+      const formattedTestcases = testcases.map((testcase: TestcaseInput) => ({
+        codeProblemId: code_problem.id,
+        input: testcase.input,
+        output: testcase.output,
+        hidden: !testcase.hidden,
+      }));
+
+      await Testcase.bulkCreate(formattedTestcases);
+    }
+
+    const completeCodeProblem = await findByPkWithSoftDelete(
+      CodeProblem,
+      code_problem.id,
+      undefined,
+      [{ model: Testcase }],
+    );
+
+    res.status(201).send(completeCodeProblem);
   },
 );
 
