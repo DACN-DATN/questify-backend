@@ -10,6 +10,7 @@ interface UserAttrs {
   email: string;
   password: string;
   role: UserRole;
+  imageUrl?: string;
 }
 
 // An interface that describes the properties
@@ -27,6 +28,7 @@ interface UserDoc extends mongoose.Document {
   imageUrl?: string;
   role: UserRole;
   status: UserStatus;
+  imageUrl?: string;
 }
 
 const userSchema = new mongoose.Schema(
@@ -62,6 +64,10 @@ const userSchema = new mongoose.Schema(
       require: true,
       enum: Object.values(UserStatus),
       default: () => UserStatus.Active,
+    },
+    imageUrl: {
+      type: String,
+      required: false,
     },
   },
   {

@@ -7,6 +7,8 @@ import {
   ResourcePrefix,
   CourseCategory,
 } from '@datn242/questify-common';
+import { CourseCreatedPublisher } from '../../events/publishers/course-created-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -65,6 +67,15 @@ router.post(
     });
 
     await course.save();
+
+    new CourseCreatedPublisher(natsWrapper.client).publish({
+      id: course.id,
+      teacherId: course.teacherId,
+      status: course.status!,
+      name: course.name,
+      description: course.description,
+      backgroundImage: course.backgroundImage,
+    });
     res.status(201).send(course);
   },
 );

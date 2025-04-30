@@ -14,6 +14,8 @@ import { PrerequisiteIsland } from '../../models/prerequisiteIsland';
 import { Op } from 'sequelize';
 import { sequelize } from '../../config/db';
 import { detectCycle, recalculatePositions } from '../../services/island';
+import { IslandUpdatedPublisher } from '../../events/publishers/island-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -142,7 +144,15 @@ router.patch(
 
         return island;
       });
-
+      new IslandUpdatedPublisher(natsWrapper.client).publish({
+        id: result.id,
+        courseId: result.courseId,
+        name: result.name,
+        description: result.description,
+        position: result.position,
+        backgroundImage: result.backgroundImage,
+        isDeleted: result.isDeleted,
+      });
       res.send(result);
     } catch (error) {
       if (

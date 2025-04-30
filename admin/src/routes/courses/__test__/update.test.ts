@@ -80,7 +80,7 @@ describe('Update Course Status API', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(RequestValidationError.statusCode);
-        expect(res.text).toContain('Invalid request parameters');
+        expect(res.text).toContain('Status must be either Approved or Rejected');
       });
   });
 
