@@ -4,9 +4,12 @@ metadata:
   name: ingress-service
   annotations:
     nginx.ingress.kubernetes.io/use-regex: 'true'
-    nginx.ingress.kubernetes.io/use-proxy-protocol: "true"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - www.questify.site
+    secretName: questify-tls
   rules:
     - host: www.questify.site
       http:
