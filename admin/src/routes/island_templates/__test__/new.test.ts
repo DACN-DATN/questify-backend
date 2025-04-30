@@ -51,7 +51,7 @@ describe('Create Island Template API', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(RequestValidationError.statusCode);
-        expect(res.text).toContain('Invalid request parameters');
+        expect(res.text).toContain('Name is required');
       });
   });
 
@@ -66,7 +66,7 @@ describe('Create Island Template API', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(RequestValidationError.statusCode);
-        expect(res.text).toContain('Invalid request parameters');
+        expect(res.text).toContain('Image URL is required');
       });
   });
 

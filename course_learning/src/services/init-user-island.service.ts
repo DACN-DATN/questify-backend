@@ -34,12 +34,15 @@ export async function initializeUserIslands(
 
   const userIslands: UserIsland[] = [];
   for (const island of islands) {
+    const status = island.position === 0 ? CompletionStatus.InProgress : CompletionStatus.Locked;
+
     const userIsland = await UserIsland.create({
       userId: student.id,
       islandId: island.id,
       point: 0,
-      completionStatus: CompletionStatus.Locked,
+      completionStatus: status,
     });
+
     userIslands.push(userIsland);
   }
 

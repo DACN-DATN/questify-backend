@@ -15,7 +15,13 @@ export default tseslint.config(
       globals: { node: true },
       parser: tseslint.parser,
       parserOptions: {
-        project: ['./auth/tsconfig.json', './course_management/tsconfig.json'],
+        project: [
+          './auth/tsconfig.json',
+          './course_management/tsconfig.json',
+          './admin/tsconfig.json',
+          './code_problem/tsconfig.json',
+          './course_learning/tsconfig.json',
+        ],
       },
     },
     plugins: {
@@ -74,6 +80,14 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         project: ['./admin/tsconfig.json'],
+      },
+    },
+  },
+  {
+    files: ['seed/**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: null,
       },
     },
   },

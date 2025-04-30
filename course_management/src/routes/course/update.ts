@@ -9,6 +9,8 @@ import {
   ResourcePrefix,
 } from '@datn242/questify-common';
 import { CourseCategory } from '@datn242/questify-common';
+import { CourseUpdatedPublisher } from '../../events/publishers/course-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -77,6 +79,15 @@ router.patch(
 
     course.set(updateFields);
 
+    new CourseUpdatedPublisher(natsWrapper.client).publish({
+      id: course.id,
+      teacherId: course.teacherId,
+      status: course.status!,
+      name: course.name,
+      description: course.description,
+      backgroundImage: course.backgroundImage,
+      isDeleted: course.isDeleted,
+    });
     await course.save();
     res.send(course);
   },

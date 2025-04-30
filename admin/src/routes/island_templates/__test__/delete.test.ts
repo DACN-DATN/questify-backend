@@ -54,7 +54,7 @@ describe('Delete Island Template API', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(NotFoundError.statusCode);
-        expect(res.text).toContain('Route not found');
+        expect(res.text).toContain('Not Found');
       });
   });
 

@@ -47,7 +47,7 @@ const CourseDefinition = {
     allowNull: false,
     type: DataTypes.STRING,
     validate: {
-      isIn: [[CourseStatus.Pending, CourseStatus.Approved, CourseStatus.Rejected]],
+      isIn: [Object.values(CourseStatus)],
     },
     defaultValue: CourseStatus.Pending,
   },
