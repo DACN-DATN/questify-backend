@@ -56,11 +56,12 @@ router.patch(
     }
 
     const updateFields: Partial<Level> = {};
-    const { name, description, position } = req.body;
+    const { name, description, position, contentType } = req.body;
 
     if (name !== undefined) updateFields['name'] = name;
     if (description !== undefined) updateFields['description'] = description;
     if (position !== undefined) updateFields['position'] = position;
+    if (contentType !== undefined) updateFields['contentType'] = contentType;
     level.set(updateFields);
 
     await new LevelUpdatedPublisher(natsWrapper.client).publish({

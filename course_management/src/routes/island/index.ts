@@ -35,6 +35,8 @@ router.get('/api/course-mgmt/:course_id/islands', async (req: Request, res: Resp
         model: Level,
         as: 'Levels',
         required: false,
+        separate: true,
+        order: [['position', 'ASC']],
       },
       {
         model: Island,

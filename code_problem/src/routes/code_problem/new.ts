@@ -10,7 +10,6 @@ import {
   ResourcePrefix,
 } from '@datn242/questify-common';
 import { Level } from '../../models/level';
-import { findByPkWithSoftDelete } from '../../utils/model';
 import { Testcase } from '../../models/testcase';
 
 interface TestcaseInput {
@@ -41,7 +40,7 @@ router.post(
       throw new NotAuthorizedError();
     }
 
-    const level = await findByPkWithSoftDelete(Level, level_id);
+    const level = await Level.findByPk(level_id);
     if (!level) {
       throw new BadRequestError('Level not found');
     }
@@ -66,12 +65,18 @@ router.post(
       await Testcase.bulkCreate(formattedTestcases);
     }
 
-    const completeCodeProblem = await findByPkWithSoftDelete(
-      CodeProblem,
-      code_problem.id,
-      undefined,
-      [{ model: Testcase }],
-    );
+    const completeCodeProblem = await CodeProblem.findOne({
+      where: {
+        id: code_problem.id,
+      },
+      include: [
+        {
+          model: Testcase,
+          as: 'Testcases',
+          required: false,
+        },
+      ],
+    });
 
     res.status(201).send(completeCodeProblem);
   },
