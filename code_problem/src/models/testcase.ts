@@ -1,4 +1,4 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { CodeProblem } from './code-problem';
 import { v4 as uuidv4 } from 'uuid';
@@ -58,6 +58,10 @@ class Testcase
   public output!: string;
   public hidden!: boolean;
   public isDeleted!: boolean;
+
+  static readonly scopes: ModelScopeOptions = {};
+
+  static readonly validations: ModelValidateOptions = {};
 }
 
 Testcase.init(TestcaseDefinition, {
@@ -66,6 +70,13 @@ Testcase.init(TestcaseDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
+  scopes: Testcase.scopes,
+  validate: Testcase.validations,
 });
 
 export { Testcase };

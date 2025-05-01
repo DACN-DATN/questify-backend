@@ -9,6 +9,8 @@ import {
 } from '@datn242/questify-common';
 import { Island } from '../../models/island';
 import { Level } from '../../models/level';
+import { LevelUpdatedPublisher } from '../../events/publishers/level-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -54,12 +56,23 @@ router.patch(
     }
 
     const updateFields: Partial<Level> = {};
-    const { name, description, position } = req.body;
+    const { name, description, position, contentType } = req.body;
 
     if (name !== undefined) updateFields['name'] = name;
     if (description !== undefined) updateFields['description'] = description;
     if (position !== undefined) updateFields['position'] = position;
+    if (contentType !== undefined) updateFields['contentType'] = contentType;
     level.set(updateFields);
+
+    await new LevelUpdatedPublisher(natsWrapper.client).publish({
+      id: level.id,
+      teacherId: course.teacherId,
+      islandId: level.islandId,
+      name: level.name,
+      description: level.description,
+      position: level.position,
+      isDeleted: level.isDeleted,
+    });
 
     await level.save();
     res.send(level);
