@@ -19,7 +19,7 @@ async function seed() {
     });
     console.log('Complete signup successful');
 
-    await api.patch(`/users/${teacherResponse.data.id}`, {
+    await api.patch(ResourcePrefix.Auth + `/${teacherResponse.data.id}`, {
       role: UserRole.Teacher,
     });
 
