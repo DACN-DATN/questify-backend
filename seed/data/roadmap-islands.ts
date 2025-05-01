@@ -85,6 +85,9 @@ async function seed() {
 
     await api.post(ResourcePrefix.CourseManagement + `/${course.id}/enrollment`, {});
     console.log(`Enroll successfully in course ${course.id}`);
+
+    await api.post(ResourcePrefix.Auth + '/signout', {});
+    console.log('Student sign out successful');
   } catch (error) {
     console.error('Error seeding data:', error.response?.data || error.message);
     if (error.response) {
