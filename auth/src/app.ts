@@ -8,7 +8,7 @@ import { currentUserRouter } from './routes/current-user';
 import { signinRouter } from './routes/signin';
 import { signupRouter } from './routes/signup';
 import { signoutRouter } from './routes/signout';
-import { updateProfileRouter } from './routes/update-user';
+import { updateProfileRouter } from './routes/update';
 
 const app = express();
 app.set('trust proxy', true);

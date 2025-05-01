@@ -2,6 +2,7 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { Island } from './island';
 import { v4 as uuidv4 } from 'uuid';
+import { LevelContent } from '@datn242/questify-common';
 
 const LevelDefinition = {
   id: {
@@ -25,6 +26,13 @@ const LevelDefinition = {
     allowNull: false,
     type: DataTypes.INTEGER,
   },
+  contentType: {
+    allowNull: true,
+    type: DataTypes.STRING,
+    validate: {
+      isIn: [Object.values(LevelContent)],
+    },
+  },
   islandId: {
     allowNull: false,
     type: DataTypes.UUID,
@@ -45,6 +53,7 @@ interface LevelAttributes {
   name: string;
   description?: string;
   position: number;
+  contentType?: string;
   islandId: string;
   isDeleted: boolean;
 }
@@ -56,6 +65,7 @@ class Level extends Model<LevelAttributes, LevelCreationAttributes> implements L
   public name!: string;
   public description?: string;
   public position!: number;
+  public contentType?: string | undefined;
   public islandId!: string;
   public isDeleted!: boolean;
 

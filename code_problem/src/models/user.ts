@@ -73,6 +73,11 @@ User.init(UserDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: User.scopes,
   validate: User.validations,
 });

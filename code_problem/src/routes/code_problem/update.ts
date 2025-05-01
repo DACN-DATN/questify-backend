@@ -9,7 +9,6 @@ import {
   validateRequest,
 } from '@datn242/questify-common';
 import { Level } from '../../models/level';
-import { findByPkWithSoftDelete } from '../../utils/model';
 
 const router = express.Router();
 
@@ -20,9 +19,18 @@ router.patch(
   validateRequest,
   async (req: Request, res: Response) => {
     const { code_problem_id } = req.params;
-    const code_problem = await findByPkWithSoftDelete(CodeProblem, code_problem_id, undefined, [
-      { model: Level },
-    ]);
+    const code_problem = await CodeProblem.findOne({
+      where: {
+        id: code_problem_id,
+      },
+      include: [
+        {
+          model: Level,
+          as: 'Level',
+          required: false,
+        },
+      ],
+    });
 
     if (!code_problem) {
       throw new NotFoundError();
