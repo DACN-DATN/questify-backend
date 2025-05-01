@@ -1,29 +1,18 @@
 import apiService from '../services/api-service';
-import { UserRole, CourseCategory, ResourcePrefix } from '@datn242/questify-common';
+import { CourseCategory, ResourcePrefix } from '@datn242/questify-common';
 
 const api = apiService.instance;
 
+// blocker: need to run signup-teacher.ts and signup-student.ts first
+
 async function seed() {
   try {
-    let teacherResponse = await api.post(ResourcePrefix.Auth + '/validate-credentials', {
+    await api.post(ResourcePrefix.Auth + '/signin', {
       email: 'teacher@example.com',
-      userName: 'Teacher',
-    });
-    console.log('Validate credentials successful');
-
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    teacherResponse = await api.post(ResourcePrefix.Auth + '/complete-signup', {
       password: '12345aB@',
-      confirmedPassword: '12345aB@',
-    });
-    console.log('Complete signup successful');
-
-    await api.patch(ResourcePrefix.Auth + `/${teacherResponse.data.id}`, {
-      role: UserRole.Teacher,
     });
 
-    console.log('Teacher user seeded successfully.');
+    console.log('Teacher login successfully.');
 
     const courseResponse = await api.post(ResourcePrefix.CourseManagement, {
       name: 'Introduction to Backend Development',
@@ -87,20 +76,12 @@ async function seed() {
     console.log('Signed out successfully');
 
     apiService.clearCookies();
-    await api.post(ResourcePrefix.Auth + '/validate-credentials', {
+    await api.post(ResourcePrefix.Auth + '/signin', {
       email: 'student@example.com',
-      userName: 'Student',
-    });
-    console.log('Student validate credentials successful');
-
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    await api.post(ResourcePrefix.Auth + '/complete-signup', {
       password: '12345aB@',
-      confirmedPassword: '12345aB@',
     });
 
-    console.log('Student user seeded successfully.');
+    console.log('Student login successfully.');
 
     await api.post(ResourcePrefix.CourseManagement + `/${course.id}/enrollment`, {});
     console.log(`Enroll successfully in course ${course.id}`);
