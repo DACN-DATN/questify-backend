@@ -26,8 +26,8 @@ interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
   role: UserRole;
-  status: UserStatus;
   imageUrl?: string;
+  status: UserStatus;
 }
 
 const userSchema = new mongoose.Schema(
@@ -54,15 +54,15 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(UserRole),
       default: UserRole.Student,
     },
+    imageUrl: {
+      type: String,
+      required: false,
+    },
     status: {
       type: String,
       require: true,
       enum: Object.values(UserStatus),
       default: () => UserStatus.Active,
-    },
-    imageUrl: {
-      type: String,
-      required: false,
     },
   },
   {
