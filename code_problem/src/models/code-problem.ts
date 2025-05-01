@@ -1,4 +1,4 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { Level } from './level';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,7 +25,7 @@ const CodeProblemDefinition = {
   isDeleted: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
-    defaultValue: () => false,
+    defaultValue: false,
   },
 };
 
@@ -46,6 +46,10 @@ class CodeProblem
   public levelId!: string;
   public description?: string;
   public isDeleted!: boolean;
+
+  static readonly scopes: ModelScopeOptions = {};
+
+  static readonly validations: ModelValidateOptions = {};
 }
 
 CodeProblem.init(CodeProblemDefinition, {
@@ -54,6 +58,13 @@ CodeProblem.init(CodeProblemDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
+  scopes: CodeProblem.scopes,
+  validate: CodeProblem.validations,
 });
 
 export { CodeProblem };

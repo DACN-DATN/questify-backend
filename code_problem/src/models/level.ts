@@ -49,6 +49,11 @@ Level.init(LevelDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: Level.scopes,
   validate: Level.validations,
 });

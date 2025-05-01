@@ -11,6 +11,8 @@ import {
   ResourcePrefix,
 } from '@datn242/questify-common';
 import { Course } from '../../models/course';
+import { LevelCreatedPublisher } from '../../events/publishers/level-created-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -60,11 +62,16 @@ router.post(
       islandId: island.id.toString(),
     });
 
+    await new LevelCreatedPublisher(natsWrapper.client).publish({
+      id: level.id,
+      teacherId: course.teacherId,
+      islandId: level.islandId,
+      name: level.name,
+      description: level.description,
+      position: level.position,
+    });
+
     await level.save();
-    // await new LevelCreatedPublisher(natsWrapper.client).publish({
-    //   id: level.id,
-    //   teacherId: course.teacherId,
-    // });
     res.status(201).send(level);
   },
 );
