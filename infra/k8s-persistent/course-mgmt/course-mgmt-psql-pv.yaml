@@ -15,4 +15,3 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: /data/course-mgmt-postgresql
-# 
