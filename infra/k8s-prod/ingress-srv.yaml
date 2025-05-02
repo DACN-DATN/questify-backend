@@ -10,9 +10,9 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - www.questify.site
-    secretName: questify-tls
+    - hosts:
+        - www.questify.site
+      secretName: questify-tls
   rules:
     - host: www.questify.site
       http:
