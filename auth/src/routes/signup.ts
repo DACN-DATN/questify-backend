@@ -84,6 +84,7 @@ router.post(
       email,
       password,
       role: UserRole.Student,
+      exp: 0,
     });
 
     await user.save();
@@ -93,6 +94,7 @@ router.post(
       status: user.status,
       gmail: user.email,
       userName: user.userName,
+      exp: user.exp,
     });
 
     const userJwt = jwt.sign(
@@ -101,6 +103,7 @@ router.post(
         email: user.email,
         userName: user.userName,
         role: user.role,
+        exp: user.exp,
       },
       process.env.JWT_KEY!,
     );

@@ -37,6 +37,7 @@ router.post(
         role: existingUser.role,
         status: existingUser.status,
         imageUrl: existingUser.imageUrl,
+        exp: existingUser.exp,
       },
       process.env.JWT_KEY!,
     );
