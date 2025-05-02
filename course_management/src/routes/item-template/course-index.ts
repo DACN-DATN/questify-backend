@@ -27,27 +27,30 @@ router.get(
       throw new NotAuthorizedError();
     }
 
-    // Find all item templates associated with this course
+    // Find all active course-item template associations
     const courseItemTemplates = await CourseItemTemplate.findAll({
       where: { course_id: courseId, isDeleted: false },
-      include: [
-        {
-          model: ItemTemplate,
-          where: { isDeleted: false },
-        },
-      ],
     });
 
-    // Extract item templates from the join results
+    // If no templates are associated, return empty array
+    if (courseItemTemplates.length === 0) {
+      res.send([]);
+      return; // Don't return the Response object, just return from function
+    }
+
+    // Extract the item template IDs
+    const itemTemplateIds = courseItemTemplates.map((cit) => cit.item_template_id);
+
+    // Fetch the actual item templates
     const itemTemplates = await ItemTemplate.findAll({
       where: {
-        id: courseItemTemplates.map((cit) => cit.item_template_id),
+        id: itemTemplateIds,
         isDeleted: false,
       },
     });
 
     res.send(itemTemplates);
-  },
+  }
 );
 
 export { router as indexCourseItemTemplateRouter };

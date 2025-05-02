@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { Op } from 'sequelize';
 import { body } from 'express-validator';
 import { Course } from '../../models/course';
 import { ItemTemplate } from '../../models/item-template';
@@ -66,14 +67,36 @@ router.put(
     const idsToRemove = currentIds.filter((id: string) => !selectedIds.includes(id));
 
     // Perform additions - create new associations
-    const newAssociations = await Promise.all(
-      idsToAdd.map(async (itemTemplateId: string) => {
-        return CourseItemTemplate.create({
+    for (const itemTemplateId of idsToAdd) {
+      const existingSoftDeleted = await CourseItemTemplate.findOne({
+        where: {
+          course_id: courseId,
+          item_template_id: itemTemplateId,
+          isDeleted: true
+        }
+      });
+      
+      if (existingSoftDeleted) {
+        // Reuse soft-deleted record
+        await CourseItemTemplate.update(
+          {
+            isDeleted: false,
+            deletedAt: undefined // Changed from null to undefined
+          },
+          {
+            where: {
+              id: existingSoftDeleted.id
+            }
+          }
+        );
+      } else {
+        // Create new association if no soft-deleted one exists
+        await CourseItemTemplate.create({
           course_id: courseId,
           item_template_id: itemTemplateId,
         });
-      }),
-    );
+      }
+    }
 
     // Perform removals - soft delete associations
     if (idsToRemove.length > 0) {
@@ -85,7 +108,9 @@ router.put(
         {
           where: {
             course_id: courseId,
-            item_template_id: idsToRemove,
+            item_template_id: {
+              [Op.in]: idsToRemove
+            },
             isDeleted: false,
           },
         },
@@ -106,7 +131,7 @@ router.put(
       removedCount: idsToRemove.length,
       items: updatedItemTemplates,
     });
-  },
+  }
 );
 
 export { router as updateCourseItemTemplateRouter };

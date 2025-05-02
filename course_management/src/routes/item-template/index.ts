@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get(
   ResourcePrefix.CourseManagement + '/templates/all',
+  requireAuth,
   async (req: Request, res: Response) => {
     const itemTemplates = await ItemTemplate.findAll({
       where: { isDeleted: false },
