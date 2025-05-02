@@ -28,12 +28,14 @@
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
-    "typescript": "^5.8.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.27.0"
   },
   "dependencies": {
     "@datn242/questify-common": "^2.0.20",
     "axios": "^1.9.0",
+    "pg": "^8.15.6",
     "sequelize": "^6.37.7",
     "uuid": "^11.1.0"
   }

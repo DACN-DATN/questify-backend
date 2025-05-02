@@ -28,6 +28,10 @@ import { deleteReviewRouter } from './routes/course/delete-review';
 
 import { enrollCourseRouter } from './routes/course/enroll';
 
+import { indexItemTemplateRouter } from './routes/item-template/index';
+import { indexCourseItemTemplateRouter } from './routes/item-template/course-index';
+import { updateCourseItemTemplateRouter } from './routes/item-template/course-update';
+
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -62,6 +66,11 @@ app.use(updateReviewRouter);
 app.use(deleteReviewRouter);
 
 app.use(enrollCourseRouter);
+
+app.use(indexItemTemplateRouter);
+app.use(indexCourseItemTemplateRouter);
+app.use(updateCourseItemTemplateRouter);
+
 app.all('*', async () => {
   throw new NotFoundError();
 });
