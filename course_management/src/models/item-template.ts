@@ -27,7 +27,10 @@ const ItemTemplateDefinition = {
   },
   effect: {
     allowNull: false,
-    type: DataTypes.ENUM(...Object.values(EffectType)),
+    type: DataTypes.STRING,
+    validate: {
+      isIn: [Object.values(EffectType)],
+    },
   },
   effect_description: {
     allowNull: false,
