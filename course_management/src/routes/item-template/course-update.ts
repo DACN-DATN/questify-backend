@@ -72,22 +72,22 @@ router.put(
         where: {
           course_id: courseId,
           item_template_id: itemTemplateId,
-          isDeleted: true
-        }
+          isDeleted: true,
+        },
       });
-      
+
       if (existingSoftDeleted) {
         // Reuse soft-deleted record
         await CourseItemTemplate.update(
           {
             isDeleted: false,
-            deletedAt: undefined // Changed from null to undefined
+            deletedAt: undefined, // Changed from null to undefined
           },
           {
             where: {
-              id: existingSoftDeleted.id
-            }
-          }
+              id: existingSoftDeleted.id,
+            },
+          },
         );
       } else {
         // Create new association if no soft-deleted one exists
@@ -109,7 +109,7 @@ router.put(
           where: {
             course_id: courseId,
             item_template_id: {
-              [Op.in]: idsToRemove
+              [Op.in]: idsToRemove,
             },
             isDeleted: false,
           },
@@ -131,7 +131,7 @@ router.put(
       removedCount: idsToRemove.length,
       items: updatedItemTemplates,
     });
-  }
+  },
 );
 
 export { router as updateCourseItemTemplateRouter };

@@ -47,7 +47,7 @@ async function seed() {
         img: 'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Finventory_modal%2Fitem-icon-eyeglass.png?alt=media&token=bff6b605-b810-41f5-9b8d-dd5aed2d3ea4',
         gold: 75,
       },
-      
+
       // Gold Boost Items
       {
         name: 'Gold Doubler',
@@ -84,10 +84,12 @@ async function seed() {
     ];
 
     // First, get the list of existing item templates to avoid duplicates
-    const existingItemsResponse = await api.get(ResourcePrefix.CourseManagement + '/item-templates');
+    const existingItemsResponse = await api.get(
+      ResourcePrefix.CourseManagement + '/item-templates',
+    );
     const existingItems = existingItemsResponse.data;
-    const existingItemNames = existingItems.map(item => item.name);
-    
+    const existingItemNames = existingItems.map((item) => item.name);
+
     console.log(`Found ${existingItems.length} existing item templates.`);
 
     // Create each item template if it doesn't already exist
@@ -96,25 +98,31 @@ async function seed() {
         console.log(`Item Template '${itemTemplate.name}' already exists, skipping.`);
         continue;
       }
-      
+
       try {
-        const response = await api.post(ResourcePrefix.CourseManagement + '/item-templates', itemTemplate);
-        console.log(`Item Template '${itemTemplate.name}' created successfully with ID: ${response.data.id}`);
+        const response = await api.post(
+          ResourcePrefix.CourseManagement + '/item-templates',
+          itemTemplate,
+        );
+        console.log(
+          `Item Template '${itemTemplate.name}' created successfully with ID: ${response.data.id}`,
+        );
       } catch (error) {
-        console.error(`Error creating item template '${itemTemplate.name}':`, 
-          error.response?.data || error.message);
+        console.error(
+          `Error creating item template '${itemTemplate.name}':`,
+          error.response?.data || error.message,
+        );
       }
-      
+
       // Add a small delay between requests to avoid rate limiting
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
     console.log('Item template seeding completed.');
-    
+
     // Sign out after completing the seed process
     await api.post(ResourcePrefix.Auth + '/signout', {});
     console.log('Teacher sign out successful');
-    
   } catch (error) {
     console.error('Error seeding item templates:', error.response?.data || error.message);
     if (error.response) {

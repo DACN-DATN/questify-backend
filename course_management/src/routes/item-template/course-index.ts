@@ -50,7 +50,7 @@ router.get(
     });
 
     res.send(itemTemplates);
-  }
+  },
 );
 
 export { router as indexCourseItemTemplateRouter };

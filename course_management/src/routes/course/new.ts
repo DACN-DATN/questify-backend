@@ -78,7 +78,7 @@ router.post(
       description: course.description,
       backgroundImage: course.backgroundImage,
     });
-    
+
     res.status(201).send(course);
   },
 );
