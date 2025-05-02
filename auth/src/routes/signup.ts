@@ -103,7 +103,7 @@ router.post(
         email: user.email,
         userName: user.userName,
         role: user.role,
-        exp: user.exp,
+        userExp: user.exp,
       },
       process.env.JWT_KEY!,
     );

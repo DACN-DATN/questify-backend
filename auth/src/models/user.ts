@@ -11,7 +11,7 @@ interface UserAttrs {
   password: string;
   role: UserRole;
   imageUrl?: string;
-  exp: number;
+  exp?: number;
 }
 
 // An interface that describes the properties
@@ -28,7 +28,7 @@ interface UserDoc extends mongoose.Document {
   password: string;
   role: UserRole;
   imageUrl?: string;
-  exp: number;
+  exp?: number;
   status: UserStatus;
 }
 
@@ -62,7 +62,7 @@ const userSchema = new mongoose.Schema(
     },
     exp: {
       type: Number,
-      required: true,
+      required: false,
       default: () => 0,
     },
     status: {

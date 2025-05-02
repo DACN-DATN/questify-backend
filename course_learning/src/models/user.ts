@@ -32,7 +32,7 @@ const UserDefinition = {
     type: DataTypes.STRING,
   },
   exp: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.NUMBER,
   },
   status: {
@@ -50,7 +50,7 @@ interface UserAttributes {
   gmail: string;
   role: UserRole;
   userName: string;
-  exp: number;
+  exp?: number;
   status: UserStatus;
 }
 
@@ -61,7 +61,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public gmail!: string;
   public role!: UserRole;
   public userName!: string;
-  public exp!: number;
+  public exp?: number;
   public status!: UserStatus;
 
   public readonly rewards?: Reward[];
