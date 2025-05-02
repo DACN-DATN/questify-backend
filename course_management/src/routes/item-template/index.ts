@@ -5,8 +5,7 @@ import { ResourcePrefix, requireAuth } from '@datn242/questify-common';
 const router = express.Router();
 
 router.get(
-  ResourcePrefix.CourseManagement + '/item-templates',
-  requireAuth,
+  ResourcePrefix.CourseManagement + '/templates/all',
   async (req: Request, res: Response) => {
     const itemTemplates = await ItemTemplate.findAll({
       where: { isDeleted: false },
