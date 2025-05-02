@@ -73,6 +73,7 @@ router.patch(
       status: user.status,
       gmail: user.email,
       userName: user.userName,
+      exp: user.exp,
     });
 
     await user.save();
