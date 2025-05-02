@@ -41,7 +41,11 @@ const CourseDefinition = {
   },
   backgroundImage: {
     allowNull: true,
-    type: DataTypes.STRING, // may change this later
+    type: DataTypes.STRING,
+  },
+  thumbnail: {
+    allowNull: true,
+    type: DataTypes.STRING,
   },
   learningObjectives: {
     allowNull: false,
@@ -95,6 +99,7 @@ interface CourseAttributes {
   requirements?: string[];
   targetAudience?: string[];
   backgroundImage?: string;
+  thumbnail?: string;
   status?: CourseStatus;
   teacherId: string;
   isDeleted: boolean;
@@ -111,6 +116,8 @@ type CourseCreationAttributes = Optional<
   | 'requirements'
   | 'targetAudience'
   | 'status'
+  | 'thumbnail'
+  | 'backgroundImage'
 >;
 
 class Course extends Model<CourseAttributes, CourseCreationAttributes> implements CourseAttributes {
@@ -123,6 +130,7 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public requirements?: string[];
   public targetAudience?: string[];
   public backgroundImage?: string;
+  public thumbnail?: string;
   public status?: CourseStatus;
   public teacherId!: string;
   public isDeleted!: boolean;
