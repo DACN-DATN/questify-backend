@@ -8,7 +8,10 @@
     "check": "npx prettier . --check",
     "format": "npx prettier . --write",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix"
+    "lint:fix": "eslint . --ext .ts --fix",
+    "test:load": "k6 run ./test/performance/load_test.js",
+    "test:stress": "k6 run ./test/performance/stress_test.js",
+    "test:throughput": "k6 run ./test/performance/throughput_test.js"
   },
   "repository": {
     "type": "git",
