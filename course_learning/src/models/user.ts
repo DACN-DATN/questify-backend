@@ -33,7 +33,7 @@ const UserDefinition = {
   },
   exp: {
     allowNull: true,
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
   },
   status: {
     allowNull: false,
