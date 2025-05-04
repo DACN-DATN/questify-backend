@@ -92,6 +92,14 @@ export default tseslint.config(
     },
   },
   {
+    files: ['test/**/*.js'],
+    languageOptions: {
+      parserOptions: {
+        project: null,
+      },
+    },
+  },
+  {
     files: ['eslint.config.js'],
     languageOptions: {
       parserOptions: {
