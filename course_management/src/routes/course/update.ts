@@ -59,6 +59,7 @@ router.patch(
       name,
       description,
       backgroundImage,
+      thumbnail,
       category,
       price,
       learningObjectives,
@@ -71,6 +72,7 @@ router.patch(
     if (name !== undefined) updateFields.name = name;
     if (description !== undefined) updateFields.description = description;
     if (backgroundImage !== undefined) updateFields.backgroundImage = backgroundImage;
+    if (thumbnail !== undefined) updateFields.thumbnail = thumbnail;
     if (category !== undefined) updateFields.category = category;
     if (price !== undefined) updateFields.price = price;
     if (learningObjectives !== undefined) updateFields.learningObjectives = learningObjectives;

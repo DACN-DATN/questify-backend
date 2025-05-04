@@ -17,7 +17,8 @@ export default function () {
     getCurrentUser();
     getCourses();
   } else {
-    console.log("Sign-up failed",);
+    // eslint-disable-next-line no-undef
+    console.log('Sign-up failed');
   }
   signOut();
   sleep(1);
