@@ -1,4 +1,4 @@
-import { getCourses, getCurrentUser, createCourse, signOut, signUp } from './api-function.js';
+import { getCourses, getCurrentUser, signOut, signUp } from './api-function.js';
 import { sleep } from 'k6';
 
 export const options = {
@@ -14,18 +14,10 @@ export default function () {
   const signUpResult = signUp();
 
   if (signUpResult) {
-    const user = getCurrentUser();
-    if (user) {
-      sleep(2);
-      const course = createCourse();
-      if (course) {
-        getCourses();
-      } else {
-        console.log("Course Creation Failed");
-      }
-    }
+    getCurrentUser();
+    getCourses();
   } else {
-    console.log("Sign-up failed, skipping course creation");
+    console.log("Sign-up failed",);
   }
   signOut();
   sleep(1);

@@ -23,7 +23,7 @@ export function getCurrentUser() {
 }
 
 export function getCourses() {
-  return http.get('http://www.questify.site/api/course-mgmt');
+  return http.get('https://www.questify.site/api/course-mgmt');
 }
 
 export function signOut() {

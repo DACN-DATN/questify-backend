@@ -1,5 +1,5 @@
 import { sleep } from 'k6';
-import { getCourses, getCurrentUser, createCourse, signOut, signUp } from './api-function.js';
+import { getCourses, getCurrentUser, signOut, signUp } from './api-function.js';
 
 export const options = {
   scenarios: {
@@ -19,8 +19,9 @@ export default function () {
 
   if (signUpResult) {
     getCurrentUser();
+    getCourses();
   } else {
-    console.log("Sign-up failed");
+    console.log("Sign-up failed",);
   }
   signOut();
   sleep(1);
