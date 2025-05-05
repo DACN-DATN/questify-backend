@@ -6,7 +6,7 @@ const api = apiService.instance;
 async function seed() {
   try {
     await api.post(ResourcePrefix.Auth + '/signin', {
-      email: 'teacher@example.com',
+      email: 'teacher1@example.com',
       password: '12345aB@',
     });
     console.log('Teacher sign in successful');
@@ -49,6 +49,7 @@ async function seed() {
     console.log('Level seeded successfully:', level.id);
 
     const codeProblemResponse = await api.post(ResourcePrefix.CodeProblem, {
+      id: 'df04a27b-ecc4-4dbf-a655-1e3a84dd085a',
       level_id: level.id,
       description: `
 # Description for Code Problem 1
