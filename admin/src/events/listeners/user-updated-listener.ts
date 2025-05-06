@@ -10,6 +10,12 @@ export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
   async onMessage(data: UserUpdatedEvent['data'], msg: Message) {
     const { id, role, status, gmail, userName } = data;
 
+    const existingUser = await User.findByPk(id);
+    if (!existingUser) {
+      console.warn(`User not found with ID: ${id}`);
+      msg.ack();
+    }
+
     await User.update(
       {
         role,
