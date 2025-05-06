@@ -5,6 +5,10 @@ import { PrerequisiteIsland } from '../../prerequisiteIsland';
 import { Review } from '../../review';
 import { UserCourse } from '../../user-course';
 import { User } from '../../user';
+import { ItemTemplate } from '../../item-template';
+import { Inventory } from '../../inventory';
+import { CourseItemTemplate } from '../../course-item-template';
+import { InventoryItemTemplate } from '../../inventory-item-template';
 
 it('check course associations', async () => {
   expect(Object.keys(Course.associations)).toEqual([
@@ -13,6 +17,9 @@ it('check course associations', async () => {
     'Reviews',
     'students',
     'UserCourses',
+    'ItemTemplates',
+    'CourseItemTemplates',
+    'Inventories',
   ]);
 });
 
@@ -47,5 +54,32 @@ it('check user associations', async () => {
     'Reviews',
     'enrolledCourses',
     'UserCourses',
+    'Inventories',
   ]);
+});
+
+it('check item template associations', async () => {
+  expect(Object.keys(ItemTemplate.associations)).toEqual([
+    'Courses',
+    'Inventories',
+    'CourseItemTemplates',
+    'InventoryItemTemplates',
+  ]);
+});
+
+it('check inventory associations', async () => {
+  expect(Object.keys(Inventory.associations)).toEqual([
+    'User',
+    'Course',
+    'ItemTemplates',
+    'InventoryItemTemplates',
+  ]);
+});
+
+it('check course item template associations', async () => {
+  expect(Object.keys(CourseItemTemplate.associations)).toEqual(['Course', 'ItemTemplate']);
+});
+
+it('check inventory item template associations', async () => {
+  expect(Object.keys(InventoryItemTemplate.associations)).toEqual(['Inventory', 'ItemTemplate']);
 });

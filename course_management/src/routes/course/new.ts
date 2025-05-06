@@ -47,7 +47,7 @@ router.post(
       name,
       description,
       backgroundImage,
-      thumbnailImage,
+      thumbnail,
       category,
       price,
       learningObjectives,
@@ -59,7 +59,7 @@ router.post(
       name,
       description,
       backgroundImage,
-      thumbnailImage,
+      thumbnail,
       category,
       price,
       learningObjectives,
@@ -78,6 +78,7 @@ router.post(
       description: course.description,
       backgroundImage: course.backgroundImage,
     });
+
     res.status(201).send(course);
   },
 );
