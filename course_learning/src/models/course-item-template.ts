@@ -2,9 +2,16 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { Course } from './course';
 import { ItemTemplate } from './item-template';
+import { v4 as uuidv4 } from 'uuid';
 
 const CourseItemTemplateDefinition = {
-  courseId: {
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: DataTypes.UUID,
+    defaultValue: () => uuidv4(),
+  },
+  course_id: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
@@ -12,7 +19,7 @@ const CourseItemTemplateDefinition = {
       key: 'id',
     },
   },
-  itemTemplateId: {
+  item_template_id: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
@@ -20,24 +27,39 @@ const CourseItemTemplateDefinition = {
       key: 'id',
     },
   },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  deletedAt: {
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
 };
 
 interface CourseItemTemplateAttributes {
-  courseId: string;
-  itemTemplateId: string;
+  id: string;
+  course_id: string;
+  item_template_id: string;
+  isDeleted: boolean;
+  deletedAt?: Date;
 }
 
 type CourseItemTemplateCreationAttributes = Optional<
   CourseItemTemplateAttributes,
-  'courseId' | 'itemTemplateId'
+  'id' | 'isDeleted' | 'deletedAt'
 >;
 
 class CourseItemTemplate
   extends Model<CourseItemTemplateAttributes, CourseItemTemplateCreationAttributes>
   implements CourseItemTemplateAttributes
 {
-  public courseId!: string;
-  public itemTemplateId!: string;
+  public id!: string;
+  public course_id!: string;
+  public item_template_id!: string;
+  public isDeleted!: boolean;
+  public deletedAt?: Date;
 
   static readonly scopes: ModelScopeOptions = {};
 
@@ -50,6 +72,11 @@ CourseItemTemplate.init(CourseItemTemplateDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: CourseItemTemplate.scopes,
   validate: CourseItemTemplate.validations,
 });

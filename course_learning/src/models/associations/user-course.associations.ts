@@ -9,7 +9,7 @@ const defineUserCourseAssociations = () => {
     onUpdate: 'CASCADE',
   });
   UserCourse.belongsTo(Course, {
-    foreignKey: 'itemTemplateId',
+    foreignKey: 'courseId',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
