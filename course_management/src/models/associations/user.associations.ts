@@ -2,6 +2,7 @@ import { Course } from '../course';
 import { User } from '../user';
 import { Review } from '../review';
 import { UserCourse } from '../user-course';
+import { Inventory } from '../inventory';
 import { UserRole } from '@datn242/questify-common';
 
 const defineUserAssociations = () => {
@@ -27,6 +28,10 @@ const defineUserAssociations = () => {
   });
   User.hasMany(UserCourse, {
     foreignKey: 'studentId',
+  });
+  User.hasMany(Inventory, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE',
   });
 };
 
