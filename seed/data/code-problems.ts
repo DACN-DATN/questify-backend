@@ -51,6 +51,9 @@ async function seed() {
     const codeProblemResponse = await api.post(ResourcePrefix.CodeProblem, {
       id: 'df04a27b-ecc4-4dbf-a655-1e3a84dd085a',
       level_id: level.id,
+      starterCode: `function main(nums, target) {
+  // Your code here
+}`,
       description: `
 # Description for Code Problem 1
 
@@ -87,30 +90,6 @@ You can return the answer in any order.
     });
     const codeProblem = codeProblemResponse.data;
     console.log('Code Problem seeded successfully:', codeProblem.id);
-
-    const testcaseResponse = await api.post(
-      ResourcePrefix.CodeProblem + `/${codeProblem.id}/testcases`,
-      {
-        testcases: [
-          {
-            input: 'nums = [2,7,11,15], target = 9',
-            output: '[0,1]',
-            hidden: false,
-          },
-          {
-            input: 'nums = [3,2,4], target = 6',
-            output: '[1,2]',
-            hidden: false,
-          },
-          {
-            input: 'nums = [3,3], target = 6',
-            output: '[0,1]',
-            hidden: true,
-          },
-        ],
-      },
-    );
-    console.log('Testcase seeded successfully:', testcaseResponse.data);
 
     await api.post(ResourcePrefix.Auth + '/signout', {});
     console.log('Teacher sign out successful');

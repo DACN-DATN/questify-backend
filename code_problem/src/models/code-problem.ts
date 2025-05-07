@@ -32,6 +32,11 @@ const CodeProblemDefinition = {
     type: DataTypes.JSONB,
     defaultValue: {},
   },
+  starterCode: {
+    allowNull: false,
+    type: DataTypes.TEXT,
+  },
+
   isDeleted: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
@@ -45,6 +50,7 @@ interface CodeProblemAttributes {
   description?: string;
   parameters: string[];
   returnType: Record<string, any>;
+  starterCode: string;
   isDeleted: boolean;
 }
 
@@ -59,6 +65,7 @@ class CodeProblem
   public description?: string;
   public parameters!: string[];
   public returnType!: Record<string, any>;
+  public starterCode!: string;
   public isDeleted!: boolean;
 
   static readonly scopes: ModelScopeOptions = {};
