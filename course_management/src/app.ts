@@ -32,6 +32,12 @@ import { indexItemTemplateRouter } from './routes/item-template/index';
 import { indexCourseItemTemplateRouter } from './routes/item-template/course-index';
 import { updateCourseItemTemplateRouter } from './routes/item-template/course-update';
 
+import { createChallengeRouter } from './routes/challenge/new';
+import { uploadChallengeRouter } from './routes/challenge/upload';
+
+import { createSlideRouter } from './routes/slide/new';
+import { updateSlideRouter } from './routes/slide/update';
+
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -70,6 +76,12 @@ app.use(enrollCourseRouter);
 app.use(indexItemTemplateRouter);
 app.use(indexCourseItemTemplateRouter);
 app.use(updateCourseItemTemplateRouter);
+
+app.use(createChallengeRouter);
+app.use(uploadChallengeRouter);
+
+app.use(createSlideRouter);
+app.use(updateSlideRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
