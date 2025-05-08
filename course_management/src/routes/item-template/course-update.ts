@@ -1,3 +1,5 @@
+// Modified course-update.ts
+
 import express, { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { body } from 'express-validator';
@@ -12,6 +14,9 @@ import {
   NotAuthorizedError,
   BadRequestError,
 } from '@datn242/questify-common';
+import { CourseItemTemplateCreatedPublisher } from '../../events/publishers/course-item-template-created-publisher';
+import { CourseItemTemplateUpdatedPublisher } from '../../events/publishers/course-item-template-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -66,6 +71,10 @@ router.put(
     const idsToAdd = selectedIds.filter((id: string) => !currentIds.includes(id));
     const idsToRemove = currentIds.filter((id: string) => !selectedIds.includes(id));
 
+    // Array to track created/updated associations for publishing events
+    const createdAssociations = [];
+    const updatedAssociations = [];
+
     // Perform additions - create new associations
     for (const itemTemplateId of idsToAdd) {
       const existingSoftDeleted = await CourseItemTemplate.findOne({
@@ -81,7 +90,7 @@ router.put(
         await CourseItemTemplate.update(
           {
             isDeleted: false,
-            deletedAt: undefined, // Changed from null to undefined
+            deletedAt: undefined,
           },
           {
             where: {
@@ -89,17 +98,44 @@ router.put(
             },
           },
         );
+        
+        // Add to updated associations
+        updatedAssociations.push({
+          id: existingSoftDeleted.id,
+          courseId,
+          itemTemplateId,
+          isDeleted: false
+        });
       } else {
         // Create new association if no soft-deleted one exists
-        await CourseItemTemplate.create({
+        const newAssociation = await CourseItemTemplate.create({
           course_id: courseId,
           item_template_id: itemTemplateId,
+        });
+        
+        // Add to created associations
+        createdAssociations.push({
+          id: newAssociation.id,
+          courseId,
+          itemTemplateId,
+          isDeleted: false
         });
       }
     }
 
     // Perform removals - soft delete associations
     if (idsToRemove.length > 0) {
+      const associationsToRemove = await CourseItemTemplate.findAll({
+        where: {
+          course_id: courseId,
+          item_template_id: {
+            [Op.in]: idsToRemove,
+          },
+          isDeleted: false,
+        },
+      });
+      
+      // Update the associations
       await CourseItemTemplate.update(
         {
           isDeleted: true,
@@ -115,6 +151,16 @@ router.put(
           },
         },
       );
+      
+      // Add to updated associations
+      for (const assoc of associationsToRemove) {
+        updatedAssociations.push({
+          id: assoc.id,
+          courseId,
+          itemTemplateId: assoc.item_template_id,
+          isDeleted: true
+        });
+      }
     }
 
     // Get the updated list of active item templates
@@ -124,6 +170,26 @@ router.put(
         isDeleted: false,
       },
     });
+
+    // Publish events for created associations
+    for (const assoc of createdAssociations) {
+      new CourseItemTemplateCreatedPublisher(natsWrapper.client).publish({
+        id: assoc.id,
+        courseId: assoc.courseId,
+        itemTemplateId: assoc.itemTemplateId,
+        isDeleted: assoc.isDeleted,
+      });
+    }
+
+    // Publish events for updated associations
+    for (const assoc of updatedAssociations) {
+      new CourseItemTemplateUpdatedPublisher(natsWrapper.client).publish({
+        id: assoc.id,
+        courseId: assoc.courseId,
+        itemTemplateId: assoc.itemTemplateId,
+        isDeleted: assoc.isDeleted,
+      });
+    }
 
     res.status(200).send({
       message: 'Course item templates updated successfully',
