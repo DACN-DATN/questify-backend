@@ -57,6 +57,7 @@ router.patch(
 
     const {
       name,
+      shortDescription,
       description,
       backgroundImage,
       thumbnail,
@@ -70,6 +71,7 @@ router.patch(
     const updateFields: Partial<typeof course> = {};
 
     if (name !== undefined) updateFields.name = name;
+    if (shortDescription !== undefined) updateFields.shortDescription = shortDescription;
     if (description !== undefined) updateFields.description = description;
     if (backgroundImage !== undefined) updateFields.backgroundImage = backgroundImage;
     if (thumbnail !== undefined) updateFields.thumbnail = thumbnail;

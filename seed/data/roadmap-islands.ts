@@ -16,8 +16,9 @@ async function seed() {
 
     const courseResponse = await api.post(ResourcePrefix.CourseManagement, {
       name: 'Introduction to Backend Development',
+      shortDescription: 'A comprehensive course on backend development using Node.js and Express.',
       description:
-        'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL.',
+        'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL. This course covers REST APIs, database management, and authentication techniques. You will also learn how to deploy your applications and manage server environments. By the end of this course, you will have a solid understanding of backend development and be able to create your own web applications.',
       category: CourseCategory.ITSoftware,
       price: 49.99,
       backgroundImage:
