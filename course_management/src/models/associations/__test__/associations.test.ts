@@ -33,7 +33,7 @@ it('check island associations', async () => {
 });
 
 it('check level associations', async () => {
-  expect(Object.keys(Level.associations)).toEqual(['Island']);
+  expect(Object.keys(Level.associations)).toEqual(['Island', 'Challenge']);
 });
 
 it('check prerequisite island associations', async () => {
