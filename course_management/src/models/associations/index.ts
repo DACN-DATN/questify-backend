@@ -9,6 +9,8 @@ import defineItemTemplateAssociations from './item-template.associations';
 import defineInventoryAssociations from './inventory.associations';
 import defineCourseItemTemplateAssociations from './course-item-template.associations';
 import defineInventoryItemTemplateAssociations from './inventory-item-template.associations';
+import defineChallengeAssociations from './challenge.associations';
+import defineSlideAssociations from './slide.associations';
 
 export const defineAssociations = () => {
   defineCourseAssociations();
@@ -22,6 +24,8 @@ export const defineAssociations = () => {
   defineInventoryAssociations();
   defineCourseItemTemplateAssociations();
   defineInventoryItemTemplateAssociations();
+  defineChallengeAssociations();
+  defineSlideAssociations();
 };
 
 defineAssociations();
