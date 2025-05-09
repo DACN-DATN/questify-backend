@@ -14,6 +14,10 @@ import { CourseItemTemplateCreatedListener } from './events/listeners/course-ite
 import { CourseItemTemplateUpdatedListener } from './events/listeners/course-item-templated-updated-listener';
 import { ItemTemplateCreatedListener } from './events/listeners/item-template-created-listener';
 import { ItemTemplateUpdatedListener } from './events/listeners/item-template-updated-listener';
+import { ChallengeCreatedListener } from './events/listeners/challenge-created-listener';
+import { ChallengeUpdatedListener } from './events/listeners/challenge-updated-listener';
+import { SlideCreatedListener } from './events/listeners/slide-created-listener';
+import { SlideUpdatedListener } from './events/listeners/slide-updated-listener';
 
 const start = async () => {
   await connectDb();
@@ -64,6 +68,10 @@ const start = async () => {
     new CourseItemTemplateUpdatedListener(natsWrapper.client).listen();
     new ItemTemplateCreatedListener(natsWrapper.client).listen();
     new ItemTemplateUpdatedListener(natsWrapper.client).listen();
+    new ChallengeCreatedListener(natsWrapper.client).listen();
+    new ChallengeUpdatedListener(natsWrapper.client).listen();
+    new SlideCreatedListener(natsWrapper.client).listen();
+    new SlideUpdatedListener(natsWrapper.client).listen();
 
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());

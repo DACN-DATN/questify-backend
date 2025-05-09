@@ -1,7 +1,7 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
-import { Level } from './level';
 import { v4 as uuidv4 } from 'uuid';
+import { Level } from './level';
 
 const ChallengeDefinition = {
   id: {
@@ -9,14 +9,6 @@ const ChallengeDefinition = {
     primaryKey: true,
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
-  },
-  description: {
-    allowNull: false,
-    type: DataTypes.STRING,
-    validate: {
-      notEmpty: true,
-      len: [1, 1000] as [number, number],
-    },
   },
   levelId: {
     allowNull: false,
@@ -26,28 +18,32 @@ const ChallengeDefinition = {
       key: 'id',
     },
   },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 };
 
 interface ChallengeAttributes {
   id: string;
-  description: string;
   levelId: string;
+  isDeleted: boolean;
 }
 
-type ChallengeCreationAttributes = Optional<ChallengeAttributes, 'id'>;
+type ChallengeCreationAttributes = Optional<ChallengeAttributes, 'id' | 'isDeleted'>;
 
 class Challenge
   extends Model<ChallengeAttributes, ChallengeCreationAttributes>
   implements ChallengeAttributes
 {
   public id!: string;
-  public description!: string;
   public levelId!: string;
+  public isDeleted!: boolean;
 
-  public readonly level?: Level;
+  static readonly scopes: ModelScopeOptions = {};
 
-  public getLevel!: () => Promise<Level>;
-  public addLevel!: (level: Level) => Promise<void>;
+  static readonly validations: ModelValidateOptions = {};
 }
 
 Challenge.init(ChallengeDefinition, {
@@ -56,6 +52,13 @@ Challenge.init(ChallengeDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
+  scopes: Challenge.scopes,
+  validate: Challenge.validations,
 });
 
 export { Challenge };

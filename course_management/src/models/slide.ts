@@ -2,12 +2,7 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { v4 as uuidv4 } from 'uuid';
 import { Challenge } from './challenge';
-
-export enum SlideType {
-  PDF_SLIDE = 'pdf_slide',
-  VIDEO = 'video',
-  QUIZ = 'quiz',
-}
+import { SlideType } from '@datn242/questify-common';
 
 const SlideDefinition = {
   id: {
@@ -15,6 +10,10 @@ const SlideDefinition = {
     primaryKey: true,
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
+  },
+  title: {
+    allowNull: true,
+    type: DataTypes.STRING,
   },
   description: {
     allowNull: true,
@@ -62,6 +61,7 @@ interface Answer {
 
 interface SlideAttributes {
   id: string;
+  title?: string;
   description?: string;
   slideNumber: number;
   type: SlideType;
@@ -76,6 +76,7 @@ type SlideCreationAttributes = Optional<SlideAttributes, 'id' | 'isDeleted'>;
 
 class Slide extends Model<SlideAttributes, SlideCreationAttributes> implements SlideAttributes {
   public id!: string;
+  public title?: string;
   public description?: string;
   public slideNumber!: number;
   public type!: SlideType;

@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import {
-  NotFoundError,
   requireAuth,
   validateRequest,
   ResourcePrefix,
@@ -8,7 +7,6 @@ import {
   NotAuthorizedError,
 } from '@datn242/questify-common';
 import { Challenge } from '../../models/challenge';
-import { Minigame } from '../../models/minigame';
 import { Level } from '../../models/level';
 import { UserLevel } from '../../models/user-level';
 import { body, param } from 'express-validator';
@@ -29,9 +27,8 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const { challenge_id } = req.body;
-    const { quiz_id } = req.params;
-    //current: eager load + lazy load error -> normal query
-    //todo: may implement eager load here
+    // const { quiz_id } = req.params;
+
     const challenge = await Challenge.findOne({
       where: { id: challenge_id },
     });
@@ -60,20 +57,9 @@ router.post(
       throw new NotAuthorizedError();
     }
 
-    const quiz = await Minigame.findOne({
-      where: {
-        id: quiz_id,
-        challengeId: challenge.id,
-      },
-    });
-
-    if (!quiz) {
-      throw new NotFoundError();
-    }
-
     //TODO: implement logic of submitting quiz here
 
-    res.status(200).send(quiz);
+    res.status(200).send({});
   },
 );
 

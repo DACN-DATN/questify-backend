@@ -10,6 +10,8 @@ import {
 } from '@datn242/questify-common';
 import { Course } from '../../models/course';
 import { Challenge } from '../../models/challenge';
+import { ChallengeCreatedPublisher } from '../../events/publishers/challenge-created-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -19,10 +21,22 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const { level_id } = req.params;
-    const level = await Level.findByPk(level_id);
+    const level = await Level.findByPk(level_id, {
+      include: [
+        {
+          model: Challenge,
+          as: 'Challenge',
+          required: false,
+        },
+      ],
+    });
 
     if (!level) {
       throw new BadRequestError('Level not found');
+    }
+
+    if (level.get('Challenge')) {
+      throw new BadRequestError('Challenge existed');
     }
 
     const island = await Island.findByPk(level.islandId, {
@@ -50,6 +64,11 @@ router.post(
     });
 
     await challenge.save();
+
+    new ChallengeCreatedPublisher(natsWrapper.client).publish({
+      id: challenge.id,
+      levelId: challenge.levelId,
+    });
     res.status(201).send(challenge);
   },
 );

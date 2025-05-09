@@ -8,10 +8,13 @@ import {
   BadRequestError,
   NotAuthorizedError,
   ResourcePrefix,
+  SlideType,
 } from '@datn242/questify-common';
 import { Course } from '../../models/course';
 import { Challenge } from '../../models/challenge';
-import { Slide, SlideType } from '../../models/slide';
+import { Slide } from '../../models/slide';
+import { SlideCreatedPublisher } from '../../events/publishers/slide-created-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -19,7 +22,11 @@ router.post(
   ResourcePrefix.CourseManagement + '/challenge/:challenge_id/slide',
   requireAuth,
   [
-    body('description').optional().isString().withMessage('Description must be a string'),
+    body('title').optional({ nullable: true }).isString().withMessage('Title must be a string'),
+    body('description')
+      .optional({ nullable: true })
+      .isString()
+      .withMessage('Description must be a string'),
     body('slideNumber')
       .notEmpty()
       .withMessage('slide Number is required')
@@ -30,16 +37,15 @@ router.post(
       .withMessage('Slide type is required')
       .isIn(Object.values(SlideType))
       .withMessage('Invalid slide type'),
-    body('videoUrl').optional().isString().withMessage('Video URL must be a string'),
-    body('answers')
-      .optional()
-      .isArray({ min: 1 })
-      .withMessage('Answers must be an array with at least one item'),
+    body('videoUrl')
+      .optional({ nullable: true })
+      .isString()
+      .withMessage('Video URL must be a string'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
     const { challenge_id } = req.params;
-    const { description, slideNumber, type, videoUrl, answers } = req.body;
+    const { title, description, slideNumber, type, videoUrl, answers } = req.body;
     const challenge = await Challenge.findByPk(challenge_id);
 
     if (!challenge) {
@@ -74,6 +80,7 @@ router.post(
 
     const slide = Slide.build({
       challengeId: challenge.id.toString(),
+      title,
       description,
       slideNumber,
       type,
@@ -82,6 +89,8 @@ router.post(
     });
 
     await slide.save();
+
+    new SlideCreatedPublisher(natsWrapper.client).publish(slide);
     res.status(201).send(slide);
   },
 );
