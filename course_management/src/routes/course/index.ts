@@ -9,9 +9,9 @@ router.get(ResourcePrefix.CourseManagement, async (req: Request, res: Response) 
   const courses = await Course.findAll({
     where: {
       status: {
-        [Op.in]: [CourseStatus.Approved, CourseStatus.Draft, CourseStatus.Pending]
-      }
-    }
+        [Op.in]: [CourseStatus.Approved, CourseStatus.Draft, CourseStatus.Pending],
+      },
+    },
   });
 
   res.send(courses);
