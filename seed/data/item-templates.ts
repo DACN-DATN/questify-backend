@@ -88,27 +88,35 @@ async function seedWithAuth() {
       const currentUser = await api.get(ResourcePrefix.Auth + '/currentuser');
       console.log('Authenticated as:', currentUser.data.currentUser.email);
     } catch (authCheckError) {
-      console.error('Authentication check failed:', authCheckError.response?.data || authCheckError.message);
+      console.error(
+        'Authentication check failed:',
+        authCheckError.response?.data || authCheckError.message,
+      );
       return;
     }
 
     console.log('Starting to seed item templates...');
-    
+
     for (const item of itemTemplates) {
       try {
         const response = await api.post(ResourcePrefix.CourseManagement + '/item-templates', item);
         console.log(`Created item template: ${item.name} with ID: ${response.data.id}`);
-        
+
         // Add a small delay between requests
         await new Promise((resolve) => setTimeout(resolve, 300));
       } catch (error) {
-        console.error(`Error creating item template ${item.name}:`, error.response?.data || error.message);
+        console.error(
+          `Error creating item template ${item.name}:`,
+          error.response?.data || error.message,
+        );
         if (error.response?.status === 404) {
-          console.error('Check if ResourcePrefix.ItemTemplateManagement is correct and the route is implemented');
+          console.error(
+            'Check if ResourcePrefix.ItemTemplateManagement is correct and the route is implemented',
+          );
         }
       }
     }
-    
+
     console.log('Item template seeding completed');
 
     // Sign out
@@ -119,7 +127,10 @@ async function seedWithAuth() {
       console.error('Error during sign out:', signOutError.response?.data || signOutError.message);
     }
   } catch (error) {
-    console.error('Unexpected error during seeding process:', error.response?.data || error.message);
+    console.error(
+      'Unexpected error during seeding process:',
+      error.response?.data || error.message,
+    );
     if (error.response) {
       console.error('Response status:', error.response.status);
       console.error('Response data:', error.response.data);

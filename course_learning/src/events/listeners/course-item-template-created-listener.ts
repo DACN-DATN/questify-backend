@@ -9,22 +9,22 @@ export class CourseItemTemplateCreatedListener extends Listener<CourseItemTempla
 
   async onMessage(data: CourseItemTemplateCreatedEvent['data'], msg: Message) {
     const { id, courseId, itemTemplateId, isDeleted } = data;
-    
+
     const existingAssociation = await CourseItemTemplate.findByPk(id);
-    
+
     if (existingAssociation) {
       console.warn(`CourseItemTemplate with ID: ${id} already exists, skipping creation`);
       msg.ack();
       return;
     }
-    
+
     const courseItemTemplate = CourseItemTemplate.build({
       id,
       course_id: courseId,
       item_template_id: itemTemplateId,
       isDeleted: isDeleted || false,
     });
-    
+
     await courseItemTemplate.save();
 
     msg.ack();

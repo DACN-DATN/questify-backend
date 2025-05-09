@@ -9,13 +9,13 @@ export class ItemTemplateUpdatedListener extends Listener<ItemTemplateUpdatedEve
 
   async onMessage(data: ItemTemplateUpdatedEvent['data'], msg: Message) {
     const { id, gold, name, effect, effect_description, img, description } = data;
-    
+
     try {
       const itemTemplate = await ItemTemplate.findByPk(id);
-      
+
       if (!itemTemplate) {
         console.log(`ItemTemplate with ID: ${id} not found, creating instead`);
-        
+
         const newItemTemplate = ItemTemplate.build({
           id,
           gold,
@@ -25,7 +25,7 @@ export class ItemTemplateUpdatedListener extends Listener<ItemTemplateUpdatedEve
           img,
           description,
         });
-        
+
         await newItemTemplate.save();
       } else {
         itemTemplate.gold = gold;
@@ -34,10 +34,10 @@ export class ItemTemplateUpdatedListener extends Listener<ItemTemplateUpdatedEve
         itemTemplate.effect_description = effect_description;
         itemTemplate.img = img;
         itemTemplate.description = description;
-        
+
         await itemTemplate.save();
       }
-      
+
       msg.ack();
     } catch (err) {
       console.error('Error processing ItemTemplateUpdated event:', err);

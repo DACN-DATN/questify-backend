@@ -100,13 +100,13 @@ router.put(
             },
           },
         );
-        
+
         // Add to updated associations
         updatedAssociations.push({
           id: existingSoftDeleted.id,
           courseId,
           itemTemplateId,
-          isDeleted: false
+          isDeleted: false,
         });
       } else {
         // Create new association if no soft-deleted one exists
@@ -114,13 +114,13 @@ router.put(
           course_id: courseId,
           item_template_id: itemTemplateId,
         });
-        
+
         // Add to created associations
         createdAssociations.push({
           id: newAssociation.id,
           courseId,
           itemTemplateId,
-          isDeleted: false
+          isDeleted: false,
         });
       }
     }
@@ -136,7 +136,7 @@ router.put(
           isDeleted: false,
         },
       });
-      
+
       // Update the associations
       await CourseItemTemplate.update(
         {
@@ -153,14 +153,14 @@ router.put(
           },
         },
       );
-      
+
       // Add to updated associations
       for (const assoc of associationsToRemove) {
         updatedAssociations.push({
           id: assoc.id,
           courseId,
           itemTemplateId: assoc.item_template_id,
-          isDeleted: true
+          isDeleted: true,
         });
       }
     }

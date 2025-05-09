@@ -18,12 +18,8 @@ router.post(
   ResourcePrefix.CourseManagement + '/:course_id/inventory/use',
   requireAuth,
   [
-    body('itemTemplateId')
-      .notEmpty()
-      .withMessage('Item template ID is required'),
-    body('quantity')
-      .isInt({ min: 1 })
-      .withMessage('Quantity must be a positive integer')
+    body('itemTemplateId').notEmpty().withMessage('Item template ID is required'),
+    body('quantity').isInt({ min: 1 }).withMessage('Quantity must be a positive integer'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -80,7 +76,7 @@ router.post(
             id: inventoryItem.id,
           },
           transaction,
-        }
+        },
       );
     });
 
@@ -99,10 +95,10 @@ router.post(
       },
       effect: {
         type: itemTemplate.effect,
-        description: itemTemplate.effect_description
+        description: itemTemplate.effect_description,
       },
     });
-  }
+  },
 );
 
 export { router as inventoryUseRouter };

@@ -14,10 +14,7 @@ import { Transaction } from 'sequelize';
  * @param userId - The ID of the user to enroll
  * @returns The created or existing UserCourse record
  */
-export async function initializeUserCourse(
-  courseId: string,
-  userId: string,
-): Promise<UserCourse> {
+export async function initializeUserCourse(courseId: string, userId: string): Promise<UserCourse> {
   // Start a transaction to ensure data consistency
   const transaction = await sequelize.transaction();
 
@@ -59,7 +56,7 @@ export async function initializeUserCourse(
         point: 0,
         completionStatus: CompletionStatus.InProgress,
       },
-      { transaction }
+      { transaction },
     );
 
     // Initialize islands within the same transaction
@@ -83,7 +80,7 @@ export async function initializeUserCourse(
 async function initializeUserIslandsWithTransaction(
   courseId: string,
   userId: string,
-  transaction: Transaction
+  transaction: Transaction,
 ): Promise<UserIsland[]> {
   // Find all islands for this course
   const islands = await Island.findAll({
@@ -101,9 +98,9 @@ async function initializeUserIslandsWithTransaction(
   const existingUserIslands = await UserIsland.findAll({
     where: {
       userId: userId,
-      islandId: islands.map(island => island.id)
+      islandId: islands.map((island) => island.id),
     },
-    transaction
+    transaction,
   });
 
   // If user islands already exist, return them
@@ -112,11 +109,11 @@ async function initializeUserIslandsWithTransaction(
   }
 
   // Create new user islands only for islands that don't already have user islands
-  const existingIslandIds = new Set(existingUserIslands.map(ui => ui.islandId));
-  const userIslandsToCreate = islands.filter(island => !existingIslandIds.has(island.id));
-  
+  const existingIslandIds = new Set(existingUserIslands.map((ui) => ui.islandId));
+  const userIslandsToCreate = islands.filter((island) => !existingIslandIds.has(island.id));
+
   const userIslands: UserIsland[] = [];
-  
+
   // Create user islands for any that don't already exist
   for (const island of userIslandsToCreate) {
     const status = island.position === 0 ? CompletionStatus.InProgress : CompletionStatus.Locked;
@@ -128,7 +125,7 @@ async function initializeUserIslandsWithTransaction(
         point: 0,
         completionStatus: status,
       },
-      { transaction }
+      { transaction },
     );
 
     userIslands.push(userIsland);
@@ -162,10 +159,7 @@ export async function getUserCourseEnrollment(
  * @param userId - The ID of the user
  * @returns True if enrolled, false otherwise
  */
-export async function isUserEnrolledInCourse(
-  courseId: string,
-  userId: string,
-): Promise<boolean> {
+export async function isUserEnrolledInCourse(courseId: string, userId: string): Promise<boolean> {
   const enrollment = await getUserCourseEnrollment(courseId, userId);
   return !!enrollment;
 }

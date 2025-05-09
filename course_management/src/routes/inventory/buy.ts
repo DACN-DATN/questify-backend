@@ -18,12 +18,8 @@ router.post(
   ResourcePrefix.CourseManagement + '/:course_id/inventory/buy',
   requireAuth,
   [
-    body('itemTemplateId')
-      .notEmpty()
-      .withMessage('Item template ID is required'),
-    body('quantity')
-      .isInt({ min: 1 })
-      .withMessage('Quantity must be a positive integer')
+    body('itemTemplateId').notEmpty().withMessage('Item template ID is required'),
+    body('quantity').isInt({ min: 1 }).withMessage('Quantity must be a positive integer'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -94,7 +90,7 @@ router.post(
             id: inventory.id,
           },
           transaction,
-        }
+        },
       );
 
       await InventoryItemTemplate.update(
@@ -106,7 +102,7 @@ router.post(
             id: inventoryItem!.id,
           },
           transaction,
-        }
+        },
       );
     });
 
@@ -124,7 +120,7 @@ router.post(
         quantity: updatedInventoryItem!.quantity,
       },
     });
-  }
+  },
 );
 
 export { router as inventoryBuyRouter };

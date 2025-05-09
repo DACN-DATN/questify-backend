@@ -9,16 +9,16 @@ export class ItemTemplateCreatedListener extends Listener<ItemTemplateCreatedEve
 
   async onMessage(data: ItemTemplateCreatedEvent['data'], msg: Message) {
     const { id, gold, name, effect, effect_description, img, description } = data;
-    
+
     try {
       const existingItemTemplate = await ItemTemplate.findByPk(id);
-      
+
       if (existingItemTemplate) {
         console.log(`ItemTemplate with ID: ${id} already exists, skipping creation`);
         msg.ack();
         return;
       }
-      
+
       const itemTemplate = ItemTemplate.build({
         id,
         gold,
@@ -28,10 +28,10 @@ export class ItemTemplateCreatedListener extends Listener<ItemTemplateCreatedEve
         img,
         description,
       });
-      
+
       await itemTemplate.save();
       console.log(`ItemTemplate created with ID: ${id}`);
-      
+
       msg.ack();
     } catch (err) {
       console.error('Error processing ItemTemplateCreated event:', err);

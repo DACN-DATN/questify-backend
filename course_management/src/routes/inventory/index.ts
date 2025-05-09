@@ -2,11 +2,7 @@ import express, { Request, Response } from 'express';
 import { Inventory } from '../../models/inventory';
 import { InventoryItemTemplate } from '../../models/inventory-item-template';
 import { ItemTemplate } from '../../models/item-template';
-import {
-  ResourcePrefix,
-  requireAuth,
-  NotFoundError,
-} from '@datn242/questify-common';
+import { ResourcePrefix, requireAuth, NotFoundError } from '@datn242/questify-common';
 
 const router = express.Router();
 
@@ -36,7 +32,7 @@ router.get(
       },
     });
 
-    const itemTemplateIds = inventoryItems.map(item => item.item_template_id);
+    const itemTemplateIds = inventoryItems.map((item) => item.item_template_id);
 
     const itemTemplates = await ItemTemplate.findAll({
       where: {
@@ -45,11 +41,11 @@ router.get(
       },
     });
 
-    const itemsWithQuantity = inventoryItems.map(inventoryItem => {
+    const itemsWithQuantity = inventoryItems.map((inventoryItem) => {
       const template = itemTemplates.find(
-        template => template.id === inventoryItem.item_template_id
+        (template) => template.id === inventoryItem.item_template_id,
       );
-      
+
       return {
         itemTemplateId: inventoryItem.item_template_id,
         quantity: inventoryItem.quantity,
@@ -61,7 +57,7 @@ router.get(
           description: template!.description,
           gold: template!.gold,
           img: template!.img,
-        }
+        },
       };
     });
 
@@ -70,11 +66,11 @@ router.get(
       userId: inventory.user_id,
       courseId: inventory.course_id,
       gold: inventory.gold,
-      items: itemsWithQuantity
+      items: itemsWithQuantity,
     };
 
     res.status(200).send(response);
-  }
+  },
 );
 
 export { router as inventoryIndexRouter };

@@ -21,7 +21,7 @@ async function seed() {
       category: CourseCategory.ITSoftware,
       price: 49.99,
       backgroundImage:
-        "https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Fislands%2Fbackground.png?alt=media&token=6881fef8-d3fd-4bcb-99c0-bad208f4ee70",
+        'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Fislands%2Fbackground.png?alt=media&token=6881fef8-d3fd-4bcb-99c0-bad208f4ee70',
       learningObjectives: [
         'Understand REST APIs',
         'Work with databases',

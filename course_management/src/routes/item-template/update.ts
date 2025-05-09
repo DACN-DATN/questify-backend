@@ -22,7 +22,10 @@ router.put(
       .optional()
       .isIn(Object.values(EffectType))
       .withMessage('Valid effect type is required'),
-    body('effect_description').optional().notEmpty().withMessage('Effect description cannot be empty'),
+    body('effect_description')
+      .optional()
+      .notEmpty()
+      .withMessage('Effect description cannot be empty'),
     body('img').optional().notEmpty().withMessage('Image URL cannot be empty'),
     body('description').optional().notEmpty().withMessage('Description cannot be empty'),
     body('gold').optional().isInt({ min: 0 }).withMessage('Gold must be a positive number'),
@@ -57,7 +60,7 @@ router.put(
     });
 
     res.status(200).send(itemTemplate);
-  }
+  },
 );
 
 export { router as updateItemTemplateRouter };

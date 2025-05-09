@@ -15,7 +15,6 @@ import { CourseItemTemplateUpdatedListener } from './events/listeners/course-ite
 import { ItemTemplateCreatedListener } from './events/listeners/item-template-created-listener';
 import { ItemTemplateUpdatedListener } from './events/listeners/item-template-updated-listener';
 
-
 const start = async () => {
   await connectDb();
 

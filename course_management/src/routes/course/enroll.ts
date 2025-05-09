@@ -59,14 +59,14 @@ router.post(
       course_id: courseId,
       gold: 200,
     });
-    
+
     const courseItemTemplates = await CourseItemTemplate.findAll({
       where: {
         course_id: courseId,
         isDeleted: false,
-      }
+      },
     });
-    
+
     for (const courseItemTemplate of courseItemTemplates) {
       await InventoryItemTemplate.create({
         inventory_id: inventory.id,

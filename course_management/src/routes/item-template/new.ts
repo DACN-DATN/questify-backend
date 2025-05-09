@@ -2,12 +2,7 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { ItemTemplate } from '../../models/item-template';
-import {
-  validateRequest,
-  requireAuth,
-  ResourcePrefix,
-  EffectType,
-} from '@datn242/questify-common';
+import { validateRequest, requireAuth, ResourcePrefix, EffectType } from '@datn242/questify-common';
 import { ItemTemplateCreatedPublisher } from '../../events/publishers/item-template-created-publisher';
 import { natsWrapper } from '../../nats-wrapper';
 
@@ -18,9 +13,7 @@ router.post(
   requireAuth,
   [
     body('name').notEmpty().withMessage('Name is required'),
-    body('effect')
-      .isIn(Object.values(EffectType))
-      .withMessage('Valid effect type is required'),
+    body('effect').isIn(Object.values(EffectType)).withMessage('Valid effect type is required'),
     body('effect_description').notEmpty().withMessage('Effect description is required'),
     body('img').notEmpty().withMessage('Image URL is required'),
     body('description').notEmpty().withMessage('Description is required'),
@@ -52,7 +45,7 @@ router.post(
     });
 
     res.status(201).send(itemTemplate);
-  }
+  },
 );
 
 export { router as createItemTemplateRouter };
