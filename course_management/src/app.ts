@@ -9,6 +9,7 @@ import { showCourseRouter } from './routes/course/show';
 import { createCourseRouter } from './routes/course/new';
 import { updateCourseRouter } from './routes/course/update';
 import { deleteCourseRouter } from './routes/course/delete';
+import { indexCourseIntructorRouter } from './routes/course/index-instructor';
 
 import { createIslandRouter } from './routes/island/new';
 import { showIslandRouter } from './routes/island/show';
@@ -31,6 +32,11 @@ import { enrollCourseRouter } from './routes/course/enroll';
 import { indexItemTemplateRouter } from './routes/item-template/index';
 import { indexCourseItemTemplateRouter } from './routes/item-template/course-index';
 import { updateCourseItemTemplateRouter } from './routes/item-template/course-update';
+import { createItemTemplateRouter } from './routes/item-template/new';
+import { updateItemTemplateRouter } from './routes/item-template/update';
+import { inventoryBuyRouter } from './routes/inventory/buy';
+import { inventoryIndexRouter } from './routes/inventory/index';
+import { inventoryUseRouter } from './routes/inventory/use';
 
 import { createChallengeRouter } from './routes/challenge/new';
 import { uploadChallengeRouter } from './routes/challenge/upload';
@@ -50,6 +56,7 @@ app.use(
 app.use(currentUser);
 
 app.use(indexCourseRouter);
+app.use(indexCourseIntructorRouter);
 app.use(showCourseRouter);
 app.use(createCourseRouter);
 app.use(updateCourseRouter);
@@ -76,6 +83,11 @@ app.use(enrollCourseRouter);
 app.use(indexItemTemplateRouter);
 app.use(indexCourseItemTemplateRouter);
 app.use(updateCourseItemTemplateRouter);
+app.use(createItemTemplateRouter);
+app.use(updateItemTemplateRouter);
+app.use(inventoryBuyRouter);
+app.use(inventoryIndexRouter);
+app.use(inventoryUseRouter);
 
 app.use(createChallengeRouter);
 app.use(uploadChallengeRouter);

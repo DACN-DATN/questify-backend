@@ -9,6 +9,6 @@ metadata:
 data:
   NODE_ENV: 'production'
   # DATABASE_NAME: "questify_prod_db"
-  use-proxy-protocol: "true"
-  use-forwarded-headers: "true"
-  proxy-real-ip-cidr: "0.0.0.0/0"
+  use-proxy-protocol: 'true'
+  use-forwarded-headers: 'true'
+  proxy-real-ip-cidr: '0.0.0.0/0'

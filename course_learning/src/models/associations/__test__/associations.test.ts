@@ -40,10 +40,9 @@ it('check course associations', async () => {
     'Islands',
     'Reviews',
     'Rewards',
-    'Inventories',
-    'itemTemplates',
+    'ItemTemplates',
     'CourseItemTemplates',
-    'users',
+    'Inventories',
     'UserCourses',
   ]);
 });
@@ -62,9 +61,9 @@ it('check inventory item template associations', async () => {
 
 it('check inventory associations', async () => {
   expect(Object.keys(Inventory.associations)).toEqual([
-    'Course',
     'User',
-    'itemTemplates',
+    'Course',
+    'ItemTemplates',
     'InventoryItemTemplates',
   ]);
 });
@@ -83,10 +82,10 @@ it('check island associations', async () => {
 
 it('check item template associations', async () => {
   expect(Object.keys(ItemTemplate.associations)).toEqual([
-    'inventories',
-    'InventoryItemTemplates',
-    'courses',
+    'Courses',
+    'Inventories',
     'CourseItemTemplates',
+    'InventoryItemTemplates',
   ]);
 });
 
