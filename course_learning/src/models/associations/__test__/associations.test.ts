@@ -85,7 +85,7 @@ it('check item template associations', async () => {
     'Courses',
     'Inventories',
     'CourseItemTemplates',
-    'InventoryItemTemplates'
+    'InventoryItemTemplates',
   ]);
 });
 
