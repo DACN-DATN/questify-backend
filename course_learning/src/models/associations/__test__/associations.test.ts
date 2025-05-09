@@ -110,7 +110,6 @@ it('check reward associations', async () => {
   expect(Object.keys(Reward.associations)).toEqual(['Course', 'Island', 'Level', 'users']);
 });
 
-
 it('check slide associations', async () => {
   expect(Object.keys(Slide.associations)).toEqual(['Challenge']);
 });
@@ -147,4 +146,3 @@ it('check user associations', async () => {
     'UserLevels',
   ]);
 });
-
