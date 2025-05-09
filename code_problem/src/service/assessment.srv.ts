@@ -3,38 +3,152 @@ export function parseInputString(inputStr: string): any[] {
   // Remove any whitespace at start and end
   inputStr = inputStr.trim();
 
-  // Create an array to store the extracted parameters
   const params: any[] = [];
 
-  // Process each key-value pair
-  const keyValuePairs = inputStr.split(/,\s*(?![^\[]*\])/);
+  // For each parameter (key=value pairs)
+  const keyValuePairs = inputStr.split(/,\s*(?=\w+\s*=)/);
 
   for (const pair of keyValuePairs) {
-    // Extract the value (we don't need the key)
+    // Extract value after the equals sign (if present)
     let value;
     if (pair.includes('=')) {
-      value = pair.split('=')[1].trim();
+      // Get everything after the first equals sign
+      value = pair.substring(pair.indexOf('=') + 1).trim();
     } else {
       value = pair.trim();
     }
 
-    // Handle arrays
-    if (value.startsWith('[') && value.endsWith(']')) {
-      // It's an array, extract contents and parse each element
-      const arrayString = value.slice(1, -1);
-      if (arrayString.trim() === '') {
-        params.push([]);
-      } else {
-        const arrayElements = arrayString.split(',').map((element) => parseValue(element.trim()));
-        params.push(arrayElements);
-      }
-    } else {
-      // It's a simple value
-      params.push(parseValue(value));
-    }
+    // Parse the value based on its type
+    params.push(parseComplexValue(value));
   }
 
   return params;
+}
+
+// Parse a complex value (array, object, or primitive)
+function parseComplexValue(value: string): any {
+  value = value.trim();
+
+  // Handle arrays
+  if (value.startsWith('[') && value.endsWith(']')) {
+    return parseArray(value);
+  }
+
+  // Handle objects
+  if (value.startsWith('{') && value.endsWith('}')) {
+    return parseObject(value);
+  }
+
+  // Handle primitives
+  return parseValue(value);
+}
+
+// Parse an array string into an actual array
+function parseArray(arrayStr: string): any[] {
+  // Remove outer brackets
+  const content = arrayStr.slice(1, -1).trim();
+
+  // Empty array
+  if (content === '') {
+    return [];
+  }
+
+  // Nested arrays require special handling
+  if (content.includes('[') || content.includes('{')) {
+    // Split by commas that are not inside nested structures
+    const elements = splitByTopLevelCommas(content);
+    return elements.map((element) => parseComplexValue(element.trim()));
+  }
+
+  // Simple array
+  return content.split(',').map((element) => parseValue(element.trim()));
+}
+
+// Parse an object string into an actual object
+function parseObject(objStr: string): any {
+  // Remove outer braces
+  const content = objStr.slice(1, -1).trim();
+
+  // Empty object
+  if (content === '') {
+    return {};
+  }
+
+  try {
+    // First attempt: Try to fix and parse as JSON
+    const fixedStr =
+      '{' +
+      content
+        // Fix property names without quotes
+        .replace(/(\{|\,)\s*([a-zA-Z0-9_$]+)\s*:/g, '$1"$2":')
+        // Fix trailing/double commas
+        .replace(/,\s*,/g, ',')
+        .replace(/,\s*(\}|\])/g, '$1')
+        // Fix single quotes on values
+        .replace(/:\s*'([^']*)'/g, ':"$1"') +
+      '}';
+
+    return JSON.parse(fixedStr);
+  } catch (e) {
+    // Second attempt: Manual parsing
+    const result: Record<string, any> = {};
+
+    // Split the content by commas that aren't inside nested structures
+    const pairs = splitByTopLevelCommas(content);
+
+    for (const pair of pairs) {
+      // Skip empty pairs (handles double commas)
+      if (!pair.trim()) continue;
+
+      // Split by the first colon
+      const colonIndex = pair.indexOf(':');
+      if (colonIndex === -1) continue;
+
+      // Get key and value
+      const key = pair.substring(0, colonIndex).trim();
+      const value = pair.substring(colonIndex + 1).trim();
+
+      // Clean the key (remove quotes if present)
+      const cleanKey = key.replace(/^["'](.*)["']$/, '$1');
+
+      // Parse the value
+      result[cleanKey] = parseComplexValue(value);
+    }
+
+    return result;
+  }
+}
+
+// Split a string by commas that are not inside brackets or braces
+function splitByTopLevelCommas(str: string): string[] {
+  const result: string[] = [];
+  let currentPart = '';
+  let bracketCount = 0;
+  let braceCount = 0;
+
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+
+    if (char === '[') bracketCount++;
+    else if (char === ']') bracketCount--;
+    else if (char === '{') braceCount++;
+    else if (char === '}') braceCount--;
+
+    // Only split on commas at the top level
+    if (char === ',' && bracketCount === 0 && braceCount === 0) {
+      result.push(currentPart);
+      currentPart = '';
+    } else {
+      currentPart += char;
+    }
+  }
+
+  // Don't forget the last part
+  if (currentPart) {
+    result.push(currentPart);
+  }
+
+  return result;
 }
 
 // Helper function to parse different types of values
