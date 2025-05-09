@@ -21,11 +21,11 @@ const CourseDefinition = {
   },
   description: {
     allowNull: true,
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
   },
   backgroundImage: {
     allowNull: true,
-    type: DataTypes.STRING, // may change this later
+    type: DataTypes.TEXT,
   },
   teacherId: {
     allowNull: false,
