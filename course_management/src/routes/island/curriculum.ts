@@ -6,7 +6,7 @@ import { Level } from '../../models/level';
 
 const router = express.Router();
 
-router.get('/api/courses/:course_id/curriculum', async (req: Request, res: Response) => {
+router.get('/api/course-mgmt/:course_id/curriculum', async (req: Request, res: Response) => {
   const courseId = req.params.course_id;
   const course = await Course.findByPk(courseId);
 
