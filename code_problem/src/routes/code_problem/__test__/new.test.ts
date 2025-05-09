@@ -35,6 +35,7 @@ it('return BadRequestError if level not found', async () => {
     .send({
       level_id: level_id,
       description: 'Test description',
+      starterCode: 'function test() {}',
     })
     .expect((res) => {
       expect(res.status).toEqual(BadRequestError.statusCode);
@@ -54,6 +55,7 @@ it('returns an error if the user does not have permission to create a code probl
     .send({
       level_id: level.id,
       description: 'Test description',
+      starterCode: 'function test() {}',
     })
     .expect(NotAuthorizedError.statusCode);
 });
@@ -113,6 +115,7 @@ it('creates an Island with valid inputs', async () => {
     .send({
       level_id: level.id,
       description: 'Test description',
+      starterCode: 'function test() {}',
     })
     .expect(201);
 

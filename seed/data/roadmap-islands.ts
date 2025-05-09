@@ -8,7 +8,7 @@ const api = apiService.instance;
 async function seed() {
   try {
     await api.post(ResourcePrefix.Auth + '/signin', {
-      email: 'teacher@example.com',
+      email: 'teacher1@example.com',
       password: '12345aB@',
     });
 

@@ -11,6 +11,7 @@ import {
 } from '@datn242/questify-common';
 import { Level } from '../../models/level';
 import { Testcase } from '../../models/testcase';
+import { DataType, DataTypes } from 'sequelize';
 
 interface TestcaseInput {
   input: string[];
@@ -29,12 +30,24 @@ router.post(
       .withMessage('level_id is required')
       .isUUID()
       .withMessage('level_id must be a valid UUID'),
+    body('id').optional().isUUID().withMessage('id must be a valid UUID'),
     body('description').isString().withMessage('description must be a string'),
+    body('parameters').optional().isArray().withMessage('parameters must be an array'),
+    body('returnType').optional().isObject().withMessage('returnType must be an object'),
+    body('starterCode').isString().withMessage('starterCode must be a string'),
     body('testcases').optional().isArray().withMessage('testcases must be an array'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { level_id, description, testcases } = req.body;
+    const {
+      level_id,
+      id,
+      description,
+      parameters = [],
+      returnType = {},
+      starterCode,
+      testcases,
+    } = req.body;
 
     if (req.currentUser!.role !== UserRole.Teacher) {
       throw new NotAuthorizedError();
@@ -49,9 +62,19 @@ router.post(
       throw new NotAuthorizedError();
     }
 
+    if (id) {
+      const existingCodeProblem = await CodeProblem.findByPk(id);
+      if (existingCodeProblem) {
+        throw new BadRequestError('Code problem with this ID already exists');
+      }
+    }
     const code_problem = await CodeProblem.create({
+      ...(id ? { id } : {}), // Only include id if it exists in the request body
       levelId: level.id,
       description,
+      parameters: parameters,
+      returnType: returnType,
+      starterCode: starterCode,
     });
 
     if (testcases && testcases.length > 0) {

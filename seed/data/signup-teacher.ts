@@ -6,8 +6,8 @@ const api = apiService.instance;
 async function seed() {
   try {
     let teacherResponse = await api.post(ResourcePrefix.Auth + '/validate-credentials', {
-      email: 'teacher@example.com',
-      userName: 'Teacher',
+      email: 'teacher1@example.com',
+      userName: 'Teacher1',
     });
     console.log('Validate credentials successful');
 

@@ -60,6 +60,7 @@ it('returns an error if the user does not own the code problem', async () => {
     .send({
       level_id: level.id,
       description: 'Test Description',
+      starterCode: 'function test() {}',
     })
     .expect(201);
 
@@ -90,6 +91,7 @@ it('returns an error if an invalid testcases is provided', async () => {
     .send({
       level_id: level.id,
       description: 'Test Description',
+      starterCode: 'function test() {}',
     })
     .expect(201);
 
@@ -116,6 +118,7 @@ it('creates an testcase with valid inputs', async () => {
     .send({
       level_id: level.id,
       description: 'Test Description',
+      starterCode: 'function test() {}',
     })
     .expect(201);
 
