@@ -17,7 +17,10 @@ const defineUserAssociations = () => {
   User.hasMany(Feedback, { foreignKey: 'userId' });
   User.hasMany(Review, { foreignKey: 'userId' });
   User.hasMany(Attempt, { foreignKey: 'userId' });
-  User.hasMany(Inventory, { foreignKey: 'userId' });
+  User.hasMany(Inventory, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE',
+  });
   User.belongsToMany(Reward, {
     through: StudentReward,
     foreignKey: 'userId',

@@ -11,15 +11,7 @@ const InventoryItemTemplateDefinition = {
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
   },
-  quantity: {
-    allowNull: false,
-    type: DataTypes.INTEGER,
-    defaultValue: 0,
-    validate: {
-      min: 0,
-    },
-  },
-  inventoryId: {
+  inventory_id: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
@@ -27,7 +19,7 @@ const InventoryItemTemplateDefinition = {
       key: 'id',
     },
   },
-  itemTemplateId: {
+  item_template_id: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
@@ -35,25 +27,49 @@ const InventoryItemTemplateDefinition = {
       key: 'id',
     },
   },
+  quantity: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+    validate: {
+      min: 0,
+    },
+  },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  deletedAt: {
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
 };
 
 interface InventoryItemTemplateAttributes {
   id: string;
+  inventory_id: string;
+  item_template_id: string;
   quantity: number;
-  inventoryId: string;
-  itemTemplateId: string;
+  isDeleted: boolean;
+  deletedAt?: Date;
 }
 
-type InventoryItemTemplateCreationAttributes = Optional<InventoryItemTemplateAttributes, 'id'>;
+type InventoryItemTemplateCreationAttributes = Optional<
+  InventoryItemTemplateAttributes,
+  'id' | 'quantity' | 'isDeleted' | 'deletedAt'
+>;
 
 class InventoryItemTemplate
   extends Model<InventoryItemTemplateAttributes, InventoryItemTemplateCreationAttributes>
   implements InventoryItemTemplateAttributes
 {
   public id!: string;
+  public inventory_id!: string;
+  public item_template_id!: string;
   public quantity!: number;
-  public inventoryId!: string;
-  public itemTemplateId!: string;
+  public isDeleted!: boolean;
+  public deletedAt?: Date;
 
   static readonly scopes: ModelScopeOptions = {};
 
@@ -66,6 +82,11 @@ InventoryItemTemplate.init(InventoryItemTemplateDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: InventoryItemTemplate.scopes,
   validate: InventoryItemTemplate.validations,
 });

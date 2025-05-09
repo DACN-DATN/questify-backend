@@ -20,9 +20,13 @@ const CourseDefinition = {
       notEmpty: true,
     },
   },
-  description: {
+  shortDescription: {
     allowNull: true,
     type: DataTypes.STRING,
+  },
+  description: {
+    allowNull: true,
+    type: DataTypes.TEXT,
   },
   category: {
     allowNull: true,
@@ -41,11 +45,11 @@ const CourseDefinition = {
   },
   backgroundImage: {
     allowNull: true,
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
   },
   thumbnail: {
     allowNull: true,
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
   },
   learningObjectives: {
     allowNull: false,
@@ -92,6 +96,7 @@ const CourseDefinition = {
 interface CourseAttributes {
   id: string;
   name: string;
+  shortDescription?: string;
   description?: string;
   category?: string;
   price?: number;
@@ -123,6 +128,7 @@ type CourseCreationAttributes = Optional<
 class Course extends Model<CourseAttributes, CourseCreationAttributes> implements CourseAttributes {
   public id!: string;
   public name!: string;
+  public shortDescription?: string;
   public description?: string;
   public category?: string;
   public price?: number;

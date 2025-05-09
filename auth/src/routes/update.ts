@@ -25,7 +25,7 @@ router.patch(
     body('imageUrl').optional().isURL().withMessage('Image URL must be a valid URL'),
     body('role')
       .optional()
-      .isIn([UserRole.Student, UserRole.Teacher])
+      .isIn([UserRole.Student, UserRole.Teacher, UserRole.Admin])
       .withMessage('Role must be Student or Teacher'),
     body().custom((body) => {
       if (!body.userName && !body.imageUrl && !body.role) {

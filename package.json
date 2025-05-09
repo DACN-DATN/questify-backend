@@ -36,7 +36,7 @@
     "typescript-eslint": "^8.27.0"
   },
   "dependencies": {
-    "@datn242/questify-common": "^3.0.2",
+    "@datn242/questify-common": "^3.0.5",
     "axios": "^1.9.0",
     "pg": "^8.15.6",
     "sequelize": "^6.37.7",
