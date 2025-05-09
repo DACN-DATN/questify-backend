@@ -2,7 +2,6 @@ import { BadRequestError, CompletionStatus } from '@datn242/questify-common';
 import { User } from '../models/user';
 import { Course } from '../models/course';
 import { UserCourse } from '../models/user-course';
-import { initializeUserIslands } from './init-user-island.service';
 import { Island } from '../models/island';
 import { UserIsland } from '../models/user-island';
 import { sequelize } from '../config/db';

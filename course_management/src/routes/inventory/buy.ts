@@ -68,7 +68,7 @@ router.post(
       throw new BadRequestError('Not enough gold to purchase this item');
     }
 
-    let inventoryItem = await InventoryItemTemplate.findOne({
+    const inventoryItem = await InventoryItemTemplate.findOne({
       where: {
         inventory_id: inventory.id,
         item_template_id: itemTemplateId,

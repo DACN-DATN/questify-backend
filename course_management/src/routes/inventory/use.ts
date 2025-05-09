@@ -9,7 +9,6 @@ import {
   validateRequest,
   NotFoundError,
   BadRequestError,
-  EffectType,
 } from '@datn242/questify-common';
 
 const router = express.Router();

@@ -1,7 +1,6 @@
 import { Message } from 'node-nats-streaming';
 import { Subjects, Listener, UserCourseCreatedEvent } from '@datn242/questify-common';
 import { queueGroupName } from './queue-group-name';
-import { initializeUserIslands } from '../../services/init-user-island.service';
 import { initializeUserCourse } from '../../services/init-user-course.service';
 import { User } from '../../models/user';
 import { Course } from '../../models/course';

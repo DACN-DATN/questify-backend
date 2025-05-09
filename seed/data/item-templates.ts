@@ -1,5 +1,5 @@
 import apiService from '../services/api-service';
-import { UserRole, ResourcePrefix, EffectType } from '@datn242/questify-common';
+import { ResourcePrefix, EffectType } from '@datn242/questify-common';
 
 const api = apiService.instance;
 
