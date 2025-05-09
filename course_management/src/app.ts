@@ -21,6 +21,7 @@ import { indexIslandRouter } from './routes/island';
 import { indexLevelRouter } from './routes/level';
 import { updateLevelRouter } from './routes/level/update';
 import { deleteLevelRouter } from './routes/level/delete';
+import { indexCurriculumRouter } from './routes/island/curriculum';
 
 import { createReviewRouter } from './routes/course/new-review';
 import { showReviewRouter } from './routes/course/show-review';
@@ -61,6 +62,7 @@ app.use(showIslandRouter);
 app.use(updateIslandRouter);
 app.use(indexIslandRouter);
 app.use(deleteIslandRouter);
+app.use(indexCurriculumRouter);
 
 app.use(createLevelRouter);
 app.use(indexLevelRouter);
