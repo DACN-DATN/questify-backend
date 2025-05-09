@@ -9,25 +9,22 @@ import { Inventory } from '../../inventory';
 import { Island } from '../../island';
 import { ItemTemplate } from '../../item-template';
 import { Level } from '../../level';
-import { Minigame } from '../../minigame';
 import { PrerequisiteIsland } from '../../prerequisite-island';
 import { Review } from '../../review';
 import { Reward } from '../../reward';
-import { SlideTemplate } from '../../slide-template';
 import { Slide } from '../../slide';
 import { StudentReward } from '../../student-reward';
 import { UserCourse } from '../../user-course';
 import { UserIsland } from '../../user-island';
 import { UserLevel } from '../../user-level';
 import { User } from '../../user';
-import { Video } from '../../video';
 
 it('check attempt associations', async () => {
   expect(Object.keys(Attempt.associations)).toEqual(['Level', 'User', 'Feedback']);
 });
 
 it('check challenge associations', async () => {
-  expect(Object.keys(Challenge.associations)).toEqual(['Level', 'Videos', 'Minigames', 'Slides']);
+  expect(Object.keys(Challenge.associations)).toEqual(['Level', 'Slides']);
 });
 
 it('check course item template associations', async () => {
@@ -101,10 +98,6 @@ it('check level associations', async () => {
   ]);
 });
 
-it('check minigame associations', async () => {
-  expect(Object.keys(Minigame.associations)).toEqual(['Challenge']);
-});
-
 it('check prerequisite island associations', async () => {
   expect(Object.keys(PrerequisiteIsland.associations)).toEqual(['Island']);
 });
@@ -117,12 +110,8 @@ it('check reward associations', async () => {
   expect(Object.keys(Reward.associations)).toEqual(['Course', 'Island', 'Level', 'users']);
 });
 
-it('check slide template associations', async () => {
-  expect(Object.keys(SlideTemplate.associations)).toEqual(['Slides']);
-});
-
 it('check slide associations', async () => {
-  expect(Object.keys(Slide.associations)).toEqual(['Challenge', 'SlideTemplate']);
+  expect(Object.keys(Slide.associations)).toEqual(['Challenge']);
 });
 
 it('check student reward associations', async () => {
@@ -156,8 +145,4 @@ it('check user associations', async () => {
     'levels',
     'UserLevels',
   ]);
-});
-
-it('check video associations', async () => {
-  expect(Object.keys(Video.associations)).toEqual(['Challenge']);
 });

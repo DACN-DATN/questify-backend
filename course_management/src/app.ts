@@ -21,6 +21,7 @@ import { indexIslandRouter } from './routes/island';
 import { indexLevelRouter } from './routes/level';
 import { updateLevelRouter } from './routes/level/update';
 import { deleteLevelRouter } from './routes/level/delete';
+import { showLevelChallengeRouter } from './routes/level/show-challenge';
 import { indexCurriculumRouter } from './routes/island/curriculum';
 
 import { createReviewRouter } from './routes/course/new-review';
@@ -38,6 +39,14 @@ import { updateItemTemplateRouter } from './routes/item-template/update';
 import { inventoryBuyRouter } from './routes/inventory/buy';
 import { inventoryIndexRouter } from './routes/inventory/index';
 import { inventoryUseRouter } from './routes/inventory/use';
+
+import { createChallengeRouter } from './routes/challenge/new';
+// import { uploadChallengeRouter } from './routes/challenge/upload';
+import { showChallengeRouter } from './routes/challenge/show';
+
+import { createSlideRouter } from './routes/slide/new';
+import { updateSlideRouter } from './routes/slide/update';
+import { deleteSlideRouter } from './routes/slide/delete';
 
 const app = express();
 app.set('trust proxy', true);
@@ -66,6 +75,7 @@ app.use(indexCurriculumRouter);
 
 app.use(createLevelRouter);
 app.use(indexLevelRouter);
+app.use(showLevelChallengeRouter);
 app.use(updateLevelRouter);
 app.use(deleteLevelRouter);
 
@@ -84,6 +94,14 @@ app.use(updateItemTemplateRouter);
 app.use(inventoryBuyRouter);
 app.use(inventoryIndexRouter);
 app.use(inventoryUseRouter);
+
+app.use(createChallengeRouter);
+// app.use(uploadChallengeRouter);
+app.use(showChallengeRouter);
+
+app.use(createSlideRouter);
+app.use(updateSlideRouter);
+app.use(deleteSlideRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
