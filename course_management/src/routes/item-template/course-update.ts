@@ -6,6 +6,8 @@ import { body } from 'express-validator';
 import { Course } from '../../models/course';
 import { ItemTemplate } from '../../models/item-template';
 import { CourseItemTemplate } from '../../models/course-item-template';
+import { Inventory } from '../../models/inventory';
+import { InventoryItemTemplate } from '../../models/inventory-item-template';
 import {
   ResourcePrefix,
   requireAuth,
@@ -160,6 +162,71 @@ router.put(
           itemTemplateId: assoc.item_template_id,
           isDeleted: true
         });
+      }
+    }
+
+    // Update inventory items for all students enrolled in this course
+    // Find all inventories for this course
+    const inventories = await Inventory.findAll({
+      where: {
+        course_id: courseId,
+        isDeleted: false,
+      },
+    });
+
+    // For each inventory, update the inventory items
+    for (const inventory of inventories) {
+      // Handle item additions - create new inventory items
+      for (const itemTemplateId of idsToAdd) {
+        // Check if there's a soft-deleted inventory item that can be reactivated
+        const existingSoftDeleted = await InventoryItemTemplate.findOne({
+          where: {
+            inventory_id: inventory.id,
+            item_template_id: itemTemplateId,
+            isDeleted: true,
+          },
+        });
+
+        if (existingSoftDeleted) {
+          // Reactivate soft-deleted inventory item
+          await InventoryItemTemplate.update(
+            {
+              isDeleted: false,
+              deletedAt: undefined,
+            },
+            {
+              where: {
+                id: existingSoftDeleted.id,
+              },
+            },
+          );
+        } else {
+          // Create new inventory item
+          await InventoryItemTemplate.create({
+            inventory_id: inventory.id,
+            item_template_id: itemTemplateId,
+            quantity: 0, // Initial quantity
+          });
+        }
+      }
+
+      // Handle item removals - soft delete inventory items
+      if (idsToRemove.length > 0) {
+        await InventoryItemTemplate.update(
+          {
+            isDeleted: true,
+            deletedAt: new Date(),
+          },
+          {
+            where: {
+              inventory_id: inventory.id,
+              item_template_id: {
+                [Op.in]: idsToRemove,
+              },
+              isDeleted: false,
+            },
+          },
+        );
       }
     }
 

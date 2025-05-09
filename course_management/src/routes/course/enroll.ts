@@ -2,6 +2,9 @@ import express, { Request, Response } from 'express';
 import { Course } from '../../models/course';
 import { User } from '../../models/user';
 import { UserCourse } from '../../models/user-course';
+import { Inventory } from '../../models/inventory';
+import { CourseItemTemplate } from '../../models/course-item-template';
+import { InventoryItemTemplate } from '../../models/inventory-item-template';
 import { UserCourseCreatedPublisher } from '../../events/publishers/user-course-created-publisher';
 import { natsWrapper } from '../../nats-wrapper';
 
@@ -50,6 +53,27 @@ router.post(
       point: 0,
       completionStatus: CompletionStatus.InProgress,
     });
+
+    const inventory = await Inventory.create({
+      user_id: req.currentUser!.id,
+      course_id: courseId,
+      gold: 50,
+    });
+    
+    const courseItemTemplates = await CourseItemTemplate.findAll({
+      where: {
+        course_id: courseId,
+        isDeleted: false,
+      }
+    });
+    
+    for (const courseItemTemplate of courseItemTemplates) {
+      await InventoryItemTemplate.create({
+        inventory_id: inventory.id,
+        item_template_id: courseItemTemplate.item_template_id,
+        quantity: 0,
+      });
+    }
 
     new UserCourseCreatedPublisher(natsWrapper.client).publish({
       id: enrolledUserCourse.id,
