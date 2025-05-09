@@ -1,4 +1,4 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { User } from './user';
 import { Course } from './course';
@@ -68,7 +68,7 @@ interface ReviewAttributes {
   deletedAt?: Date;
 }
 
-type ReviewCreationAttributes = Optional<ReviewAttributes, 'id'>;
+type ReviewCreationAttributes = Optional<ReviewAttributes, 'id' | 'isDeleted'>;
 
 class Review extends Model<ReviewAttributes, ReviewCreationAttributes> implements ReviewAttributes {
   public id!: string;
@@ -78,6 +78,10 @@ class Review extends Model<ReviewAttributes, ReviewCreationAttributes> implement
   public rating!: number;
   public isDeleted!: boolean;
   public deletedAt?: Date;
+
+  static readonly scopes: ModelScopeOptions = {};
+
+  static readonly validations: ModelValidateOptions = {};
 }
 
 Review.init(ReviewDefinition, {
@@ -86,6 +90,13 @@ Review.init(ReviewDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
+  scopes: Review.scopes,
+  validate: Review.validations,
 });
 
 export { Review };
