@@ -1,15 +1,16 @@
+import { CourseItemTemplate } from '../course-item-template';
 import { Course } from '../course';
 import { ItemTemplate } from '../item-template';
-import { CourseItemTemplate } from '../course-item-template';
 
 const defineCourseItemTemplateAssociations = () => {
   CourseItemTemplate.belongsTo(Course, {
-    foreignKey: 'courseId',
+    foreignKey: 'course_id',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
+
   CourseItemTemplate.belongsTo(ItemTemplate, {
-    foreignKey: 'itemTemplateId',
+    foreignKey: 'item_template_id',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });

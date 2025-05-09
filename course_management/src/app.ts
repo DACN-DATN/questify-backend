@@ -32,6 +32,11 @@ import { enrollCourseRouter } from './routes/course/enroll';
 import { indexItemTemplateRouter } from './routes/item-template/index';
 import { indexCourseItemTemplateRouter } from './routes/item-template/course-index';
 import { updateCourseItemTemplateRouter } from './routes/item-template/course-update';
+import { createItemTemplateRouter } from './routes/item-template/new';
+import { updateItemTemplateRouter } from './routes/item-template/update';
+import { inventoryBuyRouter } from './routes/inventory/buy';
+import { inventoryIndexRouter } from './routes/inventory/index';
+import { inventoryUseRouter } from './routes/inventory/use';
 
 const app = express();
 app.set('trust proxy', true);
@@ -72,6 +77,11 @@ app.use(enrollCourseRouter);
 app.use(indexItemTemplateRouter);
 app.use(indexCourseItemTemplateRouter);
 app.use(updateCourseItemTemplateRouter);
+app.use(createItemTemplateRouter);
+app.use(updateItemTemplateRouter);
+app.use(inventoryBuyRouter);
+app.use(inventoryIndexRouter);
+app.use(inventoryUseRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

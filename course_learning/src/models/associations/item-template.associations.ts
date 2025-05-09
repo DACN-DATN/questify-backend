@@ -1,32 +1,34 @@
 import { ItemTemplate } from '../item-template';
-import { Inventory } from '../inventory';
-import { InventoryItemTemplate } from '../inventory-item-template';
 import { Course } from '../course';
+import { Inventory } from '../inventory';
 import { CourseItemTemplate } from '../course-item-template';
+import { InventoryItemTemplate } from '../inventory-item-template';
 
 const defineItemTemplateAssociations = () => {
-  ItemTemplate.belongsToMany(Inventory, {
-    through: InventoryItemTemplate,
-    foreignKey: 'itemTemplateId',
-    otherKey: 'inventoryId',
-    as: 'inventories',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  });
-  ItemTemplate.hasMany(InventoryItemTemplate, {
-    foreignKey: 'itemTemplateId',
-  });
-
   ItemTemplate.belongsToMany(Course, {
     through: CourseItemTemplate,
-    foreignKey: 'itemTemplateId',
-    otherKey: 'courseId',
-    as: 'courses',
+    foreignKey: 'item_template_id',
+    otherKey: 'course_id',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
+
+  ItemTemplate.belongsToMany(Inventory, {
+    through: InventoryItemTemplate,
+    foreignKey: 'item_template_id',
+    otherKey: 'inventory_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+
   ItemTemplate.hasMany(CourseItemTemplate, {
-    foreignKey: 'itemTemplateId',
+    foreignKey: 'item_template_id',
+    onDelete: 'CASCADE',
+  });
+
+  ItemTemplate.hasMany(InventoryItemTemplate, {
+    foreignKey: 'item_template_id',
+    onDelete: 'CASCADE',
   });
 };
 
