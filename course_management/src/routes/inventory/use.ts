@@ -70,26 +70,7 @@ router.post(
       throw new NotFoundError();
     }
 
-    let goldBonus = 0;
-    let experienceBonus = 0;
-
-    // Update inventory and item quantity in a transaction
     await InventoryItemTemplate.sequelize!.transaction(async (transaction) => {
-      // Apply gold bonus if applicable
-      if (goldBonus > 0) {
-        await Inventory.update(
-          {
-            gold: inventory.gold + goldBonus,
-          },
-          {
-            where: {
-              id: inventory.id,
-            },
-            transaction,
-          }
-        );
-      }
-
       await InventoryItemTemplate.update(
         {
           quantity: inventoryItem.quantity - quantity,
@@ -107,7 +88,7 @@ router.post(
     const updatedInventoryItem = await InventoryItemTemplate.findByPk(inventoryItem.id);
 
     res.status(200).send({
-      message: 'Item used successfully',
+      message: `Item ${itemTemplate.name} used successfully`,
       inventory: {
         id: updatedInventory!.id,
         gold: updatedInventory!.gold,
@@ -118,9 +99,7 @@ router.post(
       },
       effect: {
         type: itemTemplate.effect,
-        description: itemTemplate.effect_description,
-        goldBonus,
-        experienceBonus,
+        description: itemTemplate.effect_description
       },
     });
   }

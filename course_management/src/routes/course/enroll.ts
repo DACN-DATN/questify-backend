@@ -57,7 +57,7 @@ router.post(
     const inventory = await Inventory.create({
       user_id: req.currentUser!.id,
       course_id: courseId,
-      gold: 50,
+      gold: 200,
     });
     
     const courseItemTemplates = await CourseItemTemplate.findAll({

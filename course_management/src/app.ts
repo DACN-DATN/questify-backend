@@ -35,6 +35,7 @@ import { createItemTemplateRouter } from './routes/item-template/new';
 import { updateItemTemplateRouter } from './routes/item-template/update';
 import { inventoryBuyRouter}  from './routes/inventory/buy';
 import { inventoryIndexRouter } from './routes/inventory/index';
+import { inventoryUseRouter } from './routes/inventory/use';
 
 const app = express();
 app.set('trust proxy', true);
@@ -78,6 +79,7 @@ app.use(createItemTemplateRouter);
 app.use(updateItemTemplateRouter);
 app.use(inventoryBuyRouter);
 app.use(inventoryIndexRouter);
+app.use(inventoryUseRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
