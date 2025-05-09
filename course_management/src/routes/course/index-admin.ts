@@ -22,7 +22,7 @@ router.get(
     const courses = await Course.findAll({
       where: {
         status: {
-          [Op.in]: [CourseStatus.Approved, CourseStatus.Rejected, CourseStatus.Pending],
+            [Op.not]: CourseStatus.Draft,
         },
       },
     });
