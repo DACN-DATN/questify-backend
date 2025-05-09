@@ -34,7 +34,7 @@ router.post(
     body('description').isString().withMessage('description must be a string'),
     body('parameters').optional().isArray().withMessage('parameters must be an array'),
     body('returnType').optional().isObject().withMessage('returnType must be an object'),
-    body('starterCode').optional().isString().withMessage('starterCode must be a string'),
+    body('starterCode').isString().withMessage('starterCode must be a string'),
     body('testcases').optional().isArray().withMessage('testcases must be an array'),
   ],
   validateRequest,
