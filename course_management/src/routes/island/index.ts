@@ -15,16 +15,16 @@ router.get('/api/course-mgmt/:course_id/islands', async (req: Request, res: Resp
     throw new NotFoundError();
   }
 
-  const user_course = await UserCourse.findOne({
-    where: {
-      courseId: course.id,
-      studentId: req.currentUser!.id,
-    },
-  });
+  // const user_course = await UserCourse.findOne({
+  //   where: {
+  //     courseId: course.id,
+  //     studentId: req.currentUser!.id,
+  //   },
+  // });
 
-  if (course.teacherId !== req.currentUser!.id && !user_course) {
-    throw new NotAuthorizedError();
-  }
+  // if (course.teacherId !== req.currentUser!.id && !user_course) {
+  //   throw new NotAuthorizedError();
+  // }
 
   const islands = await Island.findAll({
     where: {
