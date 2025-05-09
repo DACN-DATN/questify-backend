@@ -15,6 +15,7 @@ import { indexAttemptRouter } from './routes/attempts';
 import { createAttemptRouter } from './routes/attempts/new';
 import { showAttemptRouter } from './routes/attempts/show';
 import { showCodeProblemByLevelRouter } from './routes/code_problem/index-level';
+import { assessCodeProblemRouter } from './routes/code_problem/assess';
 
 const app = express();
 app.set('trust proxy', true);
@@ -39,6 +40,7 @@ app.use(indexAttemptRouter);
 app.use(createAttemptRouter);
 app.use(showAttemptRouter);
 app.use(showCodeProblemByLevelRouter);
+app.use(assessCodeProblemRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

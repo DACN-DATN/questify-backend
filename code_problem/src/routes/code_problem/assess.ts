@@ -12,10 +12,11 @@ import { Level } from '../../models/level';
 import { Testcase } from '../../models/testcase';
 import { DataType, DataTypes } from 'sequelize';
 import { CodeProblem } from '../../models/code-problem';
+import { parseValue, parseInputString } from '../../service/assessment.srv';
 
 interface TestcaseInput {
-  input: string[];
-  output: string[];
+  input: string;
+  output: string;
   hidden: boolean;
 }
 
@@ -24,23 +25,11 @@ const router = express.Router();
 router.post(
   ResourcePrefix.CodeProblem + '/:code_problem_id/assessment',
   requireAuth,
-  [
-    body('level_id')
-      .exists()
-      .withMessage('level_id is required')
-      .isUUID()
-      .withMessage('level_id must be a valid UUID'),
-    body('id').optional().isUUID().withMessage('id must be a valid UUID'),
-    body('description').isString().withMessage('description must be a string'),
-    body('parameters').optional().isArray().withMessage('parameters must be an array'),
-    body('returnType').optional().isObject().withMessage('returnType must be an object'),
-    body('starterCode').isString().withMessage('starterCode must be a string'),
-    body('testcases').optional().isArray().withMessage('testcases must be an array'),
-  ],
+  [body('userCode').isString().withMessage('userCode must be a string')],
   validateRequest,
   async (req: Request, res: Response) => {
     const { code_problem_id } = req.params;
-    const { level_id, id, description, parameters = [], returnType = {}, starterCode } = req.body;
+    const { userCode } = req.body;
 
     const codeProblem = await CodeProblem.findByPk(code_problem_id);
 
@@ -48,19 +37,68 @@ router.post(
       throw new BadRequestError('Code Problem not found');
     }
 
-    const testcases = await Testcase.findAll({
+    const testcasesResponse = await Testcase.findAll({
       where: {
         codeProblemId: codeProblem.id,
       },
     });
 
-    if (testcases.length === 0) {
+    if (testcasesResponse.length === 0) {
       throw new BadRequestError('No testcases found for this code problem');
     }
 
+    // const testcaseResponse = mockTestcase;
+    const testcases = testcasesResponse.map((testcase) => {
+      return {
+        input: testcase.input,
+        output: testcase.output,
+        hidden: testcase.hidden,
+      };
+    });
+    // const mockCode = mockUserCode;
 
+    const cb = new Function(`return ${userCode}`)();
+    // const cb = new Function(`return ${userCode || mockCode}`)();
 
-    res.status(200).send();
+    const results = [];
+
+    for (const testcase of testcases) {
+      try {
+        const inputParams = parseInputString(testcase.input);
+        console.log('inputParams', inputParams);
+        const result = cb(...inputParams);
+        const expectedOutput = JSON.parse(testcase.output);
+        const passed = JSON.stringify(result) === JSON.stringify(expectedOutput);
+
+        results.push({
+          input: testcase.input,
+          expectedOutput: testcase.output,
+          actualOutput: JSON.stringify(result),
+          passed,
+          hidden: testcase.hidden,
+        });
+      } catch (error: unknown) {
+        results.push({
+          input: testcase.input,
+          expectedOutput: testcase.output,
+          error: error instanceof Error ? error.message : 'Unknown error',
+          passed: false,
+          hidden: testcase.hidden,
+        });
+      }
+    }
+
+    const allPassed = results.every((r) => r.passed);
+    const visibleResults = results.filter((r) => !r.hidden);
+    const resultObj = {
+      success: allPassed,
+      results: visibleResults,
+      totalTestcases: testcases.length,
+      passedTestcases: results.filter((r) => r.passed).length,
+    };
+    console.log(resultObj);
+
+    res.status(200).send(resultObj);
   },
 );
 
