@@ -82,10 +82,10 @@ it('check island associations', async () => {
 
 it('check item template associations', async () => {
   expect(Object.keys(ItemTemplate.associations)).toEqual([
-    'inventories',
-    'InventoryItemTemplates',
-    'courses',
+    'Courses',
+    'Inventories',
     'CourseItemTemplates',
+    'InventoryItemTemplates'
   ]);
 });
 
