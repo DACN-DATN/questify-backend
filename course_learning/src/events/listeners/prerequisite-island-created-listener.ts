@@ -10,28 +10,24 @@ export class PrerequisiteIslandCreatedListener extends Listener<PrerequisiteIsla
   async onMessage(data: PrerequisiteIslandCreatedEvent['data'], msg: Message) {
     const { islandId, prerequisiteIslandId } = data;
 
-    try {
-      const existingPrerequisite = await PrerequisiteIsland.findOne({
-        where: {
-          islandId,
-          prerequisiteIslandId,
-        },
+    const existingPrerequisite = await PrerequisiteIsland.findOne({
+      where: {
+        islandId,
+        prerequisiteIslandId,
+      },
+    });
+
+    if (!existingPrerequisite) {
+      const prerequisite = PrerequisiteIsland.build({
+        islandId,
+        prerequisiteIslandId,
       });
 
-      if (!existingPrerequisite) {
-        const prerequisite = PrerequisiteIsland.build({
-          islandId,
-          prerequisiteIslandId,
-        });
-
-        await prerequisite.save();
-      } else {
-        console.log(`Prerequisite relationship already exists`);
-      }
-
-      msg.ack();
-    } catch (error) {
-      msg.ack();
+      await prerequisite.save();
+    } else {
+      console.log(`Prerequisite relationship already exists`);
     }
+
+    msg.ack();
   }
 }

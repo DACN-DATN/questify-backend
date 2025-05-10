@@ -5,6 +5,13 @@ import path from 'path';
 
 const api = apiService.instance;
 
+// Define an interface for the course data
+interface CourseData {
+  courseId: string;
+  islandIds?: string[];
+  studentId?: string;
+}
+
 /**
  * Student enrolls in the course
  * - Reads course ID from seed-data.json
@@ -58,12 +65,12 @@ async function seedStudentEnrollment() {
 }
 
 // Helper function to load course data from JSON file
-function loadCourseData() {
+function loadCourseData(): CourseData | null {
   try {
     const filePath = path.join(__dirname, 'seed-data.json');
     if (fs.existsSync(filePath)) {
       const data = fs.readFileSync(filePath, 'utf8');
-      return JSON.parse(data);
+      return JSON.parse(data) as CourseData;
     }
     return null;
   } catch (error) {
@@ -73,7 +80,7 @@ function loadCourseData() {
 }
 
 // Helper function to save course data to JSON file
-function saveCourseData(data: any) {
+function saveCourseData(data: CourseData): void {
   try {
     const filePath = path.join(__dirname, 'seed-data.json');
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));

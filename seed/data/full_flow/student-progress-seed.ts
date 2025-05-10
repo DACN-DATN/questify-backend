@@ -5,6 +5,29 @@ import path from 'path';
 
 const api = apiService.instance;
 
+// Define interfaces for type safety
+interface CourseData {
+  courseId: string;
+  studentId: string;
+  islandIds: string[];
+}
+
+interface Island {
+  id: string;
+  name: string;
+}
+
+interface UserLevel {
+  levelId: string;
+  [key: string]: any; // For other properties that might be present
+}
+
+interface LevelUpdateData {
+  point: number;
+  completion_status: CompletionStatus;
+  finished_date?: string;
+}
+
 /**
  * Update student progress
  * - Reads course and student IDs from seed-data.json
@@ -23,7 +46,8 @@ async function seedStudentProgress() {
       process.exit(1);
     }
 
-    const { courseId, studentId, islandIds } = courseData;
+    const { courseId, studentId } = courseData;
+    // islandIds is validated above but not directly used in this function
 
     // Login as student
     console.log('Logging in as student...');
@@ -157,12 +181,12 @@ async function seedStudentProgress() {
 }
 
 // Helper function to load course data from JSON file
-function loadCourseData() {
+function loadCourseData(): CourseData | null {
   try {
     const filePath = path.join(__dirname, 'seed-data.json');
     if (fs.existsSync(filePath)) {
       const data = fs.readFileSync(filePath, 'utf8');
-      return JSON.parse(data);
+      return JSON.parse(data) as CourseData;
     }
     return null;
   } catch (error) {
@@ -172,7 +196,7 @@ function loadCourseData() {
 }
 
 // Helper function to get island information
-async function getIslandInfo(courseId: string) {
+async function getIslandInfo(courseId: string): Promise<Island[]> {
   try {
     const response = await api.get(ResourcePrefix.CourseManagement + `/${courseId}/islands`);
     return response.data;
@@ -183,7 +207,7 @@ async function getIslandInfo(courseId: string) {
 }
 
 // Helper function to get user levels for an island
-async function getUserLevelsForIsland(islandId: string) {
+async function getUserLevelsForIsland(islandId: string): Promise<UserLevel[]> {
   try {
     const response = await api.get(ResourcePrefix.CourseLearning + `/roadmap/islands/${islandId}`);
     console.log(`Fetched ${response.data.userLevels.length} levels for island ${islandId}`);
@@ -204,9 +228,9 @@ async function updateLevelStatus(
   status: CompletionStatus,
   points: number,
   finishedDate?: string,
-) {
+): Promise<void> {
   try {
-    const updateData: any = {
+    const updateData: LevelUpdateData = {
       point: points,
       completion_status: status,
     };

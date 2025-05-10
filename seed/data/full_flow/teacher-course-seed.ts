@@ -13,7 +13,7 @@ const api = apiService.instance;
  */
 async function seedTeacherCourse() {
   let courseId = '';
-  let islandIds = [];
+  const islandIds = [];
 
   try {
     // Login as teacher

@@ -78,7 +78,7 @@ router.patch(
 
         // Track old and new prerequisite changes for event publishing
         let oldPrereqs: PrerequisiteIsland[] = [];
-        let newPrereqs: PrerequisiteIsland[] = [];
+        const newPrereqs: PrerequisiteIsland[] = [];
 
         if (prerequisiteIslandIds !== undefined) {
           // Store old prerequisites for event publishing and potential rollback
