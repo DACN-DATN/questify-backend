@@ -24,9 +24,9 @@ router.post(
       throw new BadRequestError('Current student not found');
     }
 
-    if (student.role !== 'student') {
-      throw new BadRequestError('Only student can init user level');
-    }
+    // if (student.role !== 'student') {
+    //   throw new BadRequestError('Only student can init user level');
+    // }
 
     const levels = await Level.findAll({
       where: {
