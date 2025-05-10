@@ -19,7 +19,7 @@ interface Island {
 
 interface UserLevel {
   levelId: string;
-  [key: string]: any; // For other properties that might be present
+  [key: string]: unknown;
 }
 
 interface LevelUpdateData {
