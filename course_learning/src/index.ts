@@ -76,7 +76,7 @@ const start = async () => {
     new ChallengeUpdatedListener(natsWrapper.client).listen();
     new SlideCreatedListener(natsWrapper.client).listen();
     new SlideUpdatedListener(natsWrapper.client).listen();
-    
+
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
   } catch (err) {

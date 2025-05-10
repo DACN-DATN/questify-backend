@@ -19,9 +19,9 @@ async function seedStudentEnrollment() {
       console.error('No course data found. Please run teacher-course-seed.ts first.');
       process.exit(1);
     }
-    
+
     const courseId = courseData.courseId;
-    
+
     // Login as student
     console.log('Logging in as student...');
     await api.post(ResourcePrefix.Auth + '/signin', {
@@ -29,25 +29,24 @@ async function seedStudentEnrollment() {
       password: '12345aB@',
     });
     console.log('Student login successful.');
-    
+
     // Get current user ID
     const currentUserResponse = await api.get(ResourcePrefix.Auth + '/currentuser');
     const studentId = currentUserResponse.data.currentUser.id;
     console.log(`Student ID: ${studentId}`);
-    
+
     // Enroll in course
     console.log(`\nEnrolling in course: ${courseId}...`);
     await api.post(ResourcePrefix.CourseManagement + `/${courseId}/enrollment`, {});
     console.log(`Enrollment successful in course ${courseId}`);
-    
+
     // Save student ID to course data
     courseData.studentId = studentId;
     saveCourseData(courseData);
-    
+
     // Sign out
     await api.post(ResourcePrefix.Auth + '/signout', {});
     console.log('Student signed out successfully.');
-    
   } catch (error) {
     console.error('Error during student enrollment:', error.response?.data || error.message);
     if (error.response) {

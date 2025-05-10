@@ -14,7 +14,7 @@ const api = apiService.instance;
 async function seedTeacherCourse() {
   let courseId = '';
   let islandIds = [];
-  
+
   try {
     // Login as teacher
     console.log('Logging in as teacher...');
@@ -53,25 +53,27 @@ async function seedTeacherCourse() {
 
     // Create islands
     console.log('\nCreating islands...');
-    
+
     const islandNames = [
       { name: 'REST API Basics', description: 'Learn the fundamentals of RESTful APIs' },
       { name: 'Database Integration', description: 'Connect your API to databases' },
       { name: 'Authentication', description: 'Implement secure authentication' },
-      { name: 'Deployment', description: 'Deploy your backend to production' }
+      { name: 'Deployment', description: 'Deploy your backend to production' },
     ];
-    
+
     for (let i = 0; i < islandNames.length; i++) {
       const { name, description } = islandNames[i];
-      
+
       // Determine prerequisites for this island
       const prerequisiteIslandIds = [];
-      if (i === 2) { // Authentication island has first two islands as prerequisites
+      if (i === 2) {
+        // Authentication island has first two islands as prerequisites
         prerequisiteIslandIds.push(islandIds[0], islandIds[1]);
-      } else if (i === 3) { // Deployment island has first island as prerequisite
+      } else if (i === 3) {
+        // Deployment island has first island as prerequisite
         prerequisiteIslandIds.push(islandIds[0]);
       }
-      
+
       // Create island
       const islandResponse = await api.post(
         ResourcePrefix.CourseManagement + `/${courseId}/islands`,
@@ -81,11 +83,11 @@ async function seedTeacherCourse() {
           ...(prerequisiteIslandIds.length > 0 && { prerequisiteIslandIds }),
         },
       );
-      
+
       const island = islandResponse.data;
       islandIds.push(island.id);
       console.log(`Island created: "${name}" with ID: ${island.id}`);
-      
+
       // Create 5 levels for this island
       await createLevelsForIsland(island.id, name);
     }
@@ -98,10 +100,9 @@ async function seedTeacherCourse() {
     // Sign out
     await api.post(ResourcePrefix.Auth + '/signout', {});
     console.log('Teacher signed out successfully.');
-    
+
     // Return the course and island IDs for use in other seed scripts
     return { courseId, islandIds };
-    
   } catch (error) {
     console.error('Error seeding teacher course data:', error.response?.data || error.message);
     if (error.response) {
@@ -117,25 +118,25 @@ async function seedTeacherCourse() {
  */
 async function createLevelsForIsland(islandId: string, islandName: string) {
   console.log(`\nCreating levels for island: ${islandName}...`);
-  
+
   // Define level content based on island name/type
   let levelNames: string[] = [];
   let levelDescriptions: string[] = [];
-  
+
   if (islandName.includes('REST API')) {
     levelNames = [
       'HTTP Fundamentals',
       'API Design Principles',
       'Building Your First Endpoint',
       'Request/Response Handling',
-      'API Testing & Documentation'
+      'API Testing & Documentation',
     ];
     levelDescriptions = [
       'Learn about HTTP methods, status codes, and headers',
       'Best practices for designing RESTful APIs',
       'Create and implement your first API endpoint',
       'Process requests and format responses properly',
-      'Test your API and create documentation'
+      'Test your API and create documentation',
     ];
   } else if (islandName.includes('Database')) {
     levelNames = [
@@ -143,14 +144,14 @@ async function createLevelsForIsland(islandId: string, islandName: string) {
       'ORM Introduction',
       'Data Modeling',
       'CRUD Operations',
-      'Advanced Queries'
+      'Advanced Queries',
     ];
     levelDescriptions = [
       'Understand different database types and when to use them',
       'Learn about Object-Relational Mapping libraries',
       'Design efficient data models for your application',
       'Implement Create, Read, Update, Delete operations',
-      'Master complex queries and database optimizations'
+      'Master complex queries and database optimizations',
     ];
   } else if (islandName.includes('Authentication')) {
     levelNames = [
@@ -158,14 +159,14 @@ async function createLevelsForIsland(islandId: string, islandName: string) {
       'User Registration & Login',
       'JWT Implementation',
       'Password Security',
-      'OAuth Integration'
+      'OAuth Integration',
     ];
     levelDescriptions = [
       'Understand the difference between authentication and authorization',
       'Create secure user registration and login flows',
       'Implement JSON Web Tokens for stateless authentication',
       'Best practices for password hashing and security',
-      'Integrate third-party OAuth providers'
+      'Integrate third-party OAuth providers',
     ];
   } else if (islandName.includes('Deployment')) {
     levelNames = [
@@ -173,44 +174,39 @@ async function createLevelsForIsland(islandId: string, islandName: string) {
       'Containerization with Docker',
       'CI/CD Pipelines',
       'Cloud Deployment',
-      'Monitoring & Scaling'
+      'Monitoring & Scaling',
     ];
     levelDescriptions = [
       'Set up development, testing, and production environments',
       'Package your application using Docker containers',
       'Implement continuous integration and deployment',
       'Deploy your application to cloud providers',
-      'Monitor performance and scale your application'
+      'Monitor performance and scale your application',
     ];
   } else {
     // Default level names and descriptions
-    levelNames = [
-      'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'
-    ];
+    levelNames = ['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'];
     levelDescriptions = [
       'Introduction to the basics',
       'Building on fundamentals',
       'Intermediate concepts',
       'Advanced techniques',
-      'Mastery and application'
+      'Mastery and application',
     ];
   }
-  
+
   // Create the levels
   for (let i = 0; i < 5; i++) {
     try {
-      await api.post(
-        ResourcePrefix.CourseManagement + `/islands/${islandId}/level`,
-        {
-          name: levelNames[i],
-          description: levelDescriptions[i],
-          position: i
-        }
-      );
+      await api.post(ResourcePrefix.CourseManagement + `/islands/${islandId}/level`, {
+        name: levelNames[i],
+        description: levelDescriptions[i],
+        position: i,
+      });
       console.log(`Created level: "${levelNames[i]}"`);
-      
+
       // Small delay between requests
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
     } catch (error) {
       console.error(`Error creating level ${i + 1}:`, error.response?.data || error.message);
     }
@@ -223,9 +219,9 @@ function saveCourseData(courseId: string, islandIds: string[]) {
     const filePath = path.join(__dirname, 'seed-data.json');
     const data = {
       courseId,
-      islandIds
+      islandIds,
     };
-    
+
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     console.log(`Course data saved to ${filePath}`);
   } catch (error) {

@@ -21,7 +21,7 @@ import {
   unlockNextLevel,
   checkAndUpdateIslandStatus,
   unlockDependentIslands,
-  checkAndUpdateCourseStatus
+  checkAndUpdateCourseStatus,
 } from '../../services/progress-helper';
 
 const router = express.Router();
@@ -156,12 +156,13 @@ router.patch(
     }
 
     // If status changed to Completed, check if all islands in course are completed
-    if (completion_status === CompletionStatus.Completed && 
-        userIsland.completionStatus !== CompletionStatus.Completed) {
-      
+    if (
+      completion_status === CompletionStatus.Completed &&
+      userIsland.completionStatus !== CompletionStatus.Completed
+    ) {
       // Unlock islands for which this is a prerequisite
       await unlockDependentIslands(student_id, island_id, island.courseId);
-      
+
       // Check if course is now completed
       await checkAndUpdateCourseStatus(student_id, island.courseId);
     }
@@ -229,7 +230,7 @@ router.patch(
     const oldPoint = userLevel.point;
     let pointDifference = 0;
     const oldStatus = userLevel.completionStatus;
-    
+
     const updateFields: Partial<UserLevel> = {};
     if (point !== undefined) {
       updateFields['point'] = point;
@@ -246,15 +247,14 @@ router.patch(
     }
 
     // If status changed to Completed
-    if (completion_status === CompletionStatus.Completed && 
-        oldStatus !== CompletionStatus.Completed) {
-      
+    if (
+      completion_status === CompletionStatus.Completed &&
+      oldStatus !== CompletionStatus.Completed
+    ) {
       // Unlock the next level in the same island
-      console.log(`Level ${level_id} completed, unlocking next level after position ${level.position}`);
       await unlockNextLevel(student_id, level.islandId, level.position);
-      
+
       // Check if all levels in island are completed
-      console.log(`Checking if all levels in island ${level.islandId} are now completed`);
       await checkAndUpdateIslandStatus(student_id, level.islandId);
     }
 

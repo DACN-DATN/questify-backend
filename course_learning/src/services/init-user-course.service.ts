@@ -62,7 +62,7 @@ export async function initializeUserCourse(courseId: string, userId: string): Pr
 
     // Initialize islands within the same transaction
     const userIslands = await initializeUserIslandsWithTransaction(courseId, userId, transaction);
-    
+
     // Initialize levels for all islands within the same transaction
     await initializeUserLevelsWithTransaction(userId, userIslands, transaction);
 
@@ -148,10 +148,9 @@ async function initializeUserLevelsWithTransaction(
   userIslands: UserIsland[],
   transaction: Transaction,
 ): Promise<UserLevel[]> {
-  
   // Get all island IDs
-  const islandIds = userIslands.map(userIsland => userIsland.islandId);
-  
+  const islandIds = userIslands.map((userIsland) => userIsland.islandId);
+
   // Find all levels for these islands, ordered by position to ensure we process them in order
   const levels = await Level.findAll({
     where: {
@@ -168,30 +167,33 @@ async function initializeUserLevelsWithTransaction(
 
   // Get map of island completion status
   const islandStatusMap = new Map(
-    userIslands.map(userIsland => [userIsland.islandId, userIsland.completionStatus])
+    userIslands.map((userIsland) => [userIsland.islandId, userIsland.completionStatus]),
   );
 
   // Check if user levels already exist
   const existingUserLevels = await UserLevel.findAll({
     where: {
       userId: userId,
-      levelId: levels.map(level => level.id),
+      levelId: levels.map((level) => level.id),
     },
     transaction,
   });
 
   // Skip creation for levels that already have user levels
-  const existingLevelIds = new Set(existingUserLevels.map(ul => ul.levelId));
-  const levelsToCreate = levels.filter(level => !existingLevelIds.has(level.id));
+  const existingLevelIds = new Set(existingUserLevels.map((ul) => ul.levelId));
+  const levelsToCreate = levels.filter((level) => !existingLevelIds.has(level.id));
 
   // Group levels by island ID for easy processing
-  const levelsByIsland = levelsToCreate.reduce((acc, level) => {
-    if (!acc[level.islandId]) {
-      acc[level.islandId] = [];
-    }
-    acc[level.islandId].push(level);
-    return acc;
-  }, {} as Record<string, Level[]>);
+  const levelsByIsland = levelsToCreate.reduce(
+    (acc, level) => {
+      if (!acc[level.islandId]) {
+        acc[level.islandId] = [];
+      }
+      acc[level.islandId].push(level);
+      return acc;
+    },
+    {} as Record<string, Level[]>,
+  );
 
   const userLevels: UserLevel[] = [];
 
@@ -199,15 +201,15 @@ async function initializeUserLevelsWithTransaction(
   for (const [islandId, islandLevels] of Object.entries(levelsByIsland)) {
     // Sort levels by position just to be safe
     islandLevels.sort((a, b) => a.position - b.position);
-    
+
     // Get the island's completion status
     const islandStatus = islandStatusMap.get(islandId);
-    
+
     // NORMAL LOGIC: First level is InProgress if island is InProgress, others are Locked
     for (let i = 0; i < islandLevels.length; i++) {
       const level = islandLevels[i];
       let status = CompletionStatus.Locked; // Default to locked
-      
+
       // If the island is in progress and this is the first level (position 0), set it to in progress
       if (islandStatus === CompletionStatus.InProgress && i === 0) {
         status = CompletionStatus.InProgress;
@@ -231,7 +233,7 @@ async function initializeUserLevelsWithTransaction(
     //   const level = islandLevels[i];
     //   let status = CompletionStatus.Locked; // Default to locked
     //   let points = 0;
-      
+
     //   if (i < 2) {
     //     // First 2 levels are completed
     //     status = CompletionStatus.Completed;

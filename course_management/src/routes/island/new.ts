@@ -96,7 +96,7 @@ router.post(
 
         return {
           island,
-          prerequisites: createdPrerequisites
+          prerequisites: createdPrerequisites,
         };
       });
 
@@ -113,7 +113,7 @@ router.post(
       // Publish prerequisite island created events
       if (result.prerequisites && result.prerequisites.length > 0) {
         console.log(`Publishing ${result.prerequisites.length} prerequisite events`);
-        
+
         for (const prereq of result.prerequisites) {
           new PrerequisiteIslandCreatedPublisher(natsWrapper.client).publish({
             islandId: prereq.islandId,

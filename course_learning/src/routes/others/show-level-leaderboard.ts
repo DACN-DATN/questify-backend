@@ -27,22 +27,22 @@ router.get(
       order: [['point', 'DESC']],
     });
 
-    const userIds = userLevels.map(ul => ul.userId);
-    
+    const userIds = userLevels.map((ul) => ul.userId);
+
     const users = await User.findAll({
       where: {
         id: userIds,
       },
       attributes: ['id', 'userName'],
     });
-    
+
     const userMap = new Map();
-    users.forEach(user => {
+    users.forEach((user) => {
       userMap.set(user.id, user.userName);
     });
 
     let rank = 1;
-    const rankedLeaderboard = userLevels.map(userLevel => {
+    const rankedLeaderboard = userLevels.map((userLevel) => {
       return {
         rank: rank++,
         studentId: userLevel.userId,

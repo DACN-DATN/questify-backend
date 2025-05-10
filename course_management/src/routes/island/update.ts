@@ -157,7 +157,7 @@ router.patch(
         return {
           island,
           oldPrereqs,
-          newPrereqs
+          newPrereqs,
         };
       });
 
@@ -176,14 +176,14 @@ router.patch(
       if (req.body.prerequisiteIslandIds !== undefined) {
         // First, publish a delete event for all old prerequisites
         new PrerequisiteIslandDeletedPublisher(natsWrapper.client).publish({
-          islandId: island_id
+          islandId: island_id,
           // No prerequisiteIslandId means delete all for this islandId
         });
 
         // Then publish create events for all new prerequisites
         if (result.newPrereqs && result.newPrereqs.length > 0) {
           console.log(`Publishing ${result.newPrereqs.length} prerequisite created events`);
-          
+
           for (const prereq of result.newPrereqs) {
             new PrerequisiteIslandCreatedPublisher(natsWrapper.client).publish({
               islandId: prereq.islandId,

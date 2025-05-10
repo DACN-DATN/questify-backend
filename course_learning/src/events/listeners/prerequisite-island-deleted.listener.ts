@@ -10,20 +10,20 @@ export class PrerequisiteIslandDeletedListener extends Listener<PrerequisiteIsla
 
   async onMessage(data: PrerequisiteIslandDeletedEvent['data'], msg: Message) {
     const { islandId, prerequisiteIslandId } = data;
-    
+
     try {
       if (prerequisiteIslandId) {
         await PrerequisiteIsland.destroy({
           where: {
             islandId,
-            prerequisiteIslandId
-          }
+            prerequisiteIslandId,
+          },
         });
       } else {
         await PrerequisiteIsland.destroy({
           where: {
-            islandId
-          }
+            islandId,
+          },
         });
       }
       msg.ack();

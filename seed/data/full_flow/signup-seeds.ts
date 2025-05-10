@@ -9,7 +9,7 @@ const api = apiService.instance;
  */
 async function signupUsers() {
   console.log('Starting user signup process...');
-  
+
   try {
     // Sign up teacher
     console.log('\n--- Creating teacher user ---');
@@ -34,7 +34,7 @@ async function signupUsers() {
 
     await api.post(ResourcePrefix.Auth + '/signout', {});
     console.log('Teacher signout successful');
-    
+
     // Sign up student
     console.log('\n--- Creating student user ---');
     await api.post(ResourcePrefix.Auth + '/validate-credentials', {
@@ -53,7 +53,7 @@ async function signupUsers() {
 
     await api.post(ResourcePrefix.Auth + '/signout', {});
     console.log('Student signout successful');
-    
+
     // Sign up admin
     console.log('\n--- Creating admin user ---');
     let adminResponse = await api.post(ResourcePrefix.Auth + '/validate-credentials', {
@@ -77,7 +77,7 @@ async function signupUsers() {
 
     await api.post(ResourcePrefix.Auth + '/signout', {});
     console.log('Admin signout successful');
-    
+
     console.log('\nAll users created successfully!');
   } catch (error) {
     console.error('Error during user signup:', error.response?.data || error.message);
