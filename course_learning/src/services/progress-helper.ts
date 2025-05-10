@@ -194,7 +194,53 @@ export async function unlockDependentIslands(userId: string, completedIslandId: 
 
     console.log(`Found ${prerequisiteRecords.length} islands that depend on island ${completedIslandId}`);
 
-    // For each dependent island
+    // If no direct prerequisites found, check all locked islands in the course
+    if (prerequisiteRecords.length === 0) {
+      console.log(`No direct prerequisite records found. Checking all islands in course ${courseId}...`);
+      
+      // Get all islands for this course
+      const islands = await Island.findAll({
+        where: {
+          courseId,
+        },
+      });
+      
+      // For each island in the course
+      for (const island of islands) {
+        // Skip the completed island
+        if (island.id === completedIslandId) {
+          continue;
+        }
+        
+        // Check if this island is currently locked
+        const userIsland = await UserIsland.findOne({
+          where: {
+            userId,
+            islandId: island.id,
+          },
+        });
+        
+        if (userIsland && userIsland.completionStatus === CompletionStatus.Locked) {
+          console.log(`Found locked island ${island.id}, checking if it depends on completed island...`);
+          
+          // Check if this island should be unlocked now
+          const shouldUnlock = await checkIslandPrerequisites(userId, island.id, completedIslandId);
+          
+          if (shouldUnlock) {
+            // Update the island to in-progress
+            await userIsland.update({ completionStatus: CompletionStatus.InProgress });
+            console.log(`Island ${island.id} set to in-progress for user ${userId}`);
+            
+            // Also unlock the first level of this island
+            await unlockFirstLevel(userId, island.id);
+          }
+        }
+      }
+      
+      return;
+    }
+
+    // For each dependent island from direct prerequisite records
     for (const prerequisite of prerequisiteRecords) {
       const dependentIslandId = prerequisite.islandId;
       
@@ -227,6 +273,67 @@ export async function unlockDependentIslands(userId: string, completedIslandId: 
     }
   } catch (error) {
     console.error('Error unlocking dependent islands:', error);
+  }
+}
+
+// Helper function to check if an island should be unlocked based on the recently completed island
+async function checkIslandPrerequisites(userId: string, islandId: string, completedIslandId: string): Promise<boolean> {
+  try {
+    // Get island position in the course
+    const completedIsland = await Island.findByPk(completedIslandId);
+    const currentIsland = await Island.findByPk(islandId);
+    
+    if (!completedIsland || !currentIsland) {
+      return false;
+    }
+    
+    // If they're not in the same course, they don't have a dependency
+    if (completedIsland.courseId !== currentIsland.courseId) {
+      return false;
+    }
+    
+    // Check if this is a dependency based on position
+    // Islands typically follow a sequence in courses
+    if (completedIsland.position < currentIsland.position) {
+      console.log(`Island ${islandId} (position ${currentIsland.position}) follows completed island ${completedIslandId} (position ${completedIsland.position})`);
+      
+      // Check if there are any incomplete islands between them
+      const intermediateIslands = await Island.findAll({
+        where: {
+          courseId: completedIsland.courseId,
+          position: {
+            [Symbol.for('gt')]: completedIsland.position,
+            [Symbol.for('lt')]: currentIsland.position
+          }
+        }
+      });
+      
+      // If no islands between them or all intermediate islands are completed, unlock this one
+      if (intermediateIslands.length === 0) {
+        return true;
+      }
+      
+      // Check if all intermediate islands are completed
+      for (const island of intermediateIslands) {
+        const userIsland = await UserIsland.findOne({
+          where: {
+            userId,
+            islandId: island.id,
+          }
+        });
+        
+        if (!userIsland || userIsland.completionStatus !== CompletionStatus.Completed) {
+          return false; // There's at least one uncompleted island in between
+        }
+      }
+      
+      return true; // All intermediate islands are completed
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Error checking island prerequisites:', error);
+    return false;
   }
 }
 

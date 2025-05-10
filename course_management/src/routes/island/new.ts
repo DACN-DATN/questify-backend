@@ -13,6 +13,7 @@ import {
   ResourcePrefix,
 } from '@datn242/questify-common';
 import { IslandCreatedPublisher } from '../../events/publishers/island-created-publisher';
+import { PrerequisiteIslandCreatedPublisher } from '../../events/publishers/prerequisite-island-created-publisher';
 import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
@@ -50,6 +51,9 @@ router.post(
           { transaction },
         );
 
+        // Explicitly type the array to fix the implicit 'any[]' type error
+        const createdPrerequisites: PrerequisiteIsland[] = [];
+
         if (prerequisiteIslandIds && prerequisiteIslandIds.length > 0) {
           const prereqIslands = await Island.findAll({
             where: {
@@ -65,15 +69,17 @@ router.post(
             );
           }
 
-          const prereqPromises = prerequisiteIslandIds.map((prereqId: string) =>
-            PrerequisiteIsland.create(
+          const prereqPromises = prerequisiteIslandIds.map(async (prereqId: string) => {
+            const prereq = await PrerequisiteIsland.create(
               {
                 islandId: island.id,
                 prerequisiteIslandId: prereqId,
               },
               { transaction },
-            ),
-          );
+            );
+            createdPrerequisites.push(prereq);
+            return prereq;
+          });
 
           await Promise.all(prereqPromises);
 
@@ -88,17 +94,35 @@ router.post(
 
         await island.reload({ transaction });
 
-        return island;
+        return {
+          island,
+          prerequisites: createdPrerequisites
+        };
       });
+
+      // Publish the island created event
       new IslandCreatedPublisher(natsWrapper.client).publish({
-        id: result.id,
-        courseId: result.courseId,
-        name: result.name,
-        description: result.description,
-        position: result.position,
-        backgroundImage: result.backgroundImage,
+        id: result.island.id,
+        courseId: result.island.courseId,
+        name: result.island.name,
+        description: result.island.description,
+        position: result.island.position,
+        backgroundImage: result.island.backgroundImage,
       });
-      res.status(201).send(result);
+
+      // Publish prerequisite island created events
+      if (result.prerequisites && result.prerequisites.length > 0) {
+        console.log(`Publishing ${result.prerequisites.length} prerequisite events`);
+        
+        for (const prereq of result.prerequisites) {
+          new PrerequisiteIslandCreatedPublisher(natsWrapper.client).publish({
+            islandId: prereq.islandId,
+            prerequisiteIslandId: prereq.prerequisiteIslandId,
+          });
+        }
+      }
+
+      res.status(201).send(result.island);
     } catch (error) {
       if (error instanceof BadRequestError) {
         throw error;
