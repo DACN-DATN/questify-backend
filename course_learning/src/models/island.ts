@@ -77,6 +77,11 @@ Island.init(IslandDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: Island.scopes,
   validate: Island.validations,
 });

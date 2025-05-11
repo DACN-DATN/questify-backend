@@ -15,6 +15,8 @@ import { Op } from 'sequelize';
 import { sequelize } from '../../config/db';
 import { detectCycle, recalculatePositions } from '../../services/island';
 import { IslandUpdatedPublisher } from '../../events/publishers/island-updated-publisher';
+import { PrerequisiteIslandCreatedPublisher } from '../../events/publishers/prerequisite-island-created-publisher';
+import { PrerequisiteIslandDeletedPublisher } from '../../events/publishers/prerequisite-island-deleted-publisher';
 import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
@@ -74,12 +76,18 @@ router.patch(
         island.set(updateFields);
         await island.save({ transaction });
 
+        // Track old and new prerequisite changes for event publishing
+        let oldPrereqs: PrerequisiteIsland[] = [];
+        const newPrereqs: PrerequisiteIsland[] = [];
+
         if (prerequisiteIslandIds !== undefined) {
-          const oldPrereqs = await PrerequisiteIsland.findAll({
+          // Store old prerequisites for event publishing and potential rollback
+          oldPrereqs = await PrerequisiteIsland.findAll({
             where: { islandId: island_id },
             transaction,
           });
 
+          // Delete all existing prerequisites
           await PrerequisiteIsland.destroy({
             where: { islandId: island_id },
             transaction,
@@ -100,24 +108,28 @@ router.patch(
               );
             }
 
-            const prereqPromises = prerequisiteIslandIds.map((prereqId: string) =>
-              PrerequisiteIsland.create(
+            const prereqPromises = prerequisiteIslandIds.map(async (prereqId: string) => {
+              const newPrereq = await PrerequisiteIsland.create(
                 {
                   islandId: island_id,
                   prerequisiteIslandId: prereqId,
                 },
                 { transaction },
-              ),
-            );
+              );
+              newPrereqs.push(newPrereq);
+              return newPrereq;
+            });
 
             await Promise.all(prereqPromises);
 
             if (await detectCycle(island_id, transaction)) {
+              // Delete the new prerequisites
               await PrerequisiteIsland.destroy({
                 where: { islandId: island_id },
                 transaction,
               });
 
+              // Restore the old prerequisites if there was a cycle
               if (oldPrereqs.length > 0) {
                 const restorePromises = oldPrereqs.map((oldPrereq) =>
                   PrerequisiteIsland.create(
@@ -142,18 +154,46 @@ router.patch(
 
         await island.reload({ transaction });
 
-        return island;
+        return {
+          island,
+          oldPrereqs,
+          newPrereqs,
+        };
       });
+
+      // Publish the island updated event
       new IslandUpdatedPublisher(natsWrapper.client).publish({
-        id: result.id,
-        courseId: result.courseId,
-        name: result.name,
-        description: result.description,
-        position: result.position,
-        backgroundImage: result.backgroundImage,
-        isDeleted: result.isDeleted,
+        id: result.island.id,
+        courseId: result.island.courseId,
+        name: result.island.name,
+        description: result.island.description,
+        position: result.island.position,
+        backgroundImage: result.island.backgroundImage,
+        isDeleted: result.island.isDeleted,
       });
-      res.send(result);
+
+      // Handle prerequisite changes if there were any
+      if (req.body.prerequisiteIslandIds !== undefined) {
+        // First, publish a delete event for all old prerequisites
+        new PrerequisiteIslandDeletedPublisher(natsWrapper.client).publish({
+          islandId: island_id,
+          // No prerequisiteIslandId means delete all for this islandId
+        });
+
+        // Then publish create events for all new prerequisites
+        if (result.newPrereqs && result.newPrereqs.length > 0) {
+          console.log(`Publishing ${result.newPrereqs.length} prerequisite created events`);
+
+          for (const prereq of result.newPrereqs) {
+            new PrerequisiteIslandCreatedPublisher(natsWrapper.client).publish({
+              islandId: prereq.islandId,
+              prerequisiteIslandId: prereq.prerequisiteIslandId,
+            });
+          }
+        }
+      }
+
+      res.send(result.island);
     } catch (error) {
       if (
         error instanceof NotFoundError ||
