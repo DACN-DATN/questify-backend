@@ -1,9 +1,11 @@
-import { CompletionStatus, NotAuthorizedError } from '@datn242/questify-common';
+import { BadRequestError, CompletionStatus, NotAuthorizedError } from '@datn242/questify-common';
 import { UserLevel } from '../models/user-level';
 import { Attempt } from '../models/attempt';
 import { User } from '../models/user';
 import { natsWrapper } from '../nats-wrapper';
 import { UserUpdatedPublisher } from '../events/publishers/user-updated-publisher';
+import { calculateScore } from './calculate-point';
+import { AttemptUpdatedPublisher } from '../events/publishers/attempt-updated-publisher';
 
 function getRandom(min: number, max: number): number {
   min = Math.ceil(min);
@@ -36,24 +38,32 @@ export async function submitChallenge(levelId: string, userId: string) {
     });
   }
 
-  if (progress.gold < gold + bonusGold) {
-    progress.set({
-      gold: gold + bonusGold,
-    });
-  }
-
-  if (progress.exp < exp + bonusExp) {
-    progress.set({
-      exp: exp + bonusExp,
-    });
-  }
-
-  const attempt = Attempt.build({
-    userId: userId,
-    gold: gold + bonusGold,
-    exp: exp + bonusExp,
-    levelId: levelId,
+  const attempt = await Attempt.findOne({
+    where: {
+      userId: userId,
+      levelId: levelId,
+    },
+    order: [['createdAt', 'DESC']],
   });
+
+  if (!attempt) {
+    throw new BadRequestError('Attempt not found');
+  }
+
+  if (attempt?.finishedAt) {
+    throw new BadRequestError('Attempt has already been submitted');
+  }
+
+  const now = new Date();
+  const createdAt = new Date(attempt.createdAt).getTime();
+
+  const point = calculateScore(Math.floor((now.getTime() - createdAt) / 1000));
+  attempt.set({
+    finishedAt: now,
+    point: point,
+  });
+
+  new AttemptUpdatedPublisher(natsWrapper.client).publish(attempt!);
 
   const user = await User.findByPk(userId);
   const currentExp = user!.exp || 0;
@@ -72,6 +82,7 @@ export async function submitChallenge(levelId: string, userId: string) {
     levelId: levelId,
     gold: gold,
     exp: exp,
+    point: point,
     bonusGold: bonusGold,
     bonusExp: bonusExp,
   };

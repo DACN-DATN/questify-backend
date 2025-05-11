@@ -38,6 +38,13 @@ const AttemptDefinition = {
       min: 0,
     },
   },
+  point: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    validate: {
+      min: 0,
+    },
+  },
   levelId: {
     allowNull: false,
     type: DataTypes.UUID,
@@ -45,6 +52,15 @@ const AttemptDefinition = {
       model: Level,
       key: 'id',
     },
+  },
+  finishedAt: {
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
+  createdAt: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: () => Date.now(),
   },
 };
 
@@ -54,10 +70,13 @@ interface AttemptAttributes {
   answer?: object;
   gold?: number;
   exp?: number;
+  point?: number;
   levelId: string;
+  finishedAt?: Date;
+  createdAt: Date;
 }
 
-type AttemptCreationAttributes = Optional<AttemptAttributes, 'id'>;
+type AttemptCreationAttributes = Optional<AttemptAttributes, 'id' | 'createdAt'>;
 
 class Attempt
   extends Model<AttemptAttributes, AttemptCreationAttributes>
@@ -68,7 +87,10 @@ class Attempt
   public answer?: object;
   public gold?: number;
   public exp?: number;
+  public point?: number;
   public levelId!: string;
+  public finishedAt?: Date;
+  public createdAt!: Date;
 
   declare public getFeedback: HasOneGetAssociationMixin<Feedback>;
 }

@@ -30,7 +30,7 @@ router.get(
       throw new BadRequestError('Challenge not found');
     }
 
-    const userLevel = await UserLevel.findAll({
+    const userLevel = await UserLevel.findOne({
       where: {
         userId: req.currentUser!.id,
         levelId: challenge.levelId,

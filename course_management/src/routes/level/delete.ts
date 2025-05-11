@@ -8,6 +8,8 @@ import {
 } from '@datn242/questify-common';
 import { Island } from '../../models/island';
 import { Level } from '../../models/level';
+import { LevelUpdatedPublisher } from '../../events/publishers/level-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -58,6 +60,13 @@ router.delete(
     level.set({
       isDeleted: true,
     });
+
+    new LevelUpdatedPublisher(natsWrapper.client).publish({
+      ...level,
+      teacherId: course.teacherId,
+    });
+
+
 
     await level.save();
 

@@ -11,6 +11,8 @@ import { PrerequisiteIsland } from '../../models/prerequisiteIsland';
 import { Op } from 'sequelize';
 import { sequelize } from '../../config/db';
 import { recalculatePositions } from '../../services/island';
+import { IslandUpdatedPublisher } from '../../events/publishers/island-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -60,6 +62,8 @@ router.delete(
         });
 
         island.set({ isDeleted: true });
+
+        new IslandUpdatedPublisher(natsWrapper.client).publish(island);
         await island.save({ transaction });
 
         await recalculatePositions(course_id, transaction, false);

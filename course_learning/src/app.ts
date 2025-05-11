@@ -20,6 +20,8 @@ import { initUserIslandRouter } from './routes/roadmap/init-user-island';
 import { initUserLevelRouter } from './routes/roadmap/init-user-level';
 import { updateProgressRouter } from './routes/progress/update';
 import { showChallengeRouter } from './routes/challenge/show';
+import { newAttemptRouter } from './routes/level/new-attempt';
+import { indexAttemptRouter } from './routes/level/index-attempt';
 
 const app = express();
 app.set('trust proxy', true);
@@ -49,6 +51,8 @@ app.use(initUserLevelRouter);
 app.use(updateProgressRouter);
 app.use(showChallengeRouter);
 app.use(submitChallengeRouter);
+app.use(newAttemptRouter);
+app.use(indexAttemptRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
