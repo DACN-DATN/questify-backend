@@ -28,7 +28,15 @@ const UserLevelDefinition = {
       key: 'id',
     },
   },
-  point: {
+  gold: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    validate: {
+      min: 0,
+    },
+  },
+  exp: {
     allowNull: false,
     type: DataTypes.INTEGER,
     defaultValue: 0,
@@ -56,7 +64,8 @@ interface UserLevelAttributes {
   id: string;
   userId: string;
   levelId: string;
-  point: number;
+  gold: number;
+  exp: number;
   completionStatus: CompletionStatus;
   finishedDate?: Date;
 }
@@ -70,7 +79,8 @@ class UserLevel
   public id!: string;
   public userId!: string;
   public levelId!: string;
-  public point!: number;
+  public gold!: number;
+  public exp!: number;
   public completionStatus!: CompletionStatus;
   public finishedDate?: Date;
 }

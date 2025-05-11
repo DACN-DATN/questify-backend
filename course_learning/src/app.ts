@@ -6,7 +6,7 @@ import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-comm
 
 import { showLevelRouter } from './routes/level/show';
 import { showHintRouter } from './routes/others/show-hints';
-import { submitQuizRouter } from './routes/others/submit-quiz';
+import { submitChallengeRouter } from './routes/challenge/submit';
 import { showRewardsRouter } from './routes/others/show-rewards';
 import { showLeaderboardRouter } from './routes/others/show-leaderboard';
 import { createFeedbackRouter } from './routes/feedback/new';
@@ -18,6 +18,7 @@ import { showUserLevelRouter } from './routes/roadmap/show-user-level';
 import { initUserIslandRouter } from './routes/roadmap/init-user-island';
 import { initUserLevelRouter } from './routes/roadmap/init-user-level';
 import { updateProgressRouter } from './routes/progress/update';
+import { showChallengeRouter } from './routes/challenge/show';
 
 const app = express();
 app.set('trust proxy', true);
@@ -32,7 +33,7 @@ app.use(currentUser);
 
 app.use(showLevelRouter);
 app.use(showHintRouter);
-app.use(submitQuizRouter);
+app.use(submitChallengeRouter);
 app.use(showRewardsRouter);
 app.use(showLeaderboardRouter);
 app.use(createFeedbackRouter);
@@ -44,6 +45,8 @@ app.use(showUserLevelRouter);
 app.use(initUserIslandRouter);
 app.use(initUserLevelRouter);
 app.use(updateProgressRouter);
+app.use(showChallengeRouter);
+app.use(submitChallengeRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

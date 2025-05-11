@@ -24,7 +24,14 @@ const AttemptDefinition = {
     allowNull: true,
     type: DataTypes.JSON,
   },
-  point: {
+  gold: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    validate: {
+      min: 0,
+    },
+  },
+  exp: {
     allowNull: true,
     type: DataTypes.INTEGER,
     validate: {
@@ -45,7 +52,8 @@ interface AttemptAttributes {
   id: string;
   userId: string;
   answer?: object;
-  point?: number;
+  gold?: number;
+  exp?: number;
   levelId: string;
 }
 
@@ -58,7 +66,8 @@ class Attempt
   public id!: string;
   public userId!: string;
   public answer?: object;
-  public point?: number;
+  public gold?: number;
+  public exp?: number;
   public levelId!: string;
 
   declare public getFeedback: HasOneGetAssociationMixin<Feedback>;
