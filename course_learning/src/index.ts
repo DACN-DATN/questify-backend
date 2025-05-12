@@ -20,44 +20,68 @@ import { ChallengeCreatedListener } from './events/listeners/challenge-created-l
 import { ChallengeUpdatedListener } from './events/listeners/challenge-updated-listener';
 import { SlideCreatedListener } from './events/listeners/slide-created-listener';
 import { SlideUpdatedListener } from './events/listeners/slide-updated-listener';
+// Import the retry service and event processors
+import { retryService } from './services/retry-service';
+import { initializeEventProcessors } from './services/event-processors';
 
 const start = async () => {
-  await connectDb();
-
-  await syncModels();
-
-  process.on('SIGINT', async () => {
-    console.log('Gracefully shutting down...');
-    await closeDbConnection();
-    process.exit(0);
-  });
-
-  process.on('SIGTERM', async () => {
-    console.log('Shutting down due to SIGTERM...');
-    await closeDbConnection();
-    process.exit(0);
-  });
-
-  if (!process.env.NATS_CLIENT_ID) {
-    throw new Error('NATS_CLIENT_ID must be defined');
-  }
-  if (!process.env.NATS_URL) {
-    throw new Error('NATS_URL must be defined');
-  }
-  if (!process.env.NATS_CLUSTER_ID) {
-    throw new Error('NATS_CLUSTER_ID must be defined');
-  }
   try {
+    // Connect to database
+    await connectDb();
+    console.log('Connected to Course Learning SRV Postgres');
+
+    // Sync database models - the syncModels function handles its own logging
+    await syncModels();
+
+    // Set up graceful shutdown handlers
+    const gracefulShutdown = async () => {
+      console.log('Shutting down...');
+      // Stop the retry service
+      retryService.stop();
+      
+      // Close NATS connection
+      if (natsWrapper.client) {
+        await natsWrapper.client.close();
+      }
+      
+      // Close database connection
+      await closeDbConnection();
+      
+      process.exit(0);
+    };
+
+    process.on('SIGINT', gracefulShutdown);
+    process.on('SIGTERM', gracefulShutdown);
+
+    // Check for required environment variables
+    if (!process.env.NATS_CLIENT_ID) {
+      throw new Error('NATS_CLIENT_ID must be defined');
+    }
+    if (!process.env.NATS_URL) {
+      throw new Error('NATS_URL must be defined');
+    }
+    if (!process.env.NATS_CLUSTER_ID) {
+      throw new Error('NATS_CLUSTER_ID must be defined');
+    }
+
+    // Connect to NATS
     await natsWrapper.connect(
       process.env.NATS_CLUSTER_ID,
       process.env.NATS_CLIENT_ID,
       process.env.NATS_URL,
     );
+    console.log('Connected to NATS');
+
+    // Initialize event processors for the retry service
+    initializeEventProcessors();
+
+    // Set up NATS close event handler
     natsWrapper.client.on('close', () => {
       console.log('NATS connection closed!');
       process.exit();
     });
 
+    // Initialize and start all listeners
     new UserCourseCreatedListener(natsWrapper.client).listen();
     new LevelCreatedListener(natsWrapper.client).listen();
     new LevelUpdatedListener(natsWrapper.client).listen();
@@ -76,11 +100,18 @@ const start = async () => {
     new ChallengeUpdatedListener(natsWrapper.client).listen();
     new SlideCreatedListener(natsWrapper.client).listen();
     new SlideUpdatedListener(natsWrapper.client).listen();
+    
+    // Log queue status every 30 seconds for monitoring
+    setInterval(() => {
+      const queueSize = retryService.getQueueSize();
+      if (queueSize > 0) {
+        console.log(`Retry queue status: ${queueSize} events pending`);
+      }
+    }, 30000);
 
-    process.on('SIGINT', () => natsWrapper.client.close());
-    process.on('SIGTERM', () => natsWrapper.client.close());
   } catch (err) {
-    console.error(err);
+    console.error('Error starting service:', err);
+    process.exit(1);
   }
 };
 
