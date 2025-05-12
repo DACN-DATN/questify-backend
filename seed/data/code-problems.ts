@@ -51,6 +51,7 @@ async function seed() {
     const codeProblemResponse = await api.post(ResourcePrefix.CodeProblem, {
       id: 'df04a27b-ecc4-4dbf-a655-1e3a84dd085a',
       level_id: level.id,
+      title: 'Two Sum',
       starterCode: `function main(nums, target) {
   // Your code here
 }`,

@@ -18,6 +18,10 @@ const CodeProblemDefinition = {
       key: 'id',
     },
   },
+  title: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
   description: {
     allowNull: true,
     type: DataTypes.TEXT,
@@ -47,6 +51,7 @@ const CodeProblemDefinition = {
 interface CodeProblemAttributes {
   id: string;
   levelId: string;
+  title: string;
   description?: string;
   parameters: string[];
   returnType: Record<string, any>;
@@ -62,6 +67,7 @@ class CodeProblem
 {
   public id!: string;
   public levelId!: string;
+  public title!: string;
   public description?: string;
   public parameters!: string[];
   public returnType!: Record<string, any>;

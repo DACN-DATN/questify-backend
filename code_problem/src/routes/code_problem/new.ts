@@ -11,7 +11,6 @@ import {
 } from '@datn242/questify-common';
 import { Level } from '../../models/level';
 import { Testcase } from '../../models/testcase';
-import { DataType, DataTypes } from 'sequelize';
 
 interface TestcaseInput {
   input: string[];
@@ -31,6 +30,7 @@ router.post(
       .isUUID()
       .withMessage('level_id must be a valid UUID'),
     body('id').optional().isUUID().withMessage('id must be a valid UUID'),
+    body('title').isString().withMessage('title must be a string'),
     body('description').isString().withMessage('description must be a string'),
     body('parameters').optional().isArray().withMessage('parameters must be an array'),
     body('returnType').optional().isObject().withMessage('returnType must be an object'),
@@ -42,6 +42,7 @@ router.post(
     const {
       level_id,
       id,
+      title,
       description,
       parameters = [],
       returnType = {},
@@ -71,6 +72,7 @@ router.post(
     const code_problem = await CodeProblem.create({
       ...(id ? { id } : {}), // Only include id if it exists in the request body
       levelId: level.id,
+      title,
       description,
       parameters: parameters,
       returnType: returnType,

@@ -1,13 +1,7 @@
 import request from 'supertest';
 import { app } from '../../../app';
-import { CodeProblem } from '../../../models/code-problem';
 import { Testcase } from '../../../models/testcase';
-import {
-  NotAuthorizedError,
-  BadRequestError,
-  ResourcePrefix,
-  RequestValidationError,
-} from '@datn242/questify-common';
+import { ResourcePrefix } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 import {
   twoSum,
@@ -62,7 +56,7 @@ it('assess Two sum problem with valid input', async () => {
     })
     .expect(201);
 
-  let testcases = await Testcase.findAll();
+  const testcases = await Testcase.findAll();
   expect(testcases.length).toEqual(0);
 
   await request(app)
@@ -99,7 +93,7 @@ it('assess Jump Game problem with valid input', async () => {
     })
     .expect(201);
 
-  let testcases = await Testcase.findAll();
+  const testcases = await Testcase.findAll();
   expect(testcases.length).toEqual(0);
 
   await request(app)
@@ -136,7 +130,7 @@ it('assess Valid Parenthesis problem with valid input', async () => {
     })
     .expect(201);
 
-  let testcases = await Testcase.findAll();
+  const testcases = await Testcase.findAll();
   expect(testcases.length).toEqual(0);
 
   await request(app)
@@ -173,7 +167,7 @@ it('assess Search a 2D Matrx problem with valid input', async () => {
     })
     .expect(201);
 
-  let testcases = await Testcase.findAll();
+  const testcases = await Testcase.findAll();
   expect(testcases.length).toEqual(0);
 
   await request(app)

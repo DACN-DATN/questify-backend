@@ -1,10 +1,8 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import jwt from 'jsonwebtoken';
 import {
   validateRequest,
   BadRequestError,
-  NotFoundError,
   ResourcePrefix,
   EnvStage,
 } from '@datn242/questify-common';

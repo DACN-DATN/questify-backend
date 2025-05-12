@@ -34,6 +34,7 @@ it('return BadRequestError if level not found', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level_id,
+      title: 'Test title',
       description: 'Test description',
       starterCode: 'function test() {}',
     })
@@ -54,6 +55,7 @@ it('returns an error if the user does not have permission to create a code probl
     .set('Cookie', cookie2)
     .send({
       level_id: level.id,
+      title: 'Test title',
       description: 'Test description',
       starterCode: 'function test() {}',
     })
@@ -70,6 +72,7 @@ it('returns an error if an invalid description is provided', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: '',
+      title: 'Test title',
       description: 'Test description',
     })
     .expect((res) => {
@@ -82,6 +85,7 @@ it('returns an error if an invalid description is provided', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test title',
       description: 1,
     })
     .expect((res) => {
@@ -94,6 +98,7 @@ it('returns an error if an invalid description is provided', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test title',
       description: true,
     })
     .expect((res) => {
@@ -114,6 +119,7 @@ it('creates an Island with valid inputs', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test title',
       description: 'Test description',
       starterCode: 'function test() {}',
     })

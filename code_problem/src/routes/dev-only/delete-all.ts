@@ -1,16 +1,10 @@
 import express, { Request, Response } from 'express';
-import { CodeProblem } from '../../models/code-problem';
 import {
-  NotAuthorizedError,
-  NotFoundError,
-  requireAuth,
   ResourcePrefix,
   EnvStage,
   BadRequestError,
   validateRequest,
 } from '@datn242/questify-common';
-import { Testcase } from '../../models/testcase';
-import { softDelete } from '../../utils/model';
 import { body } from 'express-validator';
 import { sequelize } from '../../config/db';
 

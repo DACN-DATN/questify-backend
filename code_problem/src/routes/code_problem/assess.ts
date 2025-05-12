@@ -3,22 +3,18 @@ import { body } from 'express-validator';
 import {
   validateRequest,
   requireAuth,
-  UserRole,
-  NotAuthorizedError,
   BadRequestError,
   ResourcePrefix,
 } from '@datn242/questify-common';
-import { Level } from '../../models/level';
 import { Testcase } from '../../models/testcase';
-import { DataType, DataTypes } from 'sequelize';
 import { CodeProblem } from '../../models/code-problem';
-import { parseValue, parseInputString } from '../../service/assessment.srv';
+import { parseInputString } from '../../service/assessment.srv';
 
-interface TestcaseInput {
-  input: string;
-  output: string;
-  hidden: boolean;
-}
+// interface TestcaseInput {
+//   input: string;
+//   output: string;
+//   hidden: boolean;
+// }
 
 const router = express.Router();
 
@@ -47,7 +43,6 @@ router.post(
       throw new BadRequestError('No testcases found for this code problem');
     }
 
-    // const testcaseResponse = mockTestcase;
     const testcases = testcasesResponse.map((testcase) => {
       return {
         input: testcase.input,
@@ -55,17 +50,14 @@ router.post(
         hidden: testcase.hidden,
       };
     });
-    // const mockCode = mockUserCode;
 
     const cb = new Function(`return ${userCode}`)();
-    // const cb = new Function(`return ${userCode || mockCode}`)();
 
     const results = [];
 
     for (const testcase of testcases) {
       try {
         const inputParams = parseInputString(testcase.input);
-        console.log('inputParams', inputParams);
         const result = cb(...inputParams);
         const expectedOutput = JSON.parse(testcase.output);
         const passed = JSON.stringify(result) === JSON.stringify(expectedOutput);
@@ -96,7 +88,6 @@ router.post(
       totalTestcases: testcases.length,
       passedTestcases: results.filter((r) => r.passed).length,
     };
-    console.log(resultObj);
 
     res.status(200).send(resultObj);
   },

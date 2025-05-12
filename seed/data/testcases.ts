@@ -11,13 +11,20 @@ async function seed() {
     });
     console.log('Teacher sign in successful');
 
-    const codeProblem = await api.get(
+    const codeProblemResponse = await api.get(
       ResourcePrefix.CodeProblem + '/df04a27b-ecc4-4dbf-a655-1e3a84dd085a',
     );
-    console.log('Code problem fetched successfully:', codeProblem.id);
+
+    const codeProblemId = codeProblemResponse.data.id;
+    console.log('Code problem fetched successfully:', codeProblemId);
+
+    // Make sure we have a valid ID before proceeding
+    if (!codeProblemId) {
+      throw new Error('Failed to get a valid code problem ID');
+    }
 
     const testcaseResponse = await api.post(
-      ResourcePrefix.CodeProblem + `/${codeProblem.id}/testcases`,
+      ResourcePrefix.CodeProblem + `/${codeProblemId}/testcases`,
       {
         testcases: [
           {
