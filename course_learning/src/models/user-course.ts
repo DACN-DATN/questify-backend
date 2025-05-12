@@ -59,7 +59,6 @@ interface UserCourseAttributes {
   point: number;
   completionStatus: CompletionStatus;
   finishedDate?: Date;
-
   user?: User;
 }
 

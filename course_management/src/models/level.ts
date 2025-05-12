@@ -53,7 +53,7 @@ interface LevelAttributes {
   name: string;
   description?: string;
   position: number;
-  contentType?: string;
+  contentType?: LevelContent;
   islandId: string;
   isDeleted: boolean;
 }
@@ -65,7 +65,7 @@ class Level extends Model<LevelAttributes, LevelCreationAttributes> implements L
   public name!: string;
   public description?: string;
   public position!: number;
-  public contentType?: string | undefined;
+  public contentType?: LevelContent;
   public islandId!: string;
   public isDeleted!: boolean;
 

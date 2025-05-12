@@ -72,6 +72,7 @@ router.patch(
       description: level.description,
       position: level.position,
       isDeleted: level.isDeleted,
+      contentType: level.contentType,
     });
 
     await level.save();
