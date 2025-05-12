@@ -2,8 +2,8 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { Course } from './course';
 import { IslandTemplate } from './island-template';
-import { IslandPath } from './island-path';
 import { IslandBackgroundImage } from './island-background-image';
+import { IslandPathType } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
 
 const IslandDefinition = {
@@ -44,13 +44,9 @@ const IslandDefinition = {
       key: 'id',
     },
   },
-  islandPathId: {
+  pathType: {
     allowNull: true,
-    type: DataTypes.UUID,
-    references: {
-      model: IslandPath,
-      key: 'id',
-    },
+    type: DataTypes.ENUM(...Object.values(IslandPathType)),
   },
   islandBackgroundImageId: {
     allowNull: true,
@@ -74,7 +70,7 @@ interface IslandAttributes {
   position: number;
   courseId: string;
   islandTemplateId?: string;
-  islandPathId?: string;
+  pathType?: IslandPathType;
   islandBackgroundImageId?: string;
   isDeleted: boolean;
 }
@@ -87,7 +83,7 @@ class Island extends Model<IslandAttributes, IslandCreationAttributes> implement
   public position!: number;
   public courseId!: string;
   public islandTemplateId?: string;
-  public islandPathId?: string;
+  public pathType?: IslandPathType;
   public islandBackgroundImageId?: string;
   public isDeleted!: boolean;
 

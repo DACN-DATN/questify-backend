@@ -10,7 +10,6 @@ import { Inventory } from '../../inventory';
 import { CourseItemTemplate } from '../../course-item-template';
 import { InventoryItemTemplate } from '../../inventory-item-template';
 import { IslandTemplate } from '../../island-template';
-import { IslandPath } from '../../island-path';
 import { IslandBackgroundImage } from '../../island-background-image';
 
 it('check course associations', async () => {
@@ -33,7 +32,6 @@ it('check island associations', async () => {
     'prerequisites',
     'islandsThatArePrerequisites',
     'template',
-    'path',
     'backgroundImage'
   ]);
 });
@@ -92,10 +90,6 @@ it('check inventory item template associations', async () => {
 
 it('check island template associations', async () => {
   expect(Object.keys(IslandTemplate.associations)).toEqual(['islands']);
-});
-
-it('check island path associations', async () => {
-  expect(Object.keys(IslandPath.associations)).toEqual(['islands']);
 });
 
 it('check island background image associations', async () => {

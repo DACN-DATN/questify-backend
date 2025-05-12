@@ -11,6 +11,7 @@ import {
   requireAuth,
   BadRequestError,
   ResourcePrefix,
+  IslandPathType,
 } from '@datn242/questify-common';
 import { IslandCreatedPublisher } from '../../events/publishers/island-created-publisher';
 import { PrerequisiteIslandCreatedPublisher } from '../../events/publishers/prerequisite-island-created-publisher';
@@ -24,6 +25,12 @@ router.post(
   [
     body('name').notEmpty().withMessage('Island name is required'),
     body('description').optional(),
+    body('islandTemplateId').optional().isUUID().withMessage('Island template ID must be a valid UUID'),
+    body('pathType')
+      .optional()
+      .isIn(Object.values(IslandPathType))
+      .withMessage('Path type must be a valid type'),
+    body('islandBackgroundImageId').optional().isUUID().withMessage('Island background image ID must be a valid UUID'),
     body('prerequisiteIslandIds')
       .optional()
       .isArray()
@@ -32,7 +39,14 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const courseId = req.params.course_id;
-    const { name, description, prerequisiteIslandIds } = req.body;
+    const { 
+      name, 
+      description, 
+      prerequisiteIslandIds,
+      islandTemplateId,
+      pathType,
+      islandBackgroundImageId
+    } = req.body;
 
     try {
       const result = await sequelize.transaction(async (transaction) => {
@@ -47,6 +61,9 @@ router.post(
             description,
             position: 0,
             courseId,
+            islandTemplateId: islandTemplateId || null,
+            pathType: pathType || null,
+            islandBackgroundImageId: islandBackgroundImageId || null,
           },
           { transaction },
         );
@@ -92,7 +109,13 @@ router.post(
 
         await recalculatePositions(courseId, transaction);
 
-        await island.reload({ transaction });
+        await island.reload({ 
+          transaction,
+          include: [
+            { association: 'template' },
+            { association: 'backgroundImage' }
+          ]
+        });
 
         return {
           island,
@@ -107,7 +130,6 @@ router.post(
         name: result.island.name,
         description: result.island.description,
         position: result.island.position,
-        backgroundImage: result.island.backgroundImage,
       });
 
       // Publish prerequisite island created events

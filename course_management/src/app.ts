@@ -48,6 +48,10 @@ import { createSlideRouter } from './routes/slide/new';
 import { updateSlideRouter } from './routes/slide/update';
 import { deleteSlideRouter } from './routes/slide/delete';
 
+import { newIslandBackgroundImageRouter } from './routes/island-background-image/new';
+import { updateIslandBackgroundImageRouter } from './routes/island-background-image/update';
+import { deleteIslandBackgroundImageRouter } from './routes/island-background-image/delete';
+
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -102,6 +106,10 @@ app.use(showChallengeRouter);
 app.use(createSlideRouter);
 app.use(updateSlideRouter);
 app.use(deleteSlideRouter);
+
+app.use(newIslandBackgroundImageRouter);
+app.use(updateIslandBackgroundImageRouter);
+app.use(deleteIslandBackgroundImageRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
