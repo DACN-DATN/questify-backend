@@ -9,7 +9,7 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: LevelCreatedEvent['data'], msg: Message) {
-    const { id, islandId, name, description, position } = data;
+    const { id, islandId, name, description, position, contentType } = data;
     const existingIsland = await Island.findByPk(islandId);
     if (!existingIsland) {
       console.warn(`Island not found with ID: ${islandId}, skipping course creation`);
@@ -21,6 +21,7 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
       description,
       position,
       islandId,
+      contentType,
     });
     await level.save();
 

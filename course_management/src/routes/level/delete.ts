@@ -66,8 +66,6 @@ router.delete(
       teacherId: course.teacherId,
     });
 
-
-
     await level.save();
 
     res.send(level);

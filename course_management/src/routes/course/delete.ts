@@ -39,7 +39,6 @@ router.delete(
 
     new CourseUpdatedPublisher(natsWrapper.client).publish(course);
 
-
     await course.save();
 
     res.send(course);

@@ -10,8 +10,7 @@ router.post(
   ResourcePrefix.CourseLearning + '/challenge/:challenge_id/submission',
   requireAuth,
   async (req: Request, res: Response) => {
-    const { challenge_id } = req.body;
-
+    const { challenge_id } = req.params;
     const challenge = await Challenge.findOne({
       where: { id: challenge_id },
     });

@@ -13,7 +13,7 @@ function getRandom(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export async function submitChallenge(levelId: string, userId: string) {
+export async function submitChallenge(userId: string, levelId: string) {
   const progress = await UserLevel.findOne({
     where: {
       userId: userId,
@@ -48,10 +48,6 @@ export async function submitChallenge(levelId: string, userId: string) {
 
   if (!attempt) {
     throw new BadRequestError('Attempt not found');
-  }
-
-  if (attempt?.finishedAt) {
-    throw new BadRequestError('Attempt has already been submitted');
   }
 
   const now = new Date();

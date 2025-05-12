@@ -63,6 +63,8 @@ router.post(
       createdAt: newAttempt.createdAt,
     });
 
+    await newAttempt.save();
+
     res.send(newAttempt);
   },
 );
