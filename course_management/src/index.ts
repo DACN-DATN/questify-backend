@@ -2,6 +2,8 @@ import { app } from './app';
 import { connectDb, closeDbConnection } from './config/db';
 import { UserCreatedListener } from './events/listeners/user-created-listener';
 import { UserUpdatedListener } from './events/listeners/user-updated-listener';
+import { IslandTemplateCreatedListener } from './events/listeners/island-template-created-listener';
+import { IslandTemplateUpdatedListener } from './events/listeners/island-template-updated-listener';
 import { natsWrapper } from './nats-wrapper';
 import { syncModels } from './scripts/sync';
 
@@ -31,6 +33,9 @@ const start = async () => {
 
     new UserCreatedListener(natsWrapper.client).listen();
     new UserUpdatedListener(natsWrapper.client).listen();
+    new IslandTemplateCreatedListener(natsWrapper.client).listen();
+    new IslandTemplateUpdatedListener(natsWrapper.client).listen();
+
   } catch (err) {
     console.error(err);
   }

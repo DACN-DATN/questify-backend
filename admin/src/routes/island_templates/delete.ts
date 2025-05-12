@@ -14,6 +14,8 @@ import {
   AdminIslandTemplateActionType,
 } from '../../models/admin-island-template';
 import { sequelize } from '../../config/db';
+import { natsWrapper } from '../../nats-wrapper';
+import { IslandTemplateUpdatedPublisher } from '../../events/publishers/island-template-updated-publisher';
 
 const router = express.Router();
 
@@ -71,6 +73,13 @@ router.delete(
       });
 
       await transaction.commit();
+
+      // Publish update event after successful transaction
+      await new IslandTemplateUpdatedPublisher(natsWrapper.client).publish({
+        id: islandTemplate.id,
+        isDeleted: islandTemplate.isDeleted,
+        deletedAt: islandTemplate.deletedAt,
+      });
 
       res.status(200).send({
         ...islandTemplate.toJSON(),

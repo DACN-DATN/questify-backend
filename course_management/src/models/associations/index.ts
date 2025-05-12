@@ -11,10 +11,16 @@ import defineCourseItemTemplateAssociations from './course-item-template.associa
 import defineInventoryItemTemplateAssociations from './inventory-item-template.associations';
 import defineChallengeAssociations from './challenge.associations';
 import defineSlideAssociations from './slide.associations';
+import defineIslandTemplateAssociations from './island-template.associations';
+import defineIslandPathAssociations from './island-path.associaitons';
+import defineIslandBackgroundImageAssociations from './island-background-image';
 
 export const defineAssociations = () => {
   defineCourseAssociations();
   defineIslandAssociations();
+  defineIslandTemplateAssociations();
+  defineIslandPathAssociations();
+  defineIslandBackgroundImageAssociations();
   defineUserAssociations();
   defineLevelAssociations();
   definePrerequisiteIslandAssociations();
