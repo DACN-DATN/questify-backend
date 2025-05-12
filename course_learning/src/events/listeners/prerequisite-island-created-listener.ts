@@ -20,7 +20,7 @@ export class PrerequisiteIslandCreatedListener extends Listener<PrerequisiteIsla
           prerequisiteIslandId,
         },
       });
-      
+
       if (existingPrerequisite) {
         console.log(`Prerequisite relationship already exists`);
         msg.ack();
@@ -30,11 +30,13 @@ export class PrerequisiteIslandCreatedListener extends Listener<PrerequisiteIsla
       // Check if both islands exist
       const [island, prerequisiteIsland] = await Promise.all([
         Island.findByPk(islandId),
-        Island.findByPk(prerequisiteIslandId)
+        Island.findByPk(prerequisiteIslandId),
       ]);
 
       if (!island || !prerequisiteIsland) {
-        console.log(`One or both islands don't exist. islandId: ${islandId}, prerequisiteIslandId: ${prerequisiteIslandId}`);
+        console.log(
+          `One or both islands don't exist. islandId: ${islandId}, prerequisiteIslandId: ${prerequisiteIslandId}`,
+        );
         // Add to retry queue
         await retryService.addEvent(this.subject, data);
         msg.ack();

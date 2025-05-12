@@ -14,9 +14,7 @@ const router = express.Router();
 router.put(
   `${ResourcePrefix.CourseManagement}/island-background-images/:id`,
   requireAuth,
-  [
-    body('imageUrl').notEmpty().withMessage('Image URL is required'),
-  ],
+  [body('imageUrl').notEmpty().withMessage('Image URL is required')],
   validateRequest,
   async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -32,9 +30,9 @@ router.put(
       }
 
       backgroundImage.set({
-        imageUrl
+        imageUrl,
       });
-      
+
       await backgroundImage.save({ transaction });
       await transaction.commit();
 

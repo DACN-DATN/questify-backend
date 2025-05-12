@@ -32,7 +32,9 @@ async function runFullFlowSeed() {
 
     // Step 4: Create island background images
     console.log('\n[4/7] Creating island background images...');
-    execSync('ts-node ' + path.join(__dirname, 'island-background-images-seed.ts'), { stdio: 'inherit' });
+    execSync('ts-node ' + path.join(__dirname, 'island-background-images-seed.ts'), {
+      stdio: 'inherit',
+    });
 
     // Step 5: Teacher creates course, islands, and levels
     console.log('\n[5/7] Creating course with islands and levels...');

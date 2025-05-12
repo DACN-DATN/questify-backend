@@ -4,7 +4,7 @@ import { Island } from '../island';
 const defineIslandBackgroundImageAssociations = () => {
   IslandBackgroundImage.hasMany(Island, {
     foreignKey: 'islandBackgroundImageId',
-    as: 'islands'
+    as: 'islands',
   });
 };
 

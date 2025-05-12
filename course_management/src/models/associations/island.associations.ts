@@ -25,14 +25,14 @@ const defineIslandAssociations = () => {
     onUpdate: 'CASCADE',
   });
 
-  Island.belongsTo(IslandTemplate, { 
+  Island.belongsTo(IslandTemplate, {
     foreignKey: 'islandTemplateId',
-    as: 'template'
+    as: 'template',
   });
-  
-  Island.belongsTo(IslandBackgroundImage, { 
+
+  Island.belongsTo(IslandBackgroundImage, {
     foreignKey: 'islandBackgroundImageId',
-    as: 'backgroundImage'
+    as: 'backgroundImage',
   });
 };
 

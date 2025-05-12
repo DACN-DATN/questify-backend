@@ -14,11 +14,11 @@ export class IslandTemplateCreatedListener extends Listener<IslandTemplateCreate
       id,
       name,
       imageUrl: image_url,
-      isDeleted: false
+      isDeleted: false,
     });
-    
+
     await islandTemplate.save();
-    
+
     msg.ack();
   }
 }

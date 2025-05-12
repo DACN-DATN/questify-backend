@@ -79,14 +79,14 @@ router.patch(
         }
 
         const updateFields: Partial<Island> = {};
-        const { 
-          name, 
-          description, 
-          position, 
-          islandTemplateId, 
-          pathType, 
-          islandBackgroundImageId, 
-          prerequisiteIslandIds 
+        const {
+          name,
+          description,
+          position,
+          islandTemplateId,
+          pathType,
+          islandBackgroundImageId,
+          prerequisiteIslandIds,
         } = req.body;
 
         if (name !== undefined) updateFields.name = name;
@@ -94,7 +94,8 @@ router.patch(
         if (position !== undefined) updateFields.position = position;
         if (islandTemplateId !== undefined) updateFields.islandTemplateId = islandTemplateId;
         if (pathType !== undefined) updateFields.pathType = pathType;
-        if (islandBackgroundImageId !== undefined) updateFields.islandBackgroundImageId = islandBackgroundImageId;
+        if (islandBackgroundImageId !== undefined)
+          updateFields.islandBackgroundImageId = islandBackgroundImageId;
 
         island.set(updateFields);
         await island.save({ transaction });
@@ -175,12 +176,9 @@ router.patch(
 
         await recalculatePositions(course_id, transaction);
 
-        await island.reload({ 
+        await island.reload({
           transaction,
-          include: [
-            { association: 'template' },
-            { association: 'backgroundImage' }
-          ] 
+          include: [{ association: 'template' }, { association: 'backgroundImage' }],
         });
 
         return {

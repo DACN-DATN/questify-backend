@@ -12,7 +12,7 @@ export class IslandCreatedListener extends Listener<IslandCreatedEvent> {
   async onMessage(data: IslandCreatedEvent['data'], msg: Message) {
     try {
       const { id, courseId, name, description, position, backgroundImage } = data;
-      
+
       // Check if island already exists
       const existingIsland = await Island.findByPk(id);
       if (existingIsland) {
@@ -20,7 +20,7 @@ export class IslandCreatedListener extends Listener<IslandCreatedEvent> {
         msg.ack();
         return;
       }
-      
+
       // Check if course exists
       const existingCourse = await Course.findByPk(courseId);
       if (!existingCourse) {
@@ -29,7 +29,7 @@ export class IslandCreatedListener extends Listener<IslandCreatedEvent> {
         msg.ack();
         return;
       }
-      
+
       // Course exists, proceed with island creation
       const island = Island.build({
         id,
@@ -39,10 +39,10 @@ export class IslandCreatedListener extends Listener<IslandCreatedEvent> {
         position,
         backgroundImage,
       });
-      
+
       await island.save();
       console.log(`Island created: ${name} (${id})`);
-      
+
       msg.ack();
     } catch (error) {
       console.error('Error processing island:created event:', error);

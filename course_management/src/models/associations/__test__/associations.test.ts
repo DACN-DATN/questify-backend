@@ -32,7 +32,7 @@ it('check island associations', async () => {
     'prerequisites',
     'islandsThatArePrerequisites',
     'template',
-    'backgroundImage'
+    'backgroundImage',
   ]);
 });
 

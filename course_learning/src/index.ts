@@ -26,27 +26,22 @@ import { initializeEventProcessors } from './services/event-processors';
 
 const start = async () => {
   try {
-    // Connect to database
     await connectDb();
-    console.log('Connected to Course Learning SRV Postgres');
 
-    // Sync database models - the syncModels function handles its own logging
     await syncModels();
 
     // Set up graceful shutdown handlers
     const gracefulShutdown = async () => {
-      console.log('Shutting down...');
-      // Stop the retry service
       retryService.stop();
-      
+
       // Close NATS connection
       if (natsWrapper.client) {
         await natsWrapper.client.close();
       }
-      
+
       // Close database connection
       await closeDbConnection();
-      
+
       process.exit(0);
     };
 
@@ -70,7 +65,6 @@ const start = async () => {
       process.env.NATS_CLIENT_ID,
       process.env.NATS_URL,
     );
-    console.log('Connected to NATS');
 
     // Initialize event processors for the retry service
     initializeEventProcessors();
@@ -100,23 +94,12 @@ const start = async () => {
     new ChallengeUpdatedListener(natsWrapper.client).listen();
     new SlideCreatedListener(natsWrapper.client).listen();
     new SlideUpdatedListener(natsWrapper.client).listen();
-    
-    // Log queue status every 30 seconds for monitoring
-    setInterval(() => {
-      const queueSize = retryService.getQueueSize();
-      if (queueSize > 0) {
-        console.log(`Retry queue status: ${queueSize} events pending`);
-      }
-    }, 30000);
-
   } catch (err) {
     console.error('Error starting service:', err);
     process.exit(1);
   }
 };
 
-app.listen(3000, () => {
-  console.log('Listening on port 3000!');
-});
+app.listen(3000, () => {});
 
 start();

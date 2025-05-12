@@ -71,25 +71,25 @@ async function seedTeacherCourse() {
     console.log('\nCreating islands...');
 
     const islandNames = [
-      { 
-        name: 'REST API Basics', 
+      {
+        name: 'REST API Basics',
         description: 'Learn the fundamentals of RESTful APIs',
-        pathType: IslandPathType.ForestPath
+        pathType: IslandPathType.ForestPath,
       },
-      { 
-        name: 'Database Integration', 
+      {
+        name: 'Database Integration',
         description: 'Connect your API to databases',
-        pathType: IslandPathType.DesertPath
+        pathType: IslandPathType.DesertPath,
       },
-      { 
-        name: 'Authentication', 
+      {
+        name: 'Authentication',
         description: 'Implement secure authentication',
-        pathType: IslandPathType.IcePath
+        pathType: IslandPathType.IcePath,
       },
-      { 
-        name: 'Deployment', 
+      {
+        name: 'Deployment',
         description: 'Deploy your backend to production',
-        pathType: IslandPathType.ForestPath
+        pathType: IslandPathType.ForestPath,
       },
     ];
 
@@ -148,7 +148,7 @@ async function seedTeacherCourse() {
       // Add a delay after creating each island to allow the event to be processed
       // This helps ensure islands exist before prerequisite relationships are created
       console.log(`Waiting for island creation event to be processed...`);
-      await new Promise((resolve) => setTimeout(resolve, 5000)); // 5 second delay
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 second delay
 
       // Create 5 levels for this island
       await createLevelsForIsland(island.id, name);
@@ -296,10 +296,10 @@ function saveCourseData(courseId: string, islandIds: string[], existingData: See
   try {
     const filePath = path.join(__dirname, 'seed-data.json');
     const data: SeedData = existingData || {};
-    
+
     data.courseId = courseId;
     data.islandIds = islandIds;
-    
+
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     console.log(`Course data saved to ${filePath}`);
   } catch (error) {

@@ -25,12 +25,18 @@ router.post(
   [
     body('name').notEmpty().withMessage('Island name is required'),
     body('description').optional(),
-    body('islandTemplateId').optional().isUUID().withMessage('Island template ID must be a valid UUID'),
+    body('islandTemplateId')
+      .optional()
+      .isUUID()
+      .withMessage('Island template ID must be a valid UUID'),
     body('pathType')
       .optional()
       .isIn(Object.values(IslandPathType))
       .withMessage('Path type must be a valid type'),
-    body('islandBackgroundImageId').optional().isUUID().withMessage('Island background image ID must be a valid UUID'),
+    body('islandBackgroundImageId')
+      .optional()
+      .isUUID()
+      .withMessage('Island background image ID must be a valid UUID'),
     body('prerequisiteIslandIds')
       .optional()
       .isArray()
@@ -39,13 +45,13 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const courseId = req.params.course_id;
-    const { 
-      name, 
-      description, 
+    const {
+      name,
+      description,
       prerequisiteIslandIds,
       islandTemplateId,
       pathType,
-      islandBackgroundImageId
+      islandBackgroundImageId,
     } = req.body;
 
     try {
@@ -109,12 +115,9 @@ router.post(
 
         await recalculatePositions(courseId, transaction);
 
-        await island.reload({ 
+        await island.reload({
           transaction,
-          include: [
-            { association: 'template' },
-            { association: 'backgroundImage' }
-          ]
+          include: [{ association: 'template' }, { association: 'backgroundImage' }],
         });
 
         return {

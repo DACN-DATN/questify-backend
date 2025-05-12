@@ -34,9 +34,9 @@ router.delete(
       const islandCount = await Island.count({
         where: {
           islandBackgroundImageId: id,
-          isDeleted: false
+          isDeleted: false,
         },
-        transaction
+        transaction,
       });
 
       if (islandCount > 0) {

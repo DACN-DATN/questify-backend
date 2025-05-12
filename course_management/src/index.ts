@@ -35,7 +35,6 @@ const start = async () => {
     new UserUpdatedListener(natsWrapper.client).listen();
     new IslandTemplateCreatedListener(natsWrapper.client).listen();
     new IslandTemplateUpdatedListener(natsWrapper.client).listen();
-
   } catch (err) {
     console.error(err);
   }

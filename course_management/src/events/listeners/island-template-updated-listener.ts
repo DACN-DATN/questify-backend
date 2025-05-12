@@ -9,29 +9,27 @@ export class IslandTemplateUpdatedListener extends Listener<IslandTemplateUpdate
 
   async onMessage(data: IslandTemplateUpdatedEvent['data'], msg: Message) {
     const { id, name, image_url, isDeleted, deletedAt } = data;
-    
+
     const existingTemplate = await IslandTemplate.findByPk(id);
-    
+
     if (!existingTemplate) {
+      console.warn(`Island template not found with ID: ${id}`);
       msg.ack();
       return;
     }
-    
-    // Create an update object with only the fields that are present in the event
-    const updateFields: any = {};
-    
-    if (name !== undefined) updateFields.name = name;
-    if (image_url !== undefined) updateFields.imageUrl = image_url;
-    if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
-    if (deletedAt !== undefined) updateFields.deletedAt = deletedAt;
-    
+
     await IslandTemplate.update(
-      updateFields,
       {
-        where: { id }
-      }
+        name,
+        imageUrl: image_url,
+        isDeleted,
+        deletedAt,
+      },
+      {
+        where: { id },
+      },
     );
-    
+
     msg.ack();
   }
 }

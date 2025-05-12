@@ -12,7 +12,7 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
   async onMessage(data: LevelCreatedEvent['data'], msg: Message) {
     try {
       const { id, islandId, name, description, position } = data;
-      
+
       // Check if level already exists
       const existingLevel = await Level.findByPk(id);
       if (existingLevel) {
@@ -20,7 +20,7 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
         msg.ack();
         return;
       }
-      
+
       // Check if island exists
       const existingIsland = await Island.findByPk(islandId);
       if (!existingIsland) {
@@ -30,7 +30,7 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
         msg.ack();
         return;
       }
-      
+
       // Island exists, proceed with level creation
       const level = Level.build({
         id,
@@ -39,10 +39,9 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
         position,
         islandId,
       });
-      
+
       await level.save();
-      console.log(`Level created: ${name} (${id})`);
-      
+
       msg.ack();
     } catch (error) {
       console.error('Error processing level:created event:', error);

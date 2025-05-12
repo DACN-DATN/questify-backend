@@ -51,6 +51,7 @@ router.get(
           model: Level,
         },
       ],
+      order: [['Level', 'position', 'ASC']],
     });
     res.send({ userLevels });
   },
