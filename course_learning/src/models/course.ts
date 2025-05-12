@@ -88,6 +88,11 @@ Course.init(CourseDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: Course.scopes,
   validate: Course.validations,
 });

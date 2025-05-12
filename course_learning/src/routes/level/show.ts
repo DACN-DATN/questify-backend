@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { NotFoundError, ResourcePrefix, validateRequest } from '@datn242/questify-common';
 import { Level } from '../../models/level';
 import { param } from 'express-validator';
+import { Challenge } from '../../models/challenge';
 
 const router = express.Router();
 
@@ -12,7 +13,15 @@ router.get(
   async (req: Request, res: Response) => {
     const { level_id } = req.params;
 
-    const level = await Level.findByPk(level_id);
+    const level = await Level.findByPk(level_id, {
+      include: [
+        {
+          model: Challenge,
+          as: 'Challenge',
+          required: false,
+        },
+      ],
+    });
 
     if (!level) {
       throw new NotFoundError();

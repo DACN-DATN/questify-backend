@@ -4,6 +4,8 @@ import { Course } from '../models/course';
 import { UserCourse } from '../models/user-course';
 import { Island } from '../models/island';
 import { UserIsland } from '../models/user-island';
+import { Level } from '../models/level';
+import { UserLevel } from '../models/user-level';
 import { sequelize } from '../config/db';
 import { Transaction } from 'sequelize';
 
@@ -59,7 +61,10 @@ export async function initializeUserCourse(courseId: string, userId: string): Pr
     );
 
     // Initialize islands within the same transaction
-    await initializeUserIslandsWithTransaction(courseId, userId, transaction);
+    const userIslands = await initializeUserIslandsWithTransaction(courseId, userId, transaction);
+
+    // Initialize levels for all islands within the same transaction
+    await initializeUserLevelsWithTransaction(userId, userIslands, transaction);
 
     // Commit the transaction
     await transaction.commit();
@@ -132,6 +137,128 @@ async function initializeUserIslandsWithTransaction(
 
   // Return all user islands (new and existing)
   return [...existingUserIslands, ...userIslands];
+}
+
+/**
+ * Initialize user levels with transaction support
+ * This function creates UserLevel records for all levels in the specified islands
+ */
+async function initializeUserLevelsWithTransaction(
+  userId: string,
+  userIslands: UserIsland[],
+  transaction: Transaction,
+): Promise<UserLevel[]> {
+  // Get all island IDs
+  const islandIds = userIslands.map((userIsland) => userIsland.islandId);
+
+  // Find all levels for these islands, ordered by position to ensure we process them in order
+  const levels = await Level.findAll({
+    where: {
+      islandId: islandIds,
+    },
+    order: [['position', 'ASC']],
+    transaction,
+  });
+
+  if (!levels || levels.length === 0) {
+    console.warn('No levels found for the islands');
+    return [];
+  }
+
+  // Get map of island completion status
+  const islandStatusMap = new Map(
+    userIslands.map((userIsland) => [userIsland.islandId, userIsland.completionStatus]),
+  );
+
+  // Check if user levels already exist
+  const existingUserLevels = await UserLevel.findAll({
+    where: {
+      userId: userId,
+      levelId: levels.map((level) => level.id),
+    },
+    transaction,
+  });
+
+  // Skip creation for levels that already have user levels
+  const existingLevelIds = new Set(existingUserLevels.map((ul) => ul.levelId));
+  const levelsToCreate = levels.filter((level) => !existingLevelIds.has(level.id));
+
+  // Group levels by island ID for easy processing
+  const levelsByIsland = levelsToCreate.reduce(
+    (acc, level) => {
+      if (!acc[level.islandId]) {
+        acc[level.islandId] = [];
+      }
+      acc[level.islandId].push(level);
+      return acc;
+    },
+    {} as Record<string, Level[]>,
+  );
+
+  const userLevels: UserLevel[] = [];
+
+  // Process each island's levels
+  for (const [islandId, islandLevels] of Object.entries(levelsByIsland)) {
+    // Sort levels by position just to be safe
+    islandLevels.sort((a, b) => a.position - b.position);
+
+    // Get the island's completion status
+    const islandStatus = islandStatusMap.get(islandId);
+
+    // NORMAL LOGIC: First level is InProgress if island is InProgress, others are Locked
+    for (let i = 0; i < islandLevels.length; i++) {
+      const level = islandLevels[i];
+      let status = CompletionStatus.Locked; // Default to locked
+
+      // If the island is in progress and this is the first level (position 0), set it to in progress
+      if (islandStatus === CompletionStatus.InProgress && i === 0) {
+        status = CompletionStatus.InProgress;
+      }
+
+      const userLevel = await UserLevel.create(
+        {
+          userId: userId,
+          levelId: level.id,
+          point: 0,
+          completionStatus: status,
+        },
+        { transaction },
+      );
+
+      userLevels.push(userLevel);
+    }
+
+    // // TEST SCENARIO: First 2 levels Completed, 3rd level InProgress, others Locked
+    // for (let i = 0; i < islandLevels.length; i++) {
+    //   const level = islandLevels[i];
+    //   let status = CompletionStatus.Locked; // Default to locked
+    //   let points = 0;
+
+    //   if (i < 2) {
+    //     // First 2 levels are completed
+    //     status = CompletionStatus.Completed;
+    //     points = 100; // Example points for completed levels
+    //   } else if (i === 2) {
+    //     // 3rd level is in progress
+    //     status = CompletionStatus.InProgress;
+    //   }
+
+    //   const userLevel = await UserLevel.create(
+    //     {
+    //       userId: userId,
+    //       levelId: level.id,
+    //       point: points,
+    //       completionStatus: status,
+    //     },
+    //     { transaction },
+    //   );
+
+    //   userLevels.push(userLevel);
+    // }
+  }
+
+  // Return all user levels (new and existing)
+  return [...existingUserLevels, ...userLevels];
 }
 
 /**

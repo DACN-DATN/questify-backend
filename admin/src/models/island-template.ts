@@ -65,6 +65,11 @@ IslandTemplate.init(IslandTemplateDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: IslandTemplate.scopes,
   validate: IslandTemplate.validations,
 });

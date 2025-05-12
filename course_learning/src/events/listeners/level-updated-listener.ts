@@ -9,7 +9,7 @@ export class LevelUpdatedListener extends Listener<LevelUpdatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: LevelUpdatedEvent['data'], msg: Message) {
-    const { id, islandId, name, description, position } = data;
+    const { id, islandId, name, description, position, contentType } = data;
     const existingIsland = await Island.findByPk(islandId);
     if (!existingIsland) {
       console.warn(`Island not found with ID: ${islandId}, skipping course creation`);
@@ -26,6 +26,7 @@ export class LevelUpdatedListener extends Listener<LevelUpdatedEvent> {
         description,
         position,
         islandId,
+        contentType,
       },
       {
         where: { id },

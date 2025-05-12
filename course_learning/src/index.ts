@@ -9,6 +9,8 @@ import { UserCreatedListener } from './events/listeners/user-created-listener';
 import { CourseCreatedListener } from './events/listeners/course-created-listener';
 import { IslandCreatedListener } from './events/listeners/island-created-listener';
 import { IslandUpdatedListener } from './events/listeners/island-updated-listener';
+import { PrerequisiteIslandCreatedListener } from './events/listeners/prerequisite-island-created-listener';
+import { PrerequisiteIslandDeletedListener } from './events/listeners/prerequisite-island-deleted.listener';
 import { UserUpdatedListener } from './events/listeners/user-updated-listener';
 import { CourseItemTemplateCreatedListener } from './events/listeners/course-item-template-created-listener';
 import { CourseItemTemplateUpdatedListener } from './events/listeners/course-item-templated-updated-listener';
@@ -18,6 +20,7 @@ import { ChallengeCreatedListener } from './events/listeners/challenge-created-l
 import { ChallengeUpdatedListener } from './events/listeners/challenge-updated-listener';
 import { SlideCreatedListener } from './events/listeners/slide-created-listener';
 import { SlideUpdatedListener } from './events/listeners/slide-updated-listener';
+import { AttemptUpdatedListener } from './events/listeners/attempt-updated-listener';
 
 const start = async () => {
   await connectDb();
@@ -64,6 +67,8 @@ const start = async () => {
     new CourseCreatedListener(natsWrapper.client).listen();
     new IslandCreatedListener(natsWrapper.client).listen();
     new IslandUpdatedListener(natsWrapper.client).listen();
+    new PrerequisiteIslandCreatedListener(natsWrapper.client).listen();
+    new PrerequisiteIslandDeletedListener(natsWrapper.client).listen();
     new CourseItemTemplateCreatedListener(natsWrapper.client).listen();
     new CourseItemTemplateUpdatedListener(natsWrapper.client).listen();
     new ItemTemplateCreatedListener(natsWrapper.client).listen();
@@ -72,6 +77,7 @@ const start = async () => {
     new ChallengeUpdatedListener(natsWrapper.client).listen();
     new SlideCreatedListener(natsWrapper.client).listen();
     new SlideUpdatedListener(natsWrapper.client).listen();
+    new AttemptUpdatedListener(natsWrapper.client).listen();
 
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());

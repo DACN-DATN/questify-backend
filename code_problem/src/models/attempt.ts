@@ -23,6 +23,20 @@ const AttemptDefinition = {
     allowNull: true,
     type: DataTypes.JSON,
   },
+  gold: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    validate: {
+      min: 0,
+    },
+  },
+  exp: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    validate: {
+      min: 0,
+    },
+  },
   point: {
     allowNull: true,
     type: DataTypes.INTEGER,
@@ -38,17 +52,30 @@ const AttemptDefinition = {
       key: 'id',
     },
   },
+  finishedAt: {
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
+  createdAt: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: () => Date.now(),
+  },
 };
 
 interface AttemptAttributes {
   id: string;
   userId: string;
-  answer: object;
+  answer?: object;
+  gold?: number;
+  exp?: number;
   point?: number;
   levelId: string;
+  finishedAt?: Date;
+  createdAt: Date;
 }
 
-type AttemptCreationAttributes = Optional<AttemptAttributes, 'id'>;
+type AttemptCreationAttributes = Optional<AttemptAttributes, 'id' | 'createdAt'>;
 
 class Attempt
   extends Model<AttemptAttributes, AttemptCreationAttributes>
@@ -56,9 +83,13 @@ class Attempt
 {
   public id!: string;
   public userId!: string;
-  public answer!: object;
+  public answer?: object;
+  public gold?: number;
+  public exp?: number;
   public point?: number;
   public levelId!: string;
+  public finishedAt?: Date;
+  public createdAt!: Date;
 }
 
 Attempt.init(AttemptDefinition, {
