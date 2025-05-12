@@ -20,11 +20,11 @@ const CourseDefinition = {
   },
   description: {
     allowNull: true,
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
   },
   backgroundImage: {
     allowNull: true,
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
   },
   teacherId: {
     allowNull: false,
@@ -87,6 +87,11 @@ Course.init(CourseDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: Course.scopes,
   validate: Course.validations,
 });

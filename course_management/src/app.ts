@@ -11,6 +11,7 @@ import { showCourseRouter } from './routes/course/show';
 import { createCourseRouter } from './routes/course/new';
 import { updateCourseRouter } from './routes/course/update';
 import { deleteCourseRouter } from './routes/course/delete';
+import { indexCourseIntructorRouter } from './routes/course/index-instructor';
 
 import { createIslandRouter } from './routes/island/new';
 import { showIslandRouter } from './routes/island/show';
@@ -22,6 +23,8 @@ import { indexIslandRouter } from './routes/island';
 import { indexLevelRouter } from './routes/level';
 import { updateLevelRouter } from './routes/level/update';
 import { deleteLevelRouter } from './routes/level/delete';
+import { showLevelChallengeRouter } from './routes/level/show-challenge';
+import { indexCurriculumRouter } from './routes/island/curriculum';
 
 import { createReviewRouter } from './routes/course/new-review';
 import { showReviewRouter } from './routes/course/show-review';
@@ -33,6 +36,19 @@ import { enrollCourseRouter } from './routes/course/enroll';
 import { indexItemTemplateRouter } from './routes/item-template/index';
 import { indexCourseItemTemplateRouter } from './routes/item-template/course-index';
 import { updateCourseItemTemplateRouter } from './routes/item-template/course-update';
+import { createItemTemplateRouter } from './routes/item-template/new';
+import { updateItemTemplateRouter } from './routes/item-template/update';
+import { inventoryBuyRouter } from './routes/inventory/buy';
+import { inventoryIndexRouter } from './routes/inventory/index';
+import { inventoryUseRouter } from './routes/inventory/use';
+
+import { createChallengeRouter } from './routes/challenge/new';
+// import { uploadChallengeRouter } from './routes/challenge/upload';
+import { showChallengeRouter } from './routes/challenge/show';
+
+import { createSlideRouter } from './routes/slide/new';
+import { updateSlideRouter } from './routes/slide/update';
+import { deleteSlideRouter } from './routes/slide/delete';
 
 const app = express();
 app.set('trust proxy', true);
@@ -48,6 +64,7 @@ app.use(currentUser);
 app.use(deleteAllRouter);
 
 app.use(indexCourseRouter);
+app.use(indexCourseIntructorRouter);
 app.use(showCourseRouter);
 app.use(createCourseRouter);
 app.use(updateCourseRouter);
@@ -58,9 +75,11 @@ app.use(showIslandRouter);
 app.use(updateIslandRouter);
 app.use(indexIslandRouter);
 app.use(deleteIslandRouter);
+app.use(indexCurriculumRouter);
 
 app.use(createLevelRouter);
 app.use(indexLevelRouter);
+app.use(showLevelChallengeRouter);
 app.use(updateLevelRouter);
 app.use(deleteLevelRouter);
 
@@ -74,6 +93,19 @@ app.use(enrollCourseRouter);
 app.use(indexItemTemplateRouter);
 app.use(indexCourseItemTemplateRouter);
 app.use(updateCourseItemTemplateRouter);
+app.use(createItemTemplateRouter);
+app.use(updateItemTemplateRouter);
+app.use(inventoryBuyRouter);
+app.use(inventoryIndexRouter);
+app.use(inventoryUseRouter);
+
+app.use(createChallengeRouter);
+// app.use(uploadChallengeRouter);
+app.use(showChallengeRouter);
+
+app.use(createSlideRouter);
+app.use(updateSlideRouter);
+app.use(deleteSlideRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

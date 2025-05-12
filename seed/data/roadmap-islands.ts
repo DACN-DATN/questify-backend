@@ -16,12 +16,13 @@ async function seed() {
 
     const courseResponse = await api.post(ResourcePrefix.CourseManagement, {
       name: 'Introduction to Backend Development',
+      shortDescription: 'A comprehensive course on backend development using Node.js and Express.',
       description:
-        'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL.',
+        'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL. This course covers REST APIs, database management, and authentication techniques. You will also learn how to deploy your applications and manage server environments. By the end of this course, you will have a solid understanding of backend development and be able to create your own web applications.',
       category: CourseCategory.ITSoftware,
       price: 49.99,
       backgroundImage:
-        'https://cdn.builder.io/api/v1/image/assets/TEMP/dfb32da73c8310560baa7041ffee9d62e89ca8f3',
+        'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Fislands%2Fbackground.png?alt=media&token=6881fef8-d3fd-4bcb-99c0-bad208f4ee70',
       learningObjectives: [
         'Understand REST APIs',
         'Work with databases',
@@ -45,6 +46,8 @@ async function seed() {
       },
     );
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const island1 = island1Response.data;
 
     const island2Response = await api.post(
@@ -55,6 +58,8 @@ async function seed() {
       },
     );
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const island2 = island2Response.data;
 
     await api.post(ResourcePrefix.CourseManagement + `/${course.id}/islands`, {
@@ -63,11 +68,15 @@ async function seed() {
       prerequisiteIslandIds: [island1.id, island2.id],
     });
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     await api.post(ResourcePrefix.CourseManagement + `/${course.id}/islands`, {
       name: '4',
       description: 'Fourth Island',
       prerequisiteIslandIds: [island1.id],
     });
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     console.log('Islands seeded successfully.');
 

@@ -45,6 +45,7 @@ router.post(
   async (req: Request, res: Response) => {
     const {
       name,
+      shortDescription,
       description,
       backgroundImage,
       thumbnail,
@@ -57,6 +58,7 @@ router.post(
 
     const course = Course.build({
       name,
+      shortDescription,
       description,
       backgroundImage,
       thumbnail,

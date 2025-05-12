@@ -19,7 +19,7 @@ const InventoryDefinition = {
       min: 0,
     },
   },
-  userId: {
+  user_id: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
@@ -27,7 +27,7 @@ const InventoryDefinition = {
       key: 'id',
     },
   },
-  courseId: {
+  course_id: {
     allowNull: false,
     type: DataTypes.UUID,
     references: {
@@ -35,16 +35,30 @@ const InventoryDefinition = {
       key: 'id',
     },
   },
+  isDeleted: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  deletedAt: {
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
 };
 
 interface InventoryAttributes {
   id: string;
   gold: number;
-  userId: string;
-  courseId: string;
+  user_id: string;
+  course_id: string;
+  isDeleted: boolean;
+  deletedAt?: Date;
 }
 
-type InventoryCreationAttributes = Optional<InventoryAttributes, 'id'>;
+type InventoryCreationAttributes = Optional<
+  InventoryAttributes,
+  'id' | 'gold' | 'isDeleted' | 'deletedAt'
+>;
 
 class Inventory
   extends Model<InventoryAttributes, InventoryCreationAttributes>
@@ -52,8 +66,10 @@ class Inventory
 {
   public id!: string;
   public gold!: number;
-  public userId!: string;
-  public courseId!: string;
+  public user_id!: string;
+  public course_id!: string;
+  public isDeleted!: boolean;
+  public deletedAt?: Date;
 
   static readonly scopes: ModelScopeOptions = {};
 
@@ -66,6 +82,11 @@ Inventory.init(InventoryDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: Inventory.scopes,
   validate: Inventory.validations,
 });

@@ -1,5 +1,7 @@
 import { app } from './app';
 import { connectDb, closeDbConnection } from './config/db';
+import { AttemptCreatedListener } from './events/listeners/attempt-created-listener';
+import { AttemptUpdatedListener } from './events/listeners/attempt-updated-listener';
 import { LevelCreatedListener } from './events/listeners/level-created-listener';
 import { LevelUpdatedListener } from './events/listeners/level-updated-listener';
 import { UserCreatedListener } from './events/listeners/user-created-listener';
@@ -48,6 +50,8 @@ const start = async () => {
     new LevelUpdatedListener(natsWrapper.client).listen();
     new UserCreatedListener(natsWrapper.client).listen();
     new UserUpdatedListener(natsWrapper.client).listen();
+    new AttemptCreatedListener(natsWrapper.client).listen();
+    new AttemptUpdatedListener(natsWrapper.client).listen();
 
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());

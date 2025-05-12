@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } from 'sequelize';
 import { sequelize } from '../config/db';
 import { v4 as uuidv4 } from 'uuid';
+import { EffectType } from '@datn242/questify-common';
 
 const ItemTemplateDefinition = {
   id: {
@@ -17,40 +18,59 @@ const ItemTemplateDefinition = {
       min: 0,
     },
   },
+  name: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    validate: {
+      notEmpty: true,
+    },
+  },
   effect: {
     allowNull: false,
     type: DataTypes.STRING,
+    validate: {
+      isIn: [Object.values(EffectType)],
+    },
   },
   effect_description: {
     allowNull: false,
     type: DataTypes.STRING,
-    validate: {
-      len: [1, 255] as [number, number],
-    },
+  },
+  img: {
+    allowNull: false,
+    type: DataTypes.STRING, // URL type
   },
   description: {
     allowNull: false,
     type: DataTypes.STRING,
-    validate: {
-      len: [1, 255] as [number, number],
-    },
   },
-  img: {
+  isDeleted: {
     allowNull: false,
-    type: DataTypes.STRING,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  deletedAt: {
+    allowNull: true,
+    type: DataTypes.DATE,
   },
 };
 
 interface ItemTemplateAttributes {
   id: string;
   gold: number;
-  effect: string;
+  name: string;
+  effect: EffectType;
   effect_description: string;
-  description: string;
   img: string;
+  description: string;
+  isDeleted: boolean;
+  deletedAt?: Date;
 }
 
-type ItemTemplateCreationAttributes = Optional<ItemTemplateAttributes, 'id'>;
+type ItemTemplateCreationAttributes = Optional<
+  ItemTemplateAttributes,
+  'id' | 'isDeleted' | 'deletedAt' | 'gold'
+>;
 
 class ItemTemplate
   extends Model<ItemTemplateAttributes, ItemTemplateCreationAttributes>
@@ -58,10 +78,13 @@ class ItemTemplate
 {
   public id!: string;
   public gold!: number;
-  public effect!: string;
+  public name!: string;
+  public effect!: EffectType;
   public effect_description!: string;
-  public description!: string;
   public img!: string;
+  public description!: string;
+  public isDeleted!: boolean;
+  public deletedAt?: Date;
 
   static readonly scopes: ModelScopeOptions = {};
 
@@ -74,6 +97,11 @@ ItemTemplate.init(ItemTemplateDefinition, {
   underscored: true,
   createdAt: true,
   updatedAt: true,
+  defaultScope: {
+    where: {
+      isDeleted: false,
+    },
+  },
   scopes: ItemTemplate.scopes,
   validate: ItemTemplate.validations,
 });

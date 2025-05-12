@@ -44,7 +44,7 @@ const UserLevelDefinition = {
       CompletionStatus.Fail,
       CompletionStatus.Locked,
     ),
-    defaultValue: CompletionStatus.InProgress,
+    defaultValue: CompletionStatus.Locked,
   },
   finishedDate: {
     allowNull: true,

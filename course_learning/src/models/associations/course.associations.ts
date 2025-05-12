@@ -15,23 +15,22 @@ const defineCourseAssociations = () => {
   Course.hasMany(Island, { foreignKey: 'courseId' });
   Course.hasMany(Review, { foreignKey: 'courseId' });
   Course.hasMany(Reward, { foreignKey: 'courseId' });
-  Course.hasMany(Inventory, { foreignKey: 'courseId' });
   Course.belongsToMany(ItemTemplate, {
     through: CourseItemTemplate,
-    foreignKey: 'courseId',
-    otherKey: 'itemTemplateId',
-    as: 'itemTemplates',
+    foreignKey: 'course_id',
+    otherKey: 'item_template_id',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
-  Course.hasMany(CourseItemTemplate, { foreignKey: 'courseId' });
-  Course.belongsToMany(User, {
-    through: 'UserCourse',
-    foreignKey: 'courseId',
-    otherKey: 'userId',
-    as: 'users',
+
+  Course.hasMany(CourseItemTemplate, {
+    foreignKey: 'course_id',
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
+  });
+
+  Course.hasMany(Inventory, {
+    foreignKey: 'course_id',
+    onDelete: 'CASCADE',
   });
   Course.hasMany(UserCourse, { foreignKey: 'courseId' });
 };
