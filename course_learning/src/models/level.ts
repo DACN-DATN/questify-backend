@@ -64,6 +64,8 @@ class Level extends Model<LevelAttributes, LevelCreationAttributes> implements L
   public contentType?: LevelContent;
   public islandId!: string;
 
+  public readonly Island?: Island;
+
   public getIsland!: () => Promise<Island>;
 
   static readonly scopes: ModelScopeOptions = {};

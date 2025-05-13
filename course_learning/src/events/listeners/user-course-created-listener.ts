@@ -15,12 +15,14 @@ export class UserCourseCreatedListener extends Listener<UserCourseCreatedEvent> 
     if (!existingStudent) {
       console.warn(`Student not found with ID: ${studentId}`);
       msg.ack();
+      return;
     }
 
     const existingCourse = await Course.findByPk(courseId);
     if (!existingCourse) {
       console.warn(`Course not found with ID: ${courseId}`);
       msg.ack();
+      return;
     }
     await initializeUserCourse(courseId, studentId);
     //await initializeUserIslands(courseId, studentId);

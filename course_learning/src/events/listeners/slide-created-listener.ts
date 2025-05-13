@@ -15,6 +15,7 @@ export class SlideCreatedListener extends Listener<SlideCreatedEvent> {
     if (!existingChallenge) {
       console.warn(`Challenge not found with ID: ${challengeId}`);
       msg.ack();
+      return;
     }
     const slide = Slide.build({
       id,

@@ -47,6 +47,7 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
       console.error('Error processing level:created event:', error);
       await retryService.addEvent(this.subject, data);
       msg.ack();
+      return;
     }
   }
 }

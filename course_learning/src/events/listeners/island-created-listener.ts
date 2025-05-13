@@ -48,6 +48,7 @@ export class IslandCreatedListener extends Listener<IslandCreatedEvent> {
       console.error('Error processing island:created event:', error);
       await retryService.addEvent(this.subject, data);
       msg.ack();
+      return;
     }
   }
 }

@@ -14,6 +14,7 @@ export class CourseCreatedListener extends Listener<CourseCreatedEvent> {
     if (!existingTeacher) {
       console.warn(`Teacher not found with ID: ${teacherId}, skipping course creation`);
       msg.ack();
+      return;
     }
     const course = Course.build({
       id,
