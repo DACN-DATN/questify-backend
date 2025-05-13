@@ -27,6 +27,10 @@ const CourseDefinition = {
     allowNull: true,
     type: DataTypes.TEXT,
   },
+  thumbnail: {
+    allowNull: true,
+    type: DataTypes.TEXT,
+  },
   teacherId: {
     allowNull: false,
     type: DataTypes.UUID,
@@ -67,6 +71,7 @@ interface CourseAttributes {
   name: string;
   description?: string;
   backgroundImage?: string;
+  thumbnail?: string;
   teacherId: string;
   status?: CourseStatus;
   nextLevelEffect?: EffectType;
@@ -81,6 +86,7 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public name!: string;
   public description?: string;
   public backgroundImage?: string;
+  public thumbnail?: string;
   public teacherId!: string;
   public status?: CourseStatus;
   public nextLevelEffect?: EffectType;

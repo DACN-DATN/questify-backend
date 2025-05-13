@@ -9,7 +9,8 @@ export class CourseUpdatedListener extends Listener<CourseUpdatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: CourseUpdatedEvent['data'], msg: Message) {
-    const { id, teacherId, status, name, description, backgroundImage, isDeleted } = data;
+    const { id, teacherId, status, name, description, backgroundImage, thumbnail, isDeleted } =
+      data;
     const existingTeacher = await User.findByPk(teacherId);
     if (!existingTeacher) {
       console.warn(`Teacher not found with ID: ${teacherId}`);
@@ -28,6 +29,7 @@ export class CourseUpdatedListener extends Listener<CourseUpdatedEvent> {
         description,
         status,
         backgroundImage,
+        thumbnail,
         isDeleted,
       },
       {
