@@ -21,7 +21,9 @@ it('returns the testcase if the testcase is found', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test Title',
       description: 'Test Description',
+      starterCode: 'Test StarterCode',
     })
     .expect(201);
 
