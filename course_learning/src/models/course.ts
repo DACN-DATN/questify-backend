@@ -2,7 +2,7 @@ import { Model, DataTypes, Optional, ModelScopeOptions, ModelValidateOptions } f
 import { sequelize } from '../config/db';
 import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
-import { CourseStatus, EffectType } from '@datn242/questify-common';
+import { CourseStatus } from '@datn242/questify-common';
 
 const CourseDefinition = {
   id: {
@@ -47,14 +47,6 @@ const CourseDefinition = {
     },
     defaultValue: CourseStatus.Draft,
   },
-  nextLevelEffect: {
-    allowNull: true,
-    type: DataTypes.STRING,
-    validate: {
-      isIn: [Object.values(EffectType)],
-    },
-    defaultValue: null,
-  },
   isDeleted: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
@@ -74,7 +66,6 @@ interface CourseAttributes {
   thumbnail?: string;
   teacherId: string;
   status?: CourseStatus;
-  nextLevelEffect?: EffectType;
   isDeleted: boolean;
   deletedAt?: Date;
 }
@@ -89,7 +80,6 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public thumbnail?: string;
   public teacherId!: string;
   public status?: CourseStatus;
-  public nextLevelEffect?: EffectType;
   public isDeleted!: boolean;
   public deletedAt?: Date;
 

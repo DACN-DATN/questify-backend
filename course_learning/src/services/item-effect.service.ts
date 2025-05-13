@@ -1,5 +1,6 @@
 import { EffectType, BadRequestError } from '@datn242/questify-common';
 import { Course } from '../models/course';
+import { UserCourse } from '../models/user-course';
 
 export function randomGoldItem(): number {
   return Math.floor(Math.random() * 190) + 10;
@@ -12,6 +13,7 @@ export function randomExpItem(): number {
 export async function multipleExpForNextLevel(
   effectType: EffectType,
   courseId: string,
+  userId: string,
 ): Promise<void> {
   const validExpEffects = [EffectType.ExpX2, EffectType.ExpX3, EffectType.ExpX4];
 
@@ -21,20 +23,26 @@ export async function multipleExpForNextLevel(
     );
   }
 
-  const course = await Course.findByPk(courseId);
-  if (!course) {
+  const user_course = await UserCourse.findOne({
+    where: {
+      userId: userId,
+      courseId: courseId,
+    }
+  });
+  if (!user_course) {
     throw new BadRequestError('Course not found');
   }
-  await course.update({
+  await user_course.update({
     nextLevelEffect: effectType,
   });
-  await course.save();
+  await user_course.save();
   return;
 }
 
 export async function multipleGoldForNextLevel(
   effectType: EffectType,
   courseId: string,
+  userId: string,
 ): Promise<void> {
   const validGoldEffects = [EffectType.GoldX2, EffectType.GoldX3, EffectType.GoldX4];
 
@@ -44,13 +52,18 @@ export async function multipleGoldForNextLevel(
     );
   }
 
-  const course = await Course.findByPk(courseId);
-  if (!course) {
+  const user_course = await UserCourse.findOne({
+    where: {
+      userId: userId,
+      courseId: courseId,
+    }
+  });
+  if (!user_course) {
     throw new BadRequestError('Course not found');
   }
-  await course.update({
+  await user_course.update({
     nextLevelEffect: effectType,
   });
-  await course.save();
+  await user_course.save();
   return;
 }
