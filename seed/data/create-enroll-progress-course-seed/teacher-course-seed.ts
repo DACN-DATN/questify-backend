@@ -150,6 +150,11 @@ async function seedTeacherCourse() {
       console.log(`Waiting for island creation event to be processed...`);
       await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 second delay
 
+      // Add a delay after creating each island to allow the event to be processed
+      // This helps ensure islands exist before prerequisite relationships are created
+      console.log(`Waiting for island creation event to be processed...`);
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 second delay
+
       // Create 5 levels for this island
       await createLevelsForIsland(island.id, name);
     }

@@ -20,9 +20,11 @@ import { ChallengeCreatedListener } from './events/listeners/challenge-created-l
 import { ChallengeUpdatedListener } from './events/listeners/challenge-updated-listener';
 import { SlideCreatedListener } from './events/listeners/slide-created-listener';
 import { SlideUpdatedListener } from './events/listeners/slide-updated-listener';
-// Import the retry service and event processors
+
 import { retryService } from './services/retry-service';
 import { initializeEventProcessors } from './services/event-processors';
+
+import { AttemptUpdatedListener } from './events/listeners/attempt-updated-listener';
 
 const start = async () => {
   try {
@@ -94,6 +96,10 @@ const start = async () => {
     new ChallengeUpdatedListener(natsWrapper.client).listen();
     new SlideCreatedListener(natsWrapper.client).listen();
     new SlideUpdatedListener(natsWrapper.client).listen();
+    new AttemptUpdatedListener(natsWrapper.client).listen();
+
+    process.on('SIGINT', () => natsWrapper.client.close());
+    process.on('SIGTERM', () => natsWrapper.client.close());
   } catch (err) {
     console.error('Error starting service:', err);
     process.exit(1);

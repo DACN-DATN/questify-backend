@@ -69,6 +69,7 @@ router.post(
       name: level.name,
       description: level.description,
       position: level.position,
+      contentType: level.contentType,
     });
 
     await level.save();

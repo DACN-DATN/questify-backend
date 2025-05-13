@@ -4,6 +4,8 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
+import { deleteAllRouter } from './routes/dev-only/delete-all';
+
 import { indexCourseRouter } from './routes/course/index';
 import { showCourseRouter } from './routes/course/show';
 import { createCourseRouter } from './routes/course/new';
@@ -67,6 +69,8 @@ app.use(
   }),
 );
 app.use(currentUser);
+
+app.use(deleteAllRouter);
 
 app.use(indexCourseRouter);
 app.use(indexCourseIntructorRouter);

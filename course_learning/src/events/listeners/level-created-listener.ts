@@ -11,7 +11,7 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
 
   async onMessage(data: LevelCreatedEvent['data'], msg: Message) {
     try {
-      const { id, islandId, name, description, position } = data;
+      const { id, islandId, name, description, position, contentType } = data;
 
       // Check if level already exists
       const existingLevel = await Level.findByPk(id);
@@ -31,13 +31,13 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
         return;
       }
 
-      // Island exists, proceed with level creation
       const level = Level.build({
         id,
         name,
         description,
         position,
         islandId,
+        contentType,
       });
 
       await level.save();
@@ -45,7 +45,6 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
       msg.ack();
     } catch (error) {
       console.error('Error processing level:created event:', error);
-      // Add to retry queue for any errors
       await retryService.addEvent(this.subject, data);
       msg.ack();
     }

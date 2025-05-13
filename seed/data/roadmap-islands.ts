@@ -8,7 +8,7 @@ const api = apiService.instance;
 async function seed() {
   try {
     await api.post(ResourcePrefix.Auth + '/signin', {
-      email: 'teacher@example.com',
+      email: 'teacher1@example.com',
       password: '12345aB@',
     });
 
@@ -46,6 +46,8 @@ async function seed() {
       },
     );
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const island1 = island1Response.data;
 
     const island2Response = await api.post(
@@ -56,6 +58,8 @@ async function seed() {
       },
     );
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const island2 = island2Response.data;
 
     await api.post(ResourcePrefix.CourseManagement + `/${course.id}/islands`, {
@@ -64,11 +68,15 @@ async function seed() {
       prerequisiteIslandIds: [island1.id, island2.id],
     });
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     await api.post(ResourcePrefix.CourseManagement + `/${course.id}/islands`, {
       name: '4',
       description: 'Fourth Island',
       prerequisiteIslandIds: [island1.id],
     });
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     console.log('Islands seeded successfully.');
 

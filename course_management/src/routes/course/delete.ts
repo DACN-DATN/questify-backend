@@ -7,6 +7,8 @@ import {
   BadRequestError,
   ResourcePrefix,
 } from '@datn242/questify-common';
+import { CourseUpdatedPublisher } from '../../events/publishers/course-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -34,6 +36,8 @@ router.delete(
       isDeleted: true,
       deletedAt: new Date(),
     });
+
+    new CourseUpdatedPublisher(natsWrapper.client).publish(course);
 
     await course.save();
 

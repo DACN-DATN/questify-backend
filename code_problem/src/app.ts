@@ -15,6 +15,10 @@ import { indexAttemptRouter } from './routes/attempts';
 import { createAttemptRouter } from './routes/attempts/new';
 import { showAttemptRouter } from './routes/attempts/show';
 import { showCodeProblemByLevelRouter } from './routes/code_problem/index-level';
+import { assessCodeProblemRouter } from './routes/code_problem/assess';
+import { indexCodeProblemRouter } from './routes/code_problem';
+import { indexTestcaseRouter } from './routes/testcases';
+
 import { deleteAllRouter } from './routes/dev-only/delete-all';
 
 const app = express();
@@ -40,8 +44,11 @@ app.use(indexAttemptRouter);
 app.use(createAttemptRouter);
 app.use(showAttemptRouter);
 app.use(showCodeProblemByLevelRouter);
-app.use(deleteAllRouter);
+app.use(assessCodeProblemRouter);
+app.use(indexCodeProblemRouter);
+app.use(indexTestcaseRouter);
 
+app.use(deleteAllRouter);
 app.all('*', async () => {
   throw new NotFoundError();
 });

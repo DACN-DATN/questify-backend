@@ -9,6 +9,7 @@ import { signinRouter } from './routes/signin';
 import { signupRouter } from './routes/signup';
 import { signoutRouter } from './routes/signout';
 import { updateProfileRouter } from './routes/update';
+import { deleteUserRouter } from './routes/dev-only/delete-all';
 import { getUserRouter } from './routes/index';
 import { deleteUserRouter } from './routes/dev-only/delete-all';
 
@@ -27,6 +28,7 @@ app.use(signinRouter);
 app.use(signupRouter);
 app.use(signoutRouter);
 app.use(updateProfileRouter);
+app.use(deleteUserRouter);
 app.use(getUserRouter);
 app.use(deleteUserRouter);
 

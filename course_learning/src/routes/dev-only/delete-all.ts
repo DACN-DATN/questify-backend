@@ -15,8 +15,14 @@ router.delete(
   [body('deleteKey').isString().withMessage('Service must be valid')],
   validateRequest,
   async (req: Request, res: Response) => {
+    const { deleteKey } = req.body;
+
     if (process.env.NODE_ENV === EnvStage.Prod) {
       throw new BadRequestError('This route is only available in development');
+    }
+
+    if (deleteKey !== 'CourseLearningDelete') {
+      throw new BadRequestError('Invalid delete key');
     }
 
     await sequelize.sync({ force: true });

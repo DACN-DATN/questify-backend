@@ -59,7 +59,9 @@ it('returns an error if the user does not own the code problem', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test Title',
       description: 'Test Description',
+      starterCode: 'function test() {}',
     })
     .expect(201);
 
@@ -89,7 +91,9 @@ it('returns an error if an invalid testcases is provided', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test Title',
       description: 'Test Description',
+      starterCode: 'Test StarterCode',
     })
     .expect(201);
 
@@ -115,7 +119,9 @@ it('creates an testcase with valid inputs', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test Title',
       description: 'Test Description',
+      starterCode: 'Test StarterCode',
     })
     .expect(201);
 
