@@ -11,7 +11,6 @@ import { signoutRouter } from './routes/signout';
 import { updateProfileRouter } from './routes/update';
 import { deleteUserRouter } from './routes/dev-only/delete-all';
 import { getUserRouter } from './routes/index';
-import { deleteUserRouter } from './routes/dev-only/delete-all';
 
 const app = express();
 app.set('trust proxy', true);

@@ -57,8 +57,6 @@ import { getIslandBackgroundImagesRouter } from './routes/island-background-imag
 
 import { getIslandTemplatesRouter } from './routes/island-template/index';
 
-import { deleteAllRouter } from './routes/dev-only/delete-all';
-
 const app = express();
 app.set('trust proxy', true);
 app.use(json());

@@ -115,13 +115,13 @@ router.post(
 
         await recalculatePositions(courseId, transaction);
 
-        await island.reload({
+        const islandWithAssociations = await Island.findByPk(island.id, {
           transaction,
           include: [{ association: 'template' }, { association: 'backgroundImage' }],
         });
 
         return {
-          island,
+          island: islandWithAssociations || island,
           prerequisites: createdPrerequisites,
         };
       });

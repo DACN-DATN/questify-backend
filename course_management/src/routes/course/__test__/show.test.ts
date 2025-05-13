@@ -22,7 +22,7 @@ it('returns the course if the course is found', async () => {
     .expect(201);
 
   const courseResponse = await request(app)
-    .get(`/api/course-mgmt/${response.body.id}`)
+    .get(`/api/course-mgmt/course/${response.body.id}`)
     .send()
     .expect(200);
   expect(courseResponse.body.name).toEqual(name);
