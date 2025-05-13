@@ -4,6 +4,8 @@ import { NotAuthorizedError, NotFoundError } from '@datn242/questify-common';
 import { Island } from '../../models/island';
 import { Level } from '../../models/level';
 import { UserCourse } from '../../models/user-course';
+import { IslandTemplate } from '../../models/island-template';
+import { IslandBackgroundImage } from '../../models/island-background-image';
 
 const router = express.Router();
 
@@ -43,6 +45,16 @@ router.get('/api/course-mgmt/:course_id/islands', async (req: Request, res: Resp
         as: 'prerequisites',
         required: false,
         attributes: ['id', 'name'],
+      },
+      {
+        model: IslandTemplate,
+        as: 'template',
+        required: false,
+      },
+      {
+        model: IslandBackgroundImage,
+        as: 'backgroundImage',
+        required: false,
       },
     ],
     order: [

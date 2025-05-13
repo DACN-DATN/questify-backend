@@ -8,14 +8,14 @@ const api = apiService.instance;
 // Data for island templates - keeping only 2 as per your note
 const islandTemplates = [
   {
-    name: 'Basic Island',
+    name: 'Island 1',
     imageUrl:
-      'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Fislands%2Fbasic-island.png?alt=media&token=12345',
+      'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Fislands%2Fisland_1.svg?alt=media&token=66e5e550-021a-48f3-9319-6aa41f5402e0',
   },
   {
-    name: 'Mountain Island',
+    name: 'Island 2',
     imageUrl:
-      'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Fislands%2Fmountain-island.png?alt=media&token=12345',
+      'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Fislands%2Fisland_2.svg?alt=media&token=5bc374af-fc6f-4db5-8613-140b40bfffce',
   },
 ];
 
