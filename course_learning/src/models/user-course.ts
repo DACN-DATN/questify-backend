@@ -75,7 +75,8 @@ type UserCourseCreationAttributes = Optional<UserCourseAttributes, 'id'>;
 
 class UserCourse
   extends Model<UserCourseAttributes, UserCourseCreationAttributes>
-  implements UserCourseAttributes {
+  implements UserCourseAttributes
+{
   public id!: string;
   public userId!: string;
   public courseId!: string;

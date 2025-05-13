@@ -1,5 +1,4 @@
 import { EffectType, BadRequestError } from '@datn242/questify-common';
-import { Course } from '../models/course';
 import { UserCourse } from '../models/user-course';
 
 export function randomGoldItem(): number {
@@ -27,7 +26,7 @@ export async function multipleExpForNextLevel(
     where: {
       userId: userId,
       courseId: courseId,
-    }
+    },
   });
   if (!user_course) {
     throw new BadRequestError('Course not found');
@@ -56,7 +55,7 @@ export async function multipleGoldForNextLevel(
     where: {
       userId: userId,
       courseId: courseId,
-    }
+    },
   });
   if (!user_course) {
     throw new BadRequestError('Course not found');
