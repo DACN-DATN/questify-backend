@@ -75,6 +75,8 @@ class UserCourse
   public completionStatus!: CompletionStatus;
   public finishedDate?: Date;
 
+  public readonly Course?: Course;
+
   public User?: User;
 }
 

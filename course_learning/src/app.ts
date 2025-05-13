@@ -22,6 +22,7 @@ import { updateProgressRouter } from './routes/progress/update';
 import { showChallengeRouter } from './routes/challenge/show';
 import { newAttemptRouter } from './routes/level/new-attempt';
 import { indexAttemptRouter } from './routes/level/index-attempt';
+import { showCourseProgressRouter } from './routes/progress/show-courses';
 
 const app = express();
 app.set('trust proxy', true);
@@ -53,6 +54,7 @@ app.use(showChallengeRouter);
 app.use(submitChallengeRouter);
 app.use(newAttemptRouter);
 app.use(indexAttemptRouter);
+app.use(showCourseProgressRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
