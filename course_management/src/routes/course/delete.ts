@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 router.delete(
-  ResourcePrefix.CourseManagement + '/:course_id',
+  ResourcePrefix.CourseManagement + '/course/:course_id',
   requireAuth,
   async (req: Request, res: Response) => {
     const courseId = req.params.course_id;

@@ -51,6 +51,10 @@ import { deleteSlideRouter } from './routes/slide/delete';
 import { newIslandBackgroundImageRouter } from './routes/island-background-image/new';
 import { updateIslandBackgroundImageRouter } from './routes/island-background-image/update';
 import { deleteIslandBackgroundImageRouter } from './routes/island-background-image/delete';
+import { getIslandBackgroundImagesRouter } from './routes/island-background-image/index';
+
+import { getIslandTemplatesRouter } from './routes/island-template/index';
+
 import { deleteAllRouter } from './routes/dev-only/delete-all';
 
 const app = express();
@@ -111,6 +115,10 @@ app.use(deleteSlideRouter);
 app.use(newIslandBackgroundImageRouter);
 app.use(updateIslandBackgroundImageRouter);
 app.use(deleteIslandBackgroundImageRouter);
+app.use(getIslandBackgroundImagesRouter);
+
+app.use(getIslandTemplatesRouter);
+
 app.use(deleteAllRouter);
 
 app.all('*', async () => {
