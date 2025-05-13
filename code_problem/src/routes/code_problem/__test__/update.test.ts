@@ -37,7 +37,9 @@ it('returns a NotAuthorizedError if the user does not own the code problem', asy
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test Title',
       description: 'Test Description',
+      starterCode: 'Test StarterCode'
     })
     .expect(201);
 
@@ -61,7 +63,9 @@ it('returns a RequestValidationError if the user provides an invalid description
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test Title',
       description: 'Test Description',
+      starterCode: 'Test StarterCode'
     })
     .expect(201);
 
@@ -98,7 +102,9 @@ it('updates the code problem provided valid inpatchs', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test Title',
       description: 'Test Description',
+      starterCode: 'Test StarterCode'
     })
     .expect(201);
 
