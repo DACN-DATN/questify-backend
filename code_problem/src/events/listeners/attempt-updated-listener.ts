@@ -15,18 +15,21 @@ export class AttemptUpdatedListener extends Listener<AttemptUpdatedEvent> {
     if (!existingLevel) {
       console.warn(`Level not found with ID: ${levelId}`);
       msg.ack();
+      return;
     }
 
     const existingUser = await User.findByPk(userId);
     if (!existingUser) {
       console.warn(`User not found with ID: ${userId}`);
       msg.ack();
+      return;
     }
 
     const existingAttempt = await Attempt.findByPk(id);
     if (!existingAttempt) {
       console.warn(`Attempt not found with ID: ${id}`);
       msg.ack();
+      return;
     }
     await Attempt.update(
       {

@@ -23,6 +23,7 @@ import { showChallengeRouter } from './routes/challenge/show';
 import { newAttemptRouter } from './routes/level/new-attempt';
 import { indexAttemptRouter } from './routes/level/index-attempt';
 import { showCourseProgressRouter } from './routes/progress/show-courses';
+import { submitLevelRouter } from './routes/level/submit';
 
 import { deleteAllRouter } from './routes/dev-only/delete-all';
 
@@ -38,6 +39,7 @@ app.use(
 app.use(currentUser);
 
 app.use(showLevelRouter);
+app.use(submitLevelRouter);
 app.use(showHintRouter);
 app.use(submitChallengeRouter);
 app.use(showRewardsRouter);

@@ -14,12 +14,14 @@ export class ChallengeUpdatedListener extends Listener<ChallengeUpdatedEvent> {
     if (!existingLevel) {
       console.warn(`Level not found with ID: ${levelId}`);
       msg.ack();
+      return;
     }
 
     const existingChallenge = await Challenge.findByPk(id);
     if (!existingChallenge) {
       console.warn(`Challenge not found with ID: ${id}`);
       msg.ack();
+      return;
     }
     await Challenge.update(
       {

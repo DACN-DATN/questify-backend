@@ -14,6 +14,7 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
     if (!existingIsland) {
       console.warn(`Island not found with ID: ${islandId}, skipping course creation`);
       msg.ack();
+      return;
     }
     const level = Level.build({
       id,

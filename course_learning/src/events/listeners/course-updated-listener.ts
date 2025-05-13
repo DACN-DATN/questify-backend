@@ -21,6 +21,7 @@ export class CourseUpdatedListener extends Listener<CourseUpdatedEvent> {
     if (!existingCourse) {
       console.warn(`Course not found with ID: ${id}`);
       msg.ack();
+      return;
     }
     await Course.update(
       {

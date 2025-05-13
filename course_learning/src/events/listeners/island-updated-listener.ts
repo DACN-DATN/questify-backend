@@ -14,11 +14,13 @@ export class IslandUpdatedListener extends Listener<IslandUpdatedEvent> {
     if (!existingCourse) {
       console.warn(`Course not found with ID: ${courseId}`);
       msg.ack();
+      return;
     }
     const existingIsland = await Island.findByPk(id);
     if (!existingIsland) {
       console.warn(`Island not found with ID: ${id}`);
       msg.ack();
+      return;
     }
     await Island.update(
       {
