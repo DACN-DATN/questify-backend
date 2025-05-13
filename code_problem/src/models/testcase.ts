@@ -20,11 +20,11 @@ const TestcaseDefinition = {
   },
   input: {
     allowNull: false,
-    type: DataTypes.TEXT,
+    type: DataTypes.JSONB,
   },
   output: {
     allowNull: false,
-    type: DataTypes.TEXT,
+    type: DataTypes.JSONB,
   },
   hidden: {
     allowNull: false,

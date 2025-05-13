@@ -15,11 +15,10 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
       console.warn(`Teacher not found with ID: ${teacherId}, skipping level creation`);
       msg.ack();
     }
-    const level = Level.build({
+    await Level.create({
       id,
       teacherId,
     });
-    await level.save();
 
     msg.ack();
   }
