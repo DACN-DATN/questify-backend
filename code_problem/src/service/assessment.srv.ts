@@ -1,9 +1,9 @@
 // Helper function to parse input string into parameters
-export function parseInputString(inputStr: string): any[] {
+export function parseInputString(inputStr: string): unknown[] {
   // Remove any whitespace at start and end
   inputStr = inputStr.trim();
 
-  const params: any[] = [];
+  const params: unknown[] = [];
 
   // For each parameter (key=value pairs)
   const keyValuePairs = inputStr.split(/,\s*(?=\w+\s*=)/);
@@ -26,7 +26,7 @@ export function parseInputString(inputStr: string): any[] {
 }
 
 // Parse a complex value (array, object, or primitive)
-function parseComplexValue(value: string): any {
+function parseComplexValue(value: string): unknown {
   value = value.trim();
 
   // Handle arrays
@@ -44,7 +44,7 @@ function parseComplexValue(value: string): any {
 }
 
 // Parse an array string into an actual array
-function parseArray(arrayStr: string): any[] {
+function parseArray(arrayStr: string): unknown[] {
   // Remove outer brackets
   const content = arrayStr.slice(1, -1).trim();
 
@@ -65,7 +65,7 @@ function parseArray(arrayStr: string): any[] {
 }
 
 // Parse an object string into an actual object
-function parseObject(objStr: string): any {
+function parseObject(objStr: string): unknown {
   // Remove outer braces
   const content = objStr.slice(1, -1).trim();
 
@@ -80,7 +80,7 @@ function parseObject(objStr: string): any {
       '{' +
       content
         // Fix property names without quotes
-        .replace(/(\{|\,)\s*([a-zA-Z0-9_$]+)\s*:/g, '$1"$2":')
+        .replace(/(\{|,)\s*([a-zA-Z0-9_$]+)\s*:/g, '$1"$2":')
         // Fix trailing/double commas
         .replace(/,\s*,/g, ',')
         .replace(/,\s*(\}|\])/g, '$1')
@@ -89,9 +89,9 @@ function parseObject(objStr: string): any {
       '}';
 
     return JSON.parse(fixedStr);
-  } catch (e) {
+  } catch {
     // Second attempt: Manual parsing
-    const result: Record<string, any> = {};
+    const result: Record<string, unknown> = {};
 
     // Split the content by commas that aren't inside nested structures
     const pairs = splitByTopLevelCommas(content);
@@ -152,7 +152,7 @@ function splitByTopLevelCommas(str: string): string[] {
 }
 
 // Helper function to parse different types of values
-export function parseValue(value: string): any {
+export function parseValue(value: string): unknown {
   value = value.trim();
 
   // Check for common types

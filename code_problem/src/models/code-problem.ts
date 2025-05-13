@@ -54,7 +54,7 @@ interface CodeProblemAttributes {
   title: string;
   description?: string;
   parameters: string[];
-  returnType: Record<string, any>;
+  returnType: Record<string, unknown>;
   starterCode: string;
   isDeleted: boolean;
 }
@@ -70,7 +70,7 @@ class CodeProblem
   public title!: string;
   public description?: string;
   public parameters!: string[];
-  public returnType!: Record<string, any>;
+  public returnType!: Record<string, unknown>;
   public starterCode!: string;
   public isDeleted!: boolean;
 
