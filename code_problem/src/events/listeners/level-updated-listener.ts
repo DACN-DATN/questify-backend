@@ -14,12 +14,14 @@ export class LevelUpdatedListener extends Listener<LevelUpdatedEvent> {
     if (!existingTeacher) {
       console.warn(`Teacher not found with ID: ${teacherId}`);
       msg.ack();
+      return;
     }
 
     const existingLevel = await Level.findByPk(id);
     if (!existingLevel) {
       console.warn(`Level not found with ID: ${id}`);
       msg.ack();
+      return;
     }
     await Level.update(
       {

@@ -14,6 +14,7 @@ export class IslandCreatedListener extends Listener<IslandCreatedEvent> {
     if (!existingCourse) {
       console.warn(`Course not found with ID: ${courseId}`);
       msg.ack();
+      return;
     }
     const island = Island.build({
       id,

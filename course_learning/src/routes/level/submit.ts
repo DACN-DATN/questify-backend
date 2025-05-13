@@ -1,26 +1,19 @@
 import express, { Request, Response } from 'express';
 import { requireAuth, ResourcePrefix, BadRequestError } from '@datn242/questify-common';
-import { Challenge } from '../../models/challenge';
 import { Level } from '../../models/level';
 import { submitLevel } from '../../services/submit-challenge';
 
 const router = express.Router();
 
 router.post(
-  ResourcePrefix.CourseLearning + '/challenge/:challenge_id/submission',
+  ResourcePrefix.CourseLearning + '/level/:level_id/submission',
   requireAuth,
   async (req: Request, res: Response) => {
-    const { challenge_id } = req.params;
-    const challenge = await Challenge.findOne({
-      where: { id: challenge_id },
-    });
-    if (!challenge) {
-      throw new BadRequestError('Challenge not found');
-    }
+    const { level_id } = req.params;
 
     const level = await Level.findOne({
       where: {
-        id: challenge.levelId,
+        id: level_id,
       },
     });
 
@@ -34,4 +27,4 @@ router.post(
   },
 );
 
-export { router as submitChallengeRouter };
+export { router as submitLevelRouter };

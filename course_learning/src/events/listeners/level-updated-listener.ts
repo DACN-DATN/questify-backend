@@ -14,11 +14,13 @@ export class LevelUpdatedListener extends Listener<LevelUpdatedEvent> {
     if (!existingIsland) {
       console.warn(`Island not found with ID: ${islandId}, skipping course creation`);
       msg.ack();
+      return;
     }
     const existingLevel = await Level.findByPk(id);
     if (!existingLevel) {
       console.warn(`Level not found with ID: ${id}`);
       msg.ack();
+      return;
     }
     await Level.update(
       {

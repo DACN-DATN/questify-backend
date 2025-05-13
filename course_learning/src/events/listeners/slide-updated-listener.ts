@@ -26,12 +26,14 @@ export class SlideUpdatedListener extends Listener<SlideUpdatedEvent> {
     if (!existingChallenge) {
       console.warn(`Challenge not found with ID: ${challengeId}`);
       msg.ack();
+      return;
     }
 
     const existingSlide = await Slide.findByPk(id);
     if (!existingSlide) {
       console.warn(`Slide not found with ID: ${id}`);
       msg.ack();
+      return;
     }
     await Slide.update(
       {

@@ -65,14 +65,14 @@ async function seedTeacherCourse() {
       const { name, description } = islandNames[i];
 
       // Determine prerequisites for this island
-      const prerequisiteIslandIds = [];
-      if (i === 2) {
-        // Authentication island has first two islands as prerequisites
-        prerequisiteIslandIds.push(islandIds[0], islandIds[1]);
-      } else if (i === 3) {
-        // Deployment island has first island as prerequisite
-        prerequisiteIslandIds.push(islandIds[0]);
-      }
+      // const prerequisiteIslandIds = [];
+      // if (i === 2) {
+      //   // Authentication island has first two islands as prerequisites
+      //   prerequisiteIslandIds.push(islandIds[0], islandIds[1]);
+      // } else if (i === 3) {
+      //   // Deployment island has first island as prerequisite
+      //   prerequisiteIslandIds.push(islandIds[0]);
+      // }
 
       // Create island
       const islandResponse = await api.post(
@@ -80,7 +80,7 @@ async function seedTeacherCourse() {
         {
           name,
           description,
-          ...(prerequisiteIslandIds.length > 0 && { prerequisiteIslandIds }),
+          // ...(prerequisiteIslandIds.length > 0 && { prerequisiteIslandIds }),
         },
       );
 
