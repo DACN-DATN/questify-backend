@@ -23,7 +23,7 @@ it('returns the testcase if the testcase is found', async () => {
       level_id: level.id,
       title: 'Test Title',
       description: 'Test Description',
-      starterCode: 'Test StarterCode'
+      starterCode: 'Test StarterCode',
     })
     .expect(201);
 
