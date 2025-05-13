@@ -1,5 +1,3 @@
-// src/controllers/course-progress.controller.ts
-import { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { Course } from '../models/course';
 import { UserCourse } from '../models/user-course';

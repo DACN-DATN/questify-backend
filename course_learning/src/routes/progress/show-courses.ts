@@ -9,11 +9,6 @@ const router = express.Router();
 router.get(
   ResourcePrefix.CourseLearning + '/progress/courses',
   [
-    query('student-id')
-      .exists()
-      .withMessage('student-id is required')
-      .isUUID()
-      .withMessage('student-id must be a valid UUID'),
     query('page')
       .optional()
       .isInt({ min: 1 })
@@ -28,16 +23,15 @@ router.get(
   validateRequest,
   async (req: Request, res: Response) => {
     try {
-      const student_id = req.query['student-id'] as string;
       const page = parseInt((req.query['page'] as string) || '1');
       const pageSize = parseInt((req.query['page-size'] as string) || '10');
 
-      const student = await User.findByPk(student_id);
+      const student = await User.findByPk(req.currentUser!.id);
       if (!student) {
         throw new BadRequestError('Student not found');
       }
 
-      const progressResponse = await getUserCourseProgress(student_id, page, pageSize);
+      const progressResponse = await getUserCourseProgress(req.currentUser!.id, page, pageSize);
 
       res.status(200).send(progressResponse);
     } catch (error) {

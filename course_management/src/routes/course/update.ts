@@ -90,6 +90,7 @@ router.patch(
       name: course.name,
       description: course.description,
       backgroundImage: course.backgroundImage,
+      thumbnail: course.thumbnail,
       isDeleted: course.isDeleted,
     });
     await course.save();

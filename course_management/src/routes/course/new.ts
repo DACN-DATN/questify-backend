@@ -79,6 +79,7 @@ router.post(
       name: course.name,
       description: course.description,
       backgroundImage: course.backgroundImage,
+      thumbnail: course.thumbnail,
     });
 
     res.status(201).send(course);
