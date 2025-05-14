@@ -45,7 +45,11 @@ router.get(
       include: [
         {
           model: Island,
+          // Don't specify 'as' here
         },
+      ],
+      order: [
+        ['Island', 'position', 'ASC'], // Note the capital 'I' in 'Island'
       ],
     });
     res.send({ userIslands });

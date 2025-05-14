@@ -13,6 +13,7 @@ export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
     if (!existingUser) {
       console.warn(`User not found with ID: ${id}`);
       msg.ack();
+      return;
     }
     await User.update(
       {

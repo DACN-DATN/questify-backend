@@ -15,6 +15,7 @@ import { updateCourseRouter } from './routes/courses/update';
 import { courseActionsRouter } from './routes/actions/courses';
 import { userActionsRouter } from './routes/actions/users';
 import { islandTemplateActionsRouter } from './routes/actions/island-templates';
+import { deleteAllRouter } from './routes/dev-only/delete-all';
 
 const app = express();
 app.set('trust proxy', true);
@@ -38,6 +39,9 @@ app.use(updateCourseRouter);
 app.use(courseActionsRouter);
 app.use(userActionsRouter);
 app.use(islandTemplateActionsRouter);
+app.use(deleteAllRouter);
+
+app.use(deleteAllRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

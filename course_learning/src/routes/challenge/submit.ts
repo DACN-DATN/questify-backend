@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { requireAuth, ResourcePrefix, BadRequestError } from '@datn242/questify-common';
 import { Challenge } from '../../models/challenge';
 import { Level } from '../../models/level';
-import { submitChallenge } from '../../services/submit-challenge';
+import { submitLevel } from '../../services/submit-challenge';
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ router.post(
       throw new BadRequestError('Level not found');
     }
 
-    const submitResponse = await submitChallenge(req.currentUser!.id, level.id);
+    const submitResponse = await submitLevel(req.currentUser!.id, level.id);
 
     res.status(200).send(submitResponse);
   },

@@ -13,8 +13,8 @@ import {
 import { Level } from '../../models/level';
 
 interface TestcaseInput {
-  input: string[];
-  output: string[];
+  input: string;
+  output: string;
   hidden: boolean;
 }
 
@@ -30,12 +30,12 @@ router.post(
       .custom((arr: TestcaseInput[]) =>
         arr.every(
           (item) =>
-            typeof item.input === 'string' &&
-            typeof item.output === 'string' &&
+            item.input !== undefined &&
+            item.output !== undefined &&
             typeof item.hidden === 'boolean',
         ),
       )
-      .withMessage('Each testcase must have input (string), output (string), and hidden (boolean)'),
+      .withMessage('Each testcase must have input, output, and hidden (boolean)'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {

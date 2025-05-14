@@ -9,6 +9,8 @@ import { ItemTemplate } from '../../item-template';
 import { Inventory } from '../../inventory';
 import { CourseItemTemplate } from '../../course-item-template';
 import { InventoryItemTemplate } from '../../inventory-item-template';
+import { IslandTemplate } from '../../island-template';
+import { IslandBackgroundImage } from '../../island-background-image';
 
 it('check course associations', async () => {
   expect(Object.keys(Course.associations)).toEqual([
@@ -29,6 +31,8 @@ it('check island associations', async () => {
     'Levels',
     'prerequisites',
     'islandsThatArePrerequisites',
+    'template',
+    'backgroundImage',
   ]);
 });
 
@@ -82,4 +86,12 @@ it('check course item template associations', async () => {
 
 it('check inventory item template associations', async () => {
   expect(Object.keys(InventoryItemTemplate.associations)).toEqual(['Inventory', 'ItemTemplate']);
+});
+
+it('check island template associations', async () => {
+  expect(Object.keys(IslandTemplate.associations)).toEqual(['islands']);
+});
+
+it('check island background image associations', async () => {
+  expect(Object.keys(IslandBackgroundImage.associations)).toEqual(['islands']);
 });

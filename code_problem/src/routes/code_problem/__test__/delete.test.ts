@@ -29,7 +29,9 @@ it('returns a NotAuthorizedError if the user does not own the code problem', asy
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test Title',
       description: 'Test Description',
+      starterCode: 'Test StarterCode',
     })
     .expect(201);
 
@@ -50,7 +52,9 @@ it('deleted successfully', async () => {
     .set('Cookie', cookie)
     .send({
       level_id: level.id,
+      title: 'Test Title',
       description: 'Test Description',
+      starterCode: 'Test StarterCode',
     })
     .expect(201);
 

@@ -9,11 +9,12 @@ export class CourseCreatedListener extends Listener<CourseCreatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: CourseCreatedEvent['data'], msg: Message) {
-    const { id, teacherId, status, name, description, backgroundImage } = data;
+    const { id, teacherId, status, name, description, backgroundImage, thumbnail } = data;
     const existingTeacher = await User.findByPk(teacherId);
     if (!existingTeacher) {
       console.warn(`Teacher not found with ID: ${teacherId}, skipping course creation`);
       msg.ack();
+      return;
     }
     const course = Course.build({
       id,
@@ -22,6 +23,7 @@ export class CourseCreatedListener extends Listener<CourseCreatedEvent> {
       name,
       description,
       backgroundImage,
+      thumbnail,
     });
     await course.save();
 

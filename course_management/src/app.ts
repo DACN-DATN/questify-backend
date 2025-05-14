@@ -4,6 +4,8 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
+import { deleteAllRouter } from './routes/dev-only/delete-all';
+
 import { indexCourseRouter } from './routes/course/index';
 import { showCourseRouter } from './routes/course/show';
 import { createCourseRouter } from './routes/course/new';
@@ -48,6 +50,13 @@ import { createSlideRouter } from './routes/slide/new';
 import { updateSlideRouter } from './routes/slide/update';
 import { deleteSlideRouter } from './routes/slide/delete';
 
+import { newIslandBackgroundImageRouter } from './routes/island-background-image/new';
+import { updateIslandBackgroundImageRouter } from './routes/island-background-image/update';
+import { deleteIslandBackgroundImageRouter } from './routes/island-background-image/delete';
+import { getIslandBackgroundImagesRouter } from './routes/island-background-image/index';
+
+import { getIslandTemplatesRouter } from './routes/island-template/index';
+
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -58,6 +67,8 @@ app.use(
   }),
 );
 app.use(currentUser);
+
+app.use(deleteAllRouter);
 
 app.use(indexCourseRouter);
 app.use(indexCourseIntructorRouter);
@@ -102,6 +113,15 @@ app.use(showChallengeRouter);
 app.use(createSlideRouter);
 app.use(updateSlideRouter);
 app.use(deleteSlideRouter);
+
+app.use(newIslandBackgroundImageRouter);
+app.use(updateIslandBackgroundImageRouter);
+app.use(deleteIslandBackgroundImageRouter);
+app.use(getIslandBackgroundImagesRouter);
+
+app.use(getIslandTemplatesRouter);
+
+app.use(deleteAllRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

@@ -14,6 +14,7 @@ export class ChallengeCreatedListener extends Listener<ChallengeCreatedEvent> {
     if (!existingLevel) {
       console.warn(`Level not found with ID: ${levelId}`);
       msg.ack();
+      return;
     }
     const challenge = Challenge.build({
       id,

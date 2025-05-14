@@ -48,14 +48,13 @@ const start = async () => {
 
     new LevelCreatedListener(natsWrapper.client).listen();
     new LevelUpdatedListener(natsWrapper.client).listen();
+    new UserCreatedListener(natsWrapper.client).listen();
+    new UserUpdatedListener(natsWrapper.client).listen();
     new AttemptCreatedListener(natsWrapper.client).listen();
     new AttemptUpdatedListener(natsWrapper.client).listen();
 
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
-
-    new UserCreatedListener(natsWrapper.client).listen();
-    new UserUpdatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
   }

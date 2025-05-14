@@ -1,9 +1,18 @@
 import apiService from '../../services/api-service';
-import { CourseCategory, ResourcePrefix } from '@datn242/questify-common';
+import { CourseCategory, ResourcePrefix, IslandPathType } from '@datn242/questify-common';
 import fs from 'fs';
 import path from 'path';
 
 const api = apiService.instance;
+
+// Define interface for seed data
+interface SeedData {
+  courseId?: string;
+  islandIds?: string[];
+  studentId?: string;
+  templateIds?: string[];
+  backgroundImageIds?: string[];
+}
 
 /**
  * Create a course with islands and levels as a teacher
@@ -13,9 +22,16 @@ const api = apiService.instance;
  */
 async function seedTeacherCourse() {
   let courseId = '';
-  const islandIds = [];
+  const islandIds: string[] = [];
 
   try {
+    // Load seed data with templates and background images
+    const seedData = loadSeedData();
+    if (!seedData) {
+      console.error('No seed data found. Please run template and background image seeds first.');
+      process.exit(1);
+    }
+
     // Login as teacher
     console.log('Logging in as teacher...');
     await api.post(ResourcePrefix.Auth + '/signin', {
@@ -55,14 +71,49 @@ async function seedTeacherCourse() {
     console.log('\nCreating islands...');
 
     const islandNames = [
-      { name: 'REST API Basics', description: 'Learn the fundamentals of RESTful APIs' },
-      { name: 'Database Integration', description: 'Connect your API to databases' },
-      { name: 'Authentication', description: 'Implement secure authentication' },
-      { name: 'Deployment', description: 'Deploy your backend to production' },
+      {
+        name: 'REST API Basics',
+        description: 'Learn the fundamentals of RESTful APIs',
+        pathType: IslandPathType.ForestPath,
+      },
+      {
+        name: 'Database Integration',
+        description: 'Connect your API to databases',
+        pathType: IslandPathType.DesertPath,
+      },
+      {
+        name: 'Authentication',
+        description: 'Implement secure authentication',
+        pathType: IslandPathType.IcePath,
+      },
+      {
+        name: 'Deployment',
+        description: 'Deploy your backend to production',
+        pathType: IslandPathType.ForestPath,
+      },
     ];
 
     for (let i = 0; i < islandNames.length; i++) {
-      const { name, description } = islandNames[i];
+      const { name, description, pathType } = islandNames[i];
+
+      // Get random template ID - we only have 2 templates as per your note
+      const templateIndex = i % 2; // Alternate between 0 and 1
+      const islandTemplateId = seedData.templateIds ? seedData.templateIds[templateIndex] : null;
+
+      // Map path types to specific background images (3 backgrounds available)
+      let islandBackgroundImageId = null;
+      if (seedData.backgroundImageIds && seedData.backgroundImageIds.length > 0) {
+        if (pathType === IslandPathType.DesertPath) {
+          // Desert path uses desert background (index 0)
+          islandBackgroundImageId = seedData.backgroundImageIds[0];
+        } else if (pathType === IslandPathType.ForestPath) {
+          // Forest path uses forest background (index 1)
+          islandBackgroundImageId = seedData.backgroundImageIds[1];
+        } else if (pathType === IslandPathType.IcePath) {
+          // Ice path uses mountain background (index 2) as requested
+          islandBackgroundImageId = seedData.backgroundImageIds[2];
+        }
+      }
 
       // Determine prerequisites for this island
       const prerequisiteIslandIds = [];
@@ -80,6 +131,9 @@ async function seedTeacherCourse() {
         {
           name,
           description,
+          pathType,
+          islandTemplateId,
+          islandBackgroundImageId,
           ...(prerequisiteIslandIds.length > 0 && { prerequisiteIslandIds }),
         },
       );
@@ -87,6 +141,14 @@ async function seedTeacherCourse() {
       const island = islandResponse.data;
       islandIds.push(island.id);
       console.log(`Island created: "${name}" with ID: ${island.id}`);
+      console.log(`  Path type: ${pathType}`);
+      console.log(`  Template ID: ${islandTemplateId || 'none'}`);
+      console.log(`  Background Image ID: ${islandBackgroundImageId || 'none'}`);
+
+      // Add a delay after creating each island to allow the event to be processed
+      // This helps ensure islands exist before prerequisite relationships are created
+      console.log(`Waiting for island creation event to be processed...`);
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 second delay
 
       // Add a delay after creating each island to allow the event to be processed
       // This helps ensure islands exist before prerequisite relationships are created
@@ -100,7 +162,7 @@ async function seedTeacherCourse() {
     console.log('\nCourse, islands, and levels created successfully!');
 
     // Save course data for other scripts to use
-    saveCourseData(courseId, islandIds);
+    saveCourseData(courseId, islandIds, seedData);
 
     // Sign out
     await api.post(ResourcePrefix.Auth + '/signout', {});
@@ -122,6 +184,7 @@ async function seedTeacherCourse() {
  * Creates 5 levels for a specific island
  */
 async function createLevelsForIsland(islandId: string, islandName: string) {
+  // The existing implementation stays the same
   console.log(`\nCreating levels for island: ${islandName}...`);
 
   // Define level content based on island name/type
@@ -218,14 +281,29 @@ async function createLevelsForIsland(islandId: string, islandName: string) {
   }
 }
 
-// Save course data to a JSON file for use in other seed scripts
-function saveCourseData(courseId: string, islandIds: string[]) {
+// Load seed data including templates and background images
+function loadSeedData(): SeedData | null {
   try {
     const filePath = path.join(__dirname, 'seed-data.json');
-    const data = {
-      courseId,
-      islandIds,
-    };
+    if (fs.existsSync(filePath)) {
+      const data = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(data) as SeedData;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error loading seed data:', error);
+    return null;
+  }
+}
+
+// Save course data to a JSON file for use in other seed scripts
+function saveCourseData(courseId: string, islandIds: string[], existingData: SeedData | null) {
+  try {
+    const filePath = path.join(__dirname, 'seed-data.json');
+    const data: SeedData = existingData || {};
+
+    data.courseId = courseId;
+    data.islandIds = islandIds;
 
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     console.log(`Course data saved to ${filePath}`);

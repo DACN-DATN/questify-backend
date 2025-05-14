@@ -22,6 +22,10 @@ import { updateProgressRouter } from './routes/progress/update';
 import { showChallengeRouter } from './routes/challenge/show';
 import { newAttemptRouter } from './routes/level/new-attempt';
 import { indexAttemptRouter } from './routes/level/index-attempt';
+import { showCourseProgressRouter } from './routes/progress/show-courses';
+import { submitLevelRouter } from './routes/level/submit';
+
+import { deleteAllRouter } from './routes/dev-only/delete-all';
 
 const app = express();
 app.set('trust proxy', true);
@@ -35,6 +39,7 @@ app.use(
 app.use(currentUser);
 
 app.use(showLevelRouter);
+app.use(submitLevelRouter);
 app.use(showHintRouter);
 app.use(submitChallengeRouter);
 app.use(showRewardsRouter);
@@ -53,6 +58,9 @@ app.use(showChallengeRouter);
 app.use(submitChallengeRouter);
 app.use(newAttemptRouter);
 app.use(indexAttemptRouter);
+app.use(showCourseProgressRouter);
+
+app.use(deleteAllRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();

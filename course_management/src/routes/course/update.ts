@@ -15,7 +15,7 @@ import { natsWrapper } from '../../nats-wrapper';
 const router = express.Router();
 
 router.patch(
-  ResourcePrefix.CourseManagement + '/:course_id',
+  ResourcePrefix.CourseManagement + '/course/:course_id',
   requireAuth,
   [
     body('name').optional().notEmpty().withMessage('Course name is required'),
@@ -90,6 +90,7 @@ router.patch(
       name: course.name,
       description: course.description,
       backgroundImage: course.backgroundImage,
+      thumbnail: course.thumbnail,
       isDeleted: course.isDeleted,
     });
     await course.save();

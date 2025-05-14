@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import { NotFoundError, ResourcePrefix } from '@datn242/questify-common';
 import { Course } from '../../models/course';
 import { Island } from '../../models/island';
+import { IslandTemplate } from '../../models/island-template';
+import { IslandBackgroundImage } from '../../models/island-background-image';
 
 const router = express.Router();
 
@@ -20,6 +22,18 @@ router.get(
         id: island_id,
         courseId: course_id,
       },
+      include: [
+        {
+          model: IslandTemplate,
+          as: 'template',
+          required: false,
+        },
+        {
+          model: IslandBackgroundImage,
+          as: 'backgroundImage',
+          required: false,
+        },
+      ],
     });
 
     if (!island) {

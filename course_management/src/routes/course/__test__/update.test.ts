@@ -12,7 +12,7 @@ it('returns a 404 if the provided id does not exist', async () => {
   const course_id = uuidv4();
   const cookie = await global.getAuthCookie();
   await request(app)
-    .patch(`/api/course-mgmt/${course_id}`)
+    .patch(`/api/course-mgmt/course/${course_id}`)
     .set('Cookie', cookie)
     .send({
       name: 'dsa',
@@ -23,7 +23,7 @@ it('returns a 404 if the provided id does not exist', async () => {
 it('returns a 401 if the user is not authorized', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .patch(`/api/course-mgmt/${id}`)
+    .patch(`/api/course-mgmt/course/${id}`)
     .send({
       title: 'aslkdfj',
       price: 20,
@@ -38,7 +38,7 @@ it('returns a 401 if the user does not own the course', async () => {
   });
   const cookie2 = await global.getAuthCookie('test2@gmail.com');
   await request(app)
-    .patch(`/api/course-mgmt/${response.body.id}`)
+    .patch(`/api/course-mgmt/course/${response.body.id}`)
     .set('Cookie', cookie2)
     .send({
       name: 'Compatcher Architecture',
@@ -54,7 +54,7 @@ it('returns a RequestValidationError if the user provides an invalid name', asyn
   });
 
   await request(app)
-    .patch(`/api/course-mgmt/${response.body.id}`)
+    .patch(`/api/course-mgmt/course/${response.body.id}`)
     .set('Cookie', cookie)
     .send({
       name: '',
@@ -73,14 +73,16 @@ it('updates the course provided valid inpatchs', async () => {
     .expect(201);
 
   await request(app)
-    .patch(`/api/course-mgmt/${response.body.id}`)
+    .patch(`/api/course-mgmt/course/${response.body.id}`)
     .set('Cookie', cookie)
     .send({
       name: 'Compatcher Architecture',
     })
     .expect(200);
 
-  const courseResponse = await request(app).get(`/api/course-mgmt/${response.body.id}`).send();
+  const courseResponse = await request(app)
+    .get(`/api/course-mgmt/course/${response.body.id}`)
+    .send();
 
   expect(courseResponse.body.name).toEqual('Compatcher Architecture');
 });

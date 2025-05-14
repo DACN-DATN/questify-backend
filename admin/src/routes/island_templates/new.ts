@@ -13,6 +13,8 @@ import {
   AdminIslandTemplateActionType,
 } from '../../models/admin-island-template';
 import { sequelize } from '../../config/db';
+import { natsWrapper } from '../../nats-wrapper';
+import { IslandTemplateCreatedPublisher } from '../../events/publishers/island-template-created-publisher';
 
 const router = express.Router();
 
@@ -71,6 +73,13 @@ router.post(
       });
 
       await transaction.commit();
+
+      // Publish event after successful transaction
+      await new IslandTemplateCreatedPublisher(natsWrapper.client).publish({
+        id: islandTemplate.id,
+        name: islandTemplate.name,
+        image_url: islandTemplate.imageUrl,
+      });
 
       res.status(201).send({
         ...islandTemplate.toJSON(),
