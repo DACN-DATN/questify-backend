@@ -21,7 +21,6 @@ export async function updateIslandPoints(
     });
 
     if (!userIsland) {
-      console.error(`User island not found for userId ${userId} and islandId ${islandId}`);
       return;
     }
 
@@ -54,7 +53,6 @@ export async function updateCoursePoints(
     });
 
     if (!userCourse) {
-      console.error(`User course not found for userId ${userId} and courseId ${courseId}`);
       return;
     }
 
@@ -94,7 +92,6 @@ export async function unlockNextLevel(
     });
 
     if (!userNextLevel) {
-      console.error(`User level not found for next level ${nextLevel.id}`);
       return;
     }
 
@@ -371,7 +368,6 @@ export async function unlockFirstLevel(userId: string, islandId: string): Promis
     });
 
     if (!firstLevel) {
-      console.error(`No levels found for island ${islandId}`);
       return;
     }
 
@@ -384,7 +380,6 @@ export async function unlockFirstLevel(userId: string, islandId: string): Promis
     });
 
     if (!userLevel) {
-      console.error(`User level not found for first level ${firstLevel.id}`);
       return;
     }
 

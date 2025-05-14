@@ -141,14 +141,6 @@ async function seedStudentProgress() {
         );
       }
 
-      // 3rd level in progress
-      // await updateLevelStatus(
-      //   studentId,
-      //   dbLevels[2].levelId,
-      //   CompletionStatus.InProgress,
-      //   0
-      // );
-
       console.log(
         `Levels 1-2 completed, level 3 in progress, levels ${dbLevels.length > 3 ? '4-' + dbLevels.length : ''} remain locked`,
       );

@@ -8,6 +8,7 @@ import {
   requireAuth,
   validateRequest,
   ResourcePrefix,
+  IslandPathType,
 } from '@datn242/questify-common';
 import { Island } from '../../models/island';
 import { PrerequisiteIsland } from '../../models/prerequisiteIsland';
@@ -32,6 +33,18 @@ router.patch(
       .withMessage('Position is required')
       .isNumeric()
       .withMessage('Position must be a number'),
+    body('islandTemplateId')
+      .optional()
+      .isUUID()
+      .withMessage('Island template ID must be a valid UUID'),
+    body('pathType')
+      .optional()
+      .isIn(Object.values(IslandPathType))
+      .withMessage('Path type must be a valid type'),
+    body('islandBackgroundImageId')
+      .optional()
+      .isUUID()
+      .withMessage('Island background image ID must be a valid UUID'),
     body('prerequisiteIslandIds')
       .optional()
       .isArray()
@@ -66,12 +79,23 @@ router.patch(
         }
 
         const updateFields: Partial<Island> = {};
-        const { name, description, position, backgroundImage, prerequisiteIslandIds } = req.body;
+        const {
+          name,
+          description,
+          position,
+          islandTemplateId,
+          pathType,
+          islandBackgroundImageId,
+          prerequisiteIslandIds,
+        } = req.body;
 
         if (name !== undefined) updateFields.name = name;
         if (description !== undefined) updateFields.description = description;
         if (position !== undefined) updateFields.position = position;
-        if (backgroundImage !== undefined) updateFields.backgroundImage = backgroundImage;
+        if (islandTemplateId !== undefined) updateFields.islandTemplateId = islandTemplateId;
+        if (pathType !== undefined) updateFields.pathType = pathType;
+        if (islandBackgroundImageId !== undefined)
+          updateFields.islandBackgroundImageId = islandBackgroundImageId;
 
         island.set(updateFields);
         await island.save({ transaction });
@@ -152,23 +176,25 @@ router.patch(
 
         await recalculatePositions(course_id, transaction);
 
-        await island.reload({ transaction });
+        const islandWithAssociations = await Island.findByPk(island.id, {
+          transaction,
+          include: [{ association: 'template' }, { association: 'backgroundImage' }],
+        });
 
         return {
-          island,
+          island: islandWithAssociations || island,
           oldPrereqs,
           newPrereqs,
         };
       });
 
-      // Publish the island updated event
+      // Publish the island updated event - NOT including the template, path, or background image IDs
       new IslandUpdatedPublisher(natsWrapper.client).publish({
         id: result.island.id,
         courseId: result.island.courseId,
         name: result.island.name,
         description: result.island.description,
         position: result.island.position,
-        backgroundImage: result.island.backgroundImage,
         isDeleted: result.island.isDeleted,
       });
 

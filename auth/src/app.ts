@@ -29,6 +29,7 @@ app.use(signoutRouter);
 app.use(updateProfileRouter);
 app.use(deleteUserRouter);
 app.use(getUserRouter);
+app.use(deleteUserRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
