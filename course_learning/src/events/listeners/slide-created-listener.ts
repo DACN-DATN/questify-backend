@@ -17,6 +17,18 @@ export class SlideCreatedListener extends Listener<SlideCreatedEvent> {
       msg.ack();
       return;
     }
+
+    console.log("dcm", {
+      id,
+      title,
+      description,
+      slideNumber,
+      type,
+      imageUrl,
+      videoUrl,
+      answers,
+      challengeId,
+    })
     const slide = Slide.build({
       id,
       title,
