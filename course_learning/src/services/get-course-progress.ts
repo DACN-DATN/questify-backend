@@ -11,7 +11,7 @@ interface CourseProgressResponse {
     id: string;
     name: string;
     description?: string;
-    backgroundImage?: string;
+    thumbnail?: string;
     completionRate: number;
     userCourseStatus: CompletionStatus;
     totalLevels: number;
@@ -32,7 +32,6 @@ export const getUserCourseProgress = async (userId: string, page: number, pageSi
         {
           model: Course,
           as: 'Course',
-          attributes: ['id', 'name', 'description', 'backgroundImage'],
         },
       ],
       limit: pageSize,
@@ -82,12 +81,11 @@ export const getUserCourseProgress = async (userId: string, page: number, pageSi
 
         const completionRate =
           totalLevels > 0 ? Math.round((completedLevels / totalLevels) * 100) : 0;
-
         return {
           id: userCourse.courseId,
           name: userCourse.Course?.name || '',
           description: userCourse.Course?.description,
-          backgroundImage: userCourse.Course?.backgroundImage,
+          thumbnail: userCourse.Course?.thumbnail,
           completionRate,
           userCourseStatus: userCourse.completionStatus,
           totalLevels,
