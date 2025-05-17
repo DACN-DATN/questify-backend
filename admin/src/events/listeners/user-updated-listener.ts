@@ -8,7 +8,7 @@ export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: UserUpdatedEvent['data'], msg: Message) {
-    const { id, role, status, gmail, userName } = data;
+    const { id, role, status, gmail, imageUrl, userName } = data;
 
     const existingUser = await User.findByPk(id);
     if (!existingUser) {
@@ -22,6 +22,7 @@ export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
         role,
         status,
         gmail,
+        imageUrl,
         userName,
       },
       {

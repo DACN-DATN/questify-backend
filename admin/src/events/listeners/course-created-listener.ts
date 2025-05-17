@@ -9,7 +9,7 @@ export class CourseCreatedListener extends Listener<CourseCreatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: CourseCreatedEvent['data'], msg: Message) {
-    const { id, teacherId, status, name, description, backgroundImage } = data;
+    const { id, teacherId, status, name, description, price, backgroundImage } = data;
 
     const existingTeacher = await User.findByPk(teacherId);
     if (!existingTeacher) {
@@ -24,6 +24,7 @@ export class CourseCreatedListener extends Listener<CourseCreatedEvent> {
       status,
       name,
       description,
+      price,
       backgroundImage,
     });
     await course.save();
