@@ -69,6 +69,8 @@ interface UserCourseAttributes {
   finishedDate?: Date;
   user?: User;
   nextLevelEffect?: EffectType;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 type UserCourseCreationAttributes = Optional<UserCourseAttributes, 'id'>;
@@ -84,6 +86,8 @@ class UserCourse
   public completionStatus!: CompletionStatus;
   public finishedDate?: Date;
   public nextLevelEffect?: EffectType;
+  public createdAt?: Date;
+  public updatedAt?: Date;
 
   public readonly Course?: Course;
 

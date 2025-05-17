@@ -59,6 +59,8 @@ interface UserIslandAttributes {
   point: number;
   completionStatus: CompletionStatus;
   finishedDate?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 type UserIslandCreationAttributes = Optional<UserIslandAttributes, 'id'>;
@@ -72,6 +74,8 @@ class UserIsland
   public point!: number;
   public completionStatus!: CompletionStatus;
   public finishedDate?: Date;
+  public createdAt?: Date;
+  public updatedAt?: Date;
 }
 
 UserIsland.init(UserIslandDefinition, {

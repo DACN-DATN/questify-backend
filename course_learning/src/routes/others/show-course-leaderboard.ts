@@ -30,17 +30,32 @@ router.get(
           attributes: ['id', 'userName'],
         },
       ],
-      attributes: ['id', 'point'],
+      attributes: ['id', 'point', 'finishedDate', 'createdAt'],
       order: [['point', 'DESC']],
     });
 
     let rank = 1;
     const rankedLeaderboard = leaderboard.map((progress) => {
+      let completionTime = null;
+
+      const createdAt = progress.getDataValue('createdAt');
+
+      if (progress.finishedDate && createdAt) {
+        const diffMs = progress.finishedDate.getTime() - new Date(createdAt).getTime();
+
+        const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        completionTime = `${days} days ${hours} hours ${minutes} minutes`;
+      }
+
       return {
         rank: rank++,
         studentId: progress.User!.id,
         studentName: progress.User!.userName,
         points: progress.point,
+        completionTime,
       };
     });
 

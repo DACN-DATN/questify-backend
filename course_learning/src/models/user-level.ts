@@ -59,6 +59,8 @@ interface UserLevelAttributes {
   point: number;
   completionStatus: CompletionStatus;
   finishedDate?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 type UserLevelCreationAttributes = Optional<UserLevelAttributes, 'id'>;
@@ -73,6 +75,8 @@ class UserLevel
   public point!: number;
   public completionStatus!: CompletionStatus;
   public finishedDate?: Date;
+  public createdAt?: Date;
+  public updatedAt?: Date;
 }
 
 UserLevel.init(UserLevelDefinition, {
