@@ -22,6 +22,14 @@ const CourseDefinition = {
     allowNull: true,
     type: DataTypes.TEXT,
   },
+  price: {
+    allowNull: true,
+    type: DataTypes.FLOAT,
+    defaultValue: 0,
+    validator: {
+      min: 0,
+    },
+  },
   backgroundImage: {
     allowNull: true,
     type: DataTypes.TEXT,
@@ -57,6 +65,7 @@ interface CourseAttributes {
   id: string;
   name: string;
   description?: string;
+  price?: number;
   backgroundImage?: string;
   teacherId: string;
   isDeleted: boolean;
@@ -70,6 +79,7 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public id!: string;
   public name!: string;
   public description?: string;
+  public price?: number;
   public backgroundImage?: string;
   public teacherId!: string;
   public isDeleted!: boolean;
