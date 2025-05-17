@@ -19,16 +19,16 @@ router.get(
       .isInt({ min: 1, max: 100 })
       .withMessage('page-size must be between 1 and 100')
       .toInt(),
-    query('userId').isUUID().withMessage('user-id must be a valid UUID'),
+    query('userId').optional().isUUID().withMessage('user-id must be a valid UUID'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
     try {
       const page = parseInt((req.query['page'] as string) || '1');
       const pageSize = parseInt((req.query['page-size'] as string) || '10');
-      const userId = req.query['userId'] as string;
+      let userId = req.query['userId'] as string;
       if (!userId) {
-        throw new BadRequestError('userId is required');
+        userId = req.currentUser!.id;
       }
 
       const student = await User.findByPk(userId);
