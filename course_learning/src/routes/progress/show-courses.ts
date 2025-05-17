@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { BadRequestError, ResourcePrefix, validateRequest } from '@datn242/questify-common';
 import { User } from '../../models/user';
-import { query } from 'express-validator';
+import { query, body } from 'express-validator';
 import { getUserCourseProgress } from '../../services/get-course-progress';
 
 const router = express.Router();
@@ -19,19 +19,24 @@ router.get(
       .isInt({ min: 1, max: 100 })
       .withMessage('page-size must be between 1 and 100')
       .toInt(),
+    query('userId').isUUID().withMessage('user-id must be a valid UUID'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
     try {
       const page = parseInt((req.query['page'] as string) || '1');
       const pageSize = parseInt((req.query['page-size'] as string) || '10');
+      const userId = req.query['userId'] as string;
+      if (!userId) {
+        throw new BadRequestError('userId is required');
+      }
 
-      const student = await User.findByPk(req.currentUser!.id);
+      const student = await User.findByPk(userId);
       if (!student) {
         throw new BadRequestError('Student not found');
       }
 
-      const progressResponse = await getUserCourseProgress(req.currentUser!.id, page, pageSize);
+      const progressResponse = await getUserCourseProgress(userId, page, pageSize);
 
       res.status(200).send(progressResponse);
     } catch (error) {
