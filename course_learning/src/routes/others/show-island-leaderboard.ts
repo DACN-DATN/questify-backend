@@ -23,7 +23,7 @@ router.get(
       where: {
         islandId: island.id,
       },
-      attributes: ['id', 'userId', 'point', 'finishedDate'],
+      attributes: ['id', 'userId', 'point', 'finishedDate', 'createdAt'],
       order: [['point', 'DESC']],
     });
 
@@ -43,12 +43,26 @@ router.get(
 
     let rank = 1;
     const rankedLeaderboard = userIslands.map((userIsland) => {
+      let completionTime = null;
+
+      const createdAt = userIsland.getDataValue('createdAt');
+
+      if (userIsland.finishedDate && createdAt) {
+        const diffMs = userIsland.finishedDate.getTime() - new Date(createdAt).getTime();
+
+        const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        completionTime = `${days} days ${hours} hours ${minutes} minutes`;
+      }
+
       return {
         rank: rank++,
         studentId: userIsland.userId,
         studentName: userMap.get(userIsland.userId) || 'Unknown User',
         points: userIsland.point,
-        finishedDate: userIsland.finishedDate,
+        completionTime,
       };
     });
 

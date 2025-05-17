@@ -23,7 +23,7 @@ router.get(
       where: {
         levelId: level.id,
       },
-      attributes: ['id', 'userId', 'point', 'finishedDate'],
+      attributes: ['id', 'userId', 'point', 'finishedDate', 'createdAt'],
       order: [['point', 'DESC']],
     });
 
@@ -43,12 +43,26 @@ router.get(
 
     let rank = 1;
     const rankedLeaderboard = userLevels.map((userLevel) => {
+      let completionTime = null;
+
+      const createdAt = userLevel.getDataValue('createdAt');
+
+      if (userLevel.finishedDate && createdAt) {
+        const diffMs = userLevel.finishedDate.getTime() - new Date(createdAt).getTime();
+
+        const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        completionTime = `${days} days ${hours} hours ${minutes} minutes`;
+      }
+
       return {
         rank: rank++,
         studentId: userLevel.userId,
         studentName: userMap.get(userLevel.userId) || 'Unknown User',
         points: userLevel.point,
-        finishedDate: userLevel.finishedDate,
+        completionTime,
       };
     });
 
