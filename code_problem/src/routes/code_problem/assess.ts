@@ -54,13 +54,31 @@ router.post(
     const cb = new Function(`return ${userCode}`)();
 
     const results = [];
+    console.log(111);
+    console.log(testcases);
 
     for (const testcase of testcases) {
       try {
         const inputParams = parseInputString(testcase.input);
         const result = cb(...inputParams);
-        const expectedOutput = JSON.parse(testcase.output);
-        const passed = JSON.stringify(result) === JSON.stringify(expectedOutput);
+        // const expectedOutput = JSON.parse(testcase.output);
+        let expectedOutput;
+        try {
+          expectedOutput = JSON.parse(testcase.output);
+        } catch (e) {
+          // If not valid JSON, treat it as a regular string
+          expectedOutput = testcase.output;
+        }
+        console.log('inside');
+        console.log('1:', JSON.stringify(result));
+        console.log('2:', JSON.stringify(expectedOutput));
+        // const passed = JSON.stringify(result) === JSON.stringify(expectedOutput);
+        let passed;
+        if (typeof expectedOutput === 'string') {
+          passed = result === expectedOutput;
+        } else {
+          passed = JSON.stringify(result) === JSON.stringify(expectedOutput);
+        }
 
         results.push({
           input: testcase.input,
@@ -70,6 +88,7 @@ router.post(
           hidden: testcase.hidden,
         });
       } catch (error: unknown) {
+        console.log('inside error', error);
         results.push({
           input: testcase.input,
           expectedOutput: testcase.output,
