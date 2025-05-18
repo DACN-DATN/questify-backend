@@ -1,16 +1,16 @@
 {
-  "courseId": "071dd8e9-90a0-4882-bce7-03101ac4d479",
+  "courseId": "ad65c050-d935-4cf2-82b3-f71dd405e0bb",
   "islandIds": [
-    "81d89ebc-7e57-4ff6-837e-3017e75339a9",
-    "3e7ab02b-5cb5-4101-84cb-d0a6ef57a2e6",
-    "0390f8a8-1bfb-4e7e-ab8c-935db90fa5db",
-    "ca179fd0-0c9b-401f-9249-f0f1a27fa89c"
+    "270c3a75-2606-4995-8811-5f24eaa2b197",
+    "31d519e3-754c-49e5-98e2-af0250220b81",
+    "732917cd-3331-4907-bdde-090eef2642e9",
+    "92ffc11e-b65b-45e5-849f-0ccbd9679e52"
   ],
-  "studentId": "3ecbb2b0-f018-4ff2-9490-cade36ca92c6",
-  "templateIds": ["18dbce9d-e61a-434c-bee4-ea4646286b03", "02744188-6da0-4fad-8105-59d32e6846ad"],
+  "studentId": "ea4bed28-e717-43cc-8b6b-7b813bad8d78",
+  "templateIds": ["35dc0ca6-20a6-41b4-a962-c69c7798827e", "5d7520fc-276e-4113-a0a5-e417c1705e8b"],
   "backgroundImageIds": [
-    "1660d768-631f-4130-81e0-ab32460da858",
-    "18c0dd0b-d77e-4894-a424-f66c16d3ea65",
-    "300bf26c-5225-4050-9531-48916bfbb719"
+    "217efba3-cc48-4f16-aa3f-06de72b3af7a",
+    "9a0bf945-f74c-49de-b730-0694a0e94dff",
+    "30e75978-6e54-4a1e-8cdd-19800613fd1f"
   ]
 }
