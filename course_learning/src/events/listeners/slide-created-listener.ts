@@ -17,6 +17,7 @@ export class SlideCreatedListener extends Listener<SlideCreatedEvent> {
       msg.ack();
       return;
     }
+
     const slide = Slide.build({
       id,
       title,
