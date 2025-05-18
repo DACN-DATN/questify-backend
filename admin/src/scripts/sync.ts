@@ -6,7 +6,7 @@ const syncModels = async () => {
   if (process.env.NODE_ENV === EnvStage.Dev) {
     console.log('⚙️ Admin SRV | Running sync in development mode...');
     try {
-      await sequelize.sync({ alter: true });
+      await sequelize.sync({ force: true });
       console.log('Database synced successfully');
     } catch (error) {
       console.error('Error syncing database:', error);
@@ -15,7 +15,7 @@ const syncModels = async () => {
     console.log('🚀 Admin SRV | Production mode detected. Use migrations instead.');
     // TODO: implement migrations for production later. Temporary use force for dev
     try {
-      await sequelize.sync({ alter: true });
+      await sequelize.sync({ force: true });
       console.log('Database synced successfully');
     } catch (error) {
       console.error('Error syncing database:', error);
