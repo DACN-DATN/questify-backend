@@ -67,6 +67,7 @@ router.post(
           expectedOutput = JSON.parse(testcase.output);
         } catch (e) {
           // If not valid JSON, treat it as a regular string
+          console.log('error', e);
           expectedOutput = testcase.output;
         }
         console.log('inside');
