@@ -1,33 +1,33 @@
 import express, { Request, Response } from 'express';
 import { NotFoundError, validateRequest, ResourcePrefix } from '@datn242/questify-common';
 import { param } from 'express-validator';
-import { Level } from '../../models/level';
+import { Island } from '../../models/island';
 import { User } from '../../models/user';
-import { UserLevel } from '../../models/user-level';
+import { UserIsland } from '../../models/user-island';
 
 const router = express.Router();
 
 router.get(
-  ResourcePrefix.CourseLearning + '/levels/:level_id/leaderboard',
-  [param('level_id').isUUID().withMessage('level_id must be a valid UUID')],
+  ResourcePrefix.CourseLearning + '/islands/:island_id/leaderboard',
+  [param('island_id').isUUID().withMessage('island_id must be a valid UUID')],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { level_id } = req.params;
+    const { island_id } = req.params;
 
-    const level = await Level.findByPk(level_id);
-    if (!level) {
+    const island = await Island.findByPk(island_id);
+    if (!island) {
       throw new NotFoundError();
     }
 
-    const userLevels = await UserLevel.findAll({
+    const userIslands = await UserIsland.findAll({
       where: {
-        levelId: level.id,
+        islandId: island.id,
       },
       attributes: ['id', 'userId', 'point', 'finishedDate', 'createdAt'],
       order: [['point', 'DESC']],
     });
 
-    const userIds = userLevels.map((ul) => ul.userId);
+    const userIds = userIslands.map((ui) => ui.userId);
 
     const users = await User.findAll({
       where: {
@@ -42,13 +42,13 @@ router.get(
     });
 
     let rank = 1;
-    const rankedLeaderboard = userLevels.map((userLevel) => {
+    const rankedLeaderboard = userIslands.map((userIsland) => {
       let completionTime = null;
 
-      const createdAt = userLevel.getDataValue('createdAt');
+      const createdAt = userIsland.getDataValue('createdAt');
 
-      if (userLevel.finishedDate && createdAt) {
-        const diffMs = userLevel.finishedDate.getTime() - new Date(createdAt).getTime();
+      if (userIsland.finishedDate && createdAt) {
+        const diffMs = userIsland.finishedDate.getTime() - new Date(createdAt).getTime();
 
         const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -59,9 +59,9 @@ router.get(
 
       return {
         rank: rank++,
-        studentId: userLevel.userId,
-        studentName: userMap.get(userLevel.userId) || 'Unknown User',
-        points: userLevel.point,
+        studentId: userIsland.userId,
+        studentName: userMap.get(userIsland.userId) || 'Unknown User',
+        points: userIsland.point,
         completionTime,
       };
     });
@@ -70,4 +70,4 @@ router.get(
   },
 );
 
-export { router as showLevelLeaderboardRouter };
+export { router as showIslandLeaderboardRouter };
