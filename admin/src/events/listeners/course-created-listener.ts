@@ -9,7 +9,17 @@ export class CourseCreatedListener extends Listener<CourseCreatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: CourseCreatedEvent['data'], msg: Message) {
-    const { id, teacherId, status, name, description, price, backgroundImage } = data;
+    const {
+      id,
+      name,
+      shortDescription,
+      description,
+      category,
+      price,
+      thumbnail,
+      status,
+      teacherId,
+    } = data;
 
     const existingTeacher = await User.findByPk(teacherId);
     if (!existingTeacher) {
@@ -20,12 +30,13 @@ export class CourseCreatedListener extends Listener<CourseCreatedEvent> {
 
     const course = Course.build({
       id,
-      teacherId,
-      status,
       name,
-      description,
+      description: shortDescription,
+      category,
       price,
-      backgroundImage,
+      thumbnail,
+      status,
+      teacherId,
     });
     await course.save();
 

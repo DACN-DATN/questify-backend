@@ -58,15 +58,15 @@ router.patch(
         actionType = AdminCourseActionType.Reject;
       }
 
-      const adminAction = await AdminCourse.create(
-        {
-          adminId,
-          courseId: course_id,
-          reason: reason || '',
-          actionType,
-        },
-        { transaction },
-      );
+      // const adminAction = await AdminCourse.create(
+      //   {
+      //     adminId,
+      //     courseId: course_id,
+      //     reason: reason || '',
+      //     actionType,
+      //   },
+      //   { transaction },
+      // );
 
       // Get admin user for the response
       const admin = await User.findByPk(adminId, {
@@ -80,7 +80,7 @@ router.patch(
       res.status(200).send({
         ...course.toJSON(),
         adminAction: {
-          ...adminAction.toJSON(),
+          // ...adminAction. toJSON(),
           admin: admin ? admin.toJSON() : null,
         },
       });

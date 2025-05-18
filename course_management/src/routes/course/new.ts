@@ -6,6 +6,7 @@ import {
   requireAuth,
   ResourcePrefix,
   CourseCategory,
+  CourseStatus,
 } from '@datn242/questify-common';
 import { CourseCreatedPublisher } from '../../events/publishers/course-created-publisher';
 import { natsWrapper } from '../../nats-wrapper';
@@ -40,6 +41,10 @@ router.post(
       .withMessage('Target audience must be an array of strings')
       .custom((arr: unknown[]) => arr.every((item): item is string => typeof item === 'string'))
       .withMessage('All target audience values must be strings'),
+    body('status')
+      .optional()
+      .isIn(Object.values(CourseStatus))
+      .withMessage('Invalid course status'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -54,6 +59,7 @@ router.post(
       learningObjectives,
       requirements,
       targetAudience,
+      status,
     } = req.body;
 
     const course = Course.build({
@@ -67,6 +73,7 @@ router.post(
       learningObjectives,
       requirements,
       targetAudience,
+      status: status || CourseStatus.Pending,
       teacherId: req.currentUser!.id,
     });
 
@@ -74,12 +81,15 @@ router.post(
 
     new CourseCreatedPublisher(natsWrapper.client).publish({
       id: course.id,
-      teacherId: course.teacherId,
-      status: course.status!,
       name: course.name,
       description: course.description,
-      backgroundImage: course.backgroundImage,
+      shortDescription: course.shortDescription,
+      category: course.category,
+      price: course.price,
       thumbnail: course.thumbnail,
+      status: course.status || CourseStatus.Pending,
+      teacherId: course.teacherId,
+      backgroundImage: course.backgroundImage,
     });
 
     res.status(201).send(course);
