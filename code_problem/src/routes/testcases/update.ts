@@ -17,8 +17,8 @@ router.patch(
   ResourcePrefix.CodeProblem + '/:code_problem_id/testcases/:testcase_id',
   requireAuth,
   [
-    body('input').isString().withMessage('input must be a string'),
-    body('output').isString().withMessage('output must be a string'),
+    // body('input').isString().withMessage('input must be a string'),
+    // body('output').isString().withMessage('output must be a string'),
     body('hidden').isBoolean().withMessage('hidden must be a boolean'),
   ],
   validateRequest,

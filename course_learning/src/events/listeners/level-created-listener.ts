@@ -1,9 +1,11 @@
 import { Message } from 'node-nats-streaming';
-import { Subjects, Listener, LevelCreatedEvent } from '@datn242/questify-common';
+import { Subjects, Listener, LevelCreatedEvent, CompletionStatus } from '@datn242/questify-common';
 import { queueGroupName } from './queue-group-name';
 import { Level } from '../../models/level';
 import { Island } from '../../models/island';
 import { retryService } from '../../services/retry-service';
+import { UserCourse } from '../../models/user-course';
+import { UserLevel } from '../../models/user-level';
 
 export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
   subject: Subjects.LevelCreated = Subjects.LevelCreated;
@@ -41,6 +43,24 @@ export class LevelCreatedListener extends Listener<LevelCreatedEvent> {
       });
 
       await level.save();
+
+      const user_course = await UserCourse.findAll({
+        where: {
+          courseId: existingIsland.courseId,
+        },
+        attributes: ['userId'],
+      });
+
+      const userIds = user_course.map((uc) => uc.userId);
+
+      await UserLevel.bulkCreate(
+        userIds.map((userId) => ({
+          userId,
+          levelId: level.id,
+          completionStatus: CompletionStatus.InProgress,
+          point: 0,
+        })),
+      );
 
       msg.ack();
     } catch (error) {

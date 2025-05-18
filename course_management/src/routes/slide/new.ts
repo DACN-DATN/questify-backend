@@ -90,7 +90,17 @@ router.post(
 
     await slide.save();
 
-    new SlideCreatedPublisher(natsWrapper.client).publish(slide);
+    new SlideCreatedPublisher(natsWrapper.client).publish({
+      id: slide.id,
+      title: slide.title,
+      description: slide.description,
+      slideNumber: slide.slideNumber,
+      type: slide.type,
+      imageUrl: slide.imageUrl,
+      videoUrl: slide.videoUrl,
+      answers: slide.answers,
+      challengeId: slide.challengeId,
+    });
     res.status(201).send(slide);
   },
 );
