@@ -10,7 +10,7 @@ import {
   CourseStatus,
 } from '@datn242/questify-common';
 import { Course } from '../../models/course';
-import { AdminCourse, AdminCourseActionType } from '../../models/admin-course';
+// import { AdminCourseActionType } from '../../models/admin-course';
 import { User } from '../../models/user';
 import { sequelize } from '../../config/db';
 
@@ -32,7 +32,7 @@ router.patch(
   validateRequest,
   async (req: Request, res: Response) => {
     const { course_id } = req.params;
-    const { status, reason } = req.body;
+    const { status } = req.body;
     const adminId = req.currentUser!.id;
 
     const course = await Course.findByPk(course_id);
@@ -51,22 +51,22 @@ router.patch(
       course.status = status;
       await course.save({ transaction });
 
-      let actionType;
-      if (status === CourseStatus.Approved) {
-        actionType = AdminCourseActionType.Approve;
-      } else {
-        actionType = AdminCourseActionType.Reject;
-      }
+      // let actionType;
+      // if (status === CourseStatus.Approved) {
+      //   actionType = AdminCourseActionType.Approve;
+      // } else {
+      //   actionType = AdminCourseActionType.Reject;
+      // }
 
-      const adminAction = await AdminCourse.create(
-        {
-          adminId,
-          courseId: course_id,
-          reason: reason || '',
-          actionType,
-        },
-        { transaction },
-      );
+      // const adminAction = await AdminCourse.create(
+      //   {
+      //     adminId,
+      //     courseId: course_id,
+      //     reason: reason || '',
+      //     actionType,
+      //   },
+      //   { transaction },
+      // );
 
       // Get admin user for the response
       const admin = await User.findByPk(adminId, {
@@ -80,7 +80,7 @@ router.patch(
       res.status(200).send({
         ...course.toJSON(),
         adminAction: {
-          ...adminAction.toJSON(),
+          // ...adminAction. toJSON(),
           admin: admin ? admin.toJSON() : null,
         },
       });

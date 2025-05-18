@@ -94,19 +94,19 @@ const CourseDefinition = {
 };
 
 interface CourseAttributes {
-  id: string;
-  name: string;
-  shortDescription?: string;
+  id: string; //
+  name: string; //title
+  shortDescription?: string; //description
   description?: string;
-  category?: string;
-  price?: number;
+  category?: string; //
+  price?: number; //
   learningObjectives?: string[];
   requirements?: string[];
   targetAudience?: string[];
   backgroundImage?: string;
-  thumbnail?: string;
-  status: CourseStatus;
-  teacherId: string;
+  thumbnail?: string; //image
+  status: CourseStatus; //
+  teacherId: string; //
   isDeleted: boolean;
   deletedAt?: Date;
 }

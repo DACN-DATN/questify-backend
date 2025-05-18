@@ -3,6 +3,7 @@ import { sequelize } from '../config/db';
 import { User } from './user';
 import { CourseStatus } from '@datn242/questify-common';
 import { v4 as uuidv4 } from 'uuid';
+import { CourseCategory } from '@datn242/questify-common';
 
 const CourseDefinition = {
   id: {
@@ -22,7 +23,22 @@ const CourseDefinition = {
     allowNull: true,
     type: DataTypes.TEXT,
   },
-  backgroundImage: {
+  category: {
+    allowNull: true,
+    type: DataTypes.STRING,
+    validator: {
+      isIn: [Object.values(CourseCategory)],
+    },
+  },
+  price: {
+    allowNull: true,
+    type: DataTypes.FLOAT,
+    defaultValue: 0,
+    validator: {
+      min: 0,
+    },
+  },
+  thumbnail: {
     allowNull: true,
     type: DataTypes.TEXT,
   },
@@ -57,7 +73,9 @@ interface CourseAttributes {
   id: string;
   name: string;
   description?: string;
-  backgroundImage?: string;
+  category?: string;
+  price?: number;
+  thumbnail?: string;
   teacherId: string;
   isDeleted: boolean;
   deletedAt?: Date;
@@ -70,7 +88,9 @@ class Course extends Model<CourseAttributes, CourseCreationAttributes> implement
   public id!: string;
   public name!: string;
   public description?: string;
-  public backgroundImage?: string;
+  public category?: string;
+  public price?: number;
+  public thumbnail?: string;
   public teacherId!: string;
   public isDeleted!: boolean;
   public deletedAt?: Date;

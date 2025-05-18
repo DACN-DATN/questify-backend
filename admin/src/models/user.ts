@@ -29,6 +29,10 @@ const UserDefinition = {
     allowNull: false,
     type: DataTypes.STRING,
   },
+  imageUrl: {
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
   status: {
     allowNull: false,
     type: DataTypes.STRING,
@@ -43,6 +47,7 @@ interface UserAttributes {
   gmail: string;
   role: UserRole;
   userName: string;
+  imageUrl?: string;
   status: UserStatus;
 }
 
@@ -53,6 +58,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public gmail!: string;
   public role!: UserRole;
   public userName!: string;
+  public imageUrl?: string;
   public status!: UserStatus;
 
   static readonly scopes: ModelScopeOptions = {};

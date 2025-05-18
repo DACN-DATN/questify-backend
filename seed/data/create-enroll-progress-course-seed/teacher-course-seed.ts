@@ -1,5 +1,10 @@
 import apiService from '../../services/api-service';
-import { CourseCategory, ResourcePrefix, IslandPathType } from '@datn242/questify-common';
+import {
+  CourseCategory,
+  ResourcePrefix,
+  IslandPathType,
+  CourseStatus,
+} from '@datn242/questify-common';
 import fs from 'fs';
 import path from 'path';
 
@@ -21,7 +26,7 @@ interface SeedData {
  * - Creates 5 levels for each island
  */
 async function seedTeacherCourse() {
-  let courseId = '';
+  // const courseId = '';
   const islandIds: string[] = [];
 
   try {
@@ -49,6 +54,8 @@ async function seedTeacherCourse() {
         'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL. This course covers REST APIs, database management, and authentication techniques. You will also learn how to deploy your applications and manage server environments. By the end of this course, you will have a solid understanding of backend development and be able to create your own web applications.',
       category: CourseCategory.ITSoftware,
       price: 49.99,
+      thumbnail:
+        'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Flanding_page%2FCourse%20Images%20(1).png?alt=media&token=a43b06ef-e639-4ea8-aff7-537554e2ef45',
       backgroundImage:
         'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Fislands%2Fbackground.png?alt=media&token=6881fef8-d3fd-4bcb-99c0-bad208f4ee70',
       learningObjectives: [
@@ -61,11 +68,132 @@ async function seedTeacherCourse() {
         'Aspiring backend developers',
         'Frontend developers looking to go fullstack',
       ],
+      status: CourseStatus.Pending,
     });
 
     const course = courseResponse.data;
-    courseId = course.id;
+    const courseId = course.id;
     console.log('Course created successfully with ID:', courseId);
+
+    // Create a course
+    console.log('\nCreating course...');
+    const courseResponse2 = await api.post(ResourcePrefix.CourseManagement, {
+      name: 'Introduction to Frontend Development',
+      shortDescription: 'A comprehensive course on backend development using Node.js and Express.',
+      description:
+        'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL. This course covers REST APIs, database management, and authentication techniques. You will also learn how to deploy your applications and manage server environments. By the end of this course, you will have a solid understanding of backend development and be able to create your own web applications.',
+      category: CourseCategory.ITSoftware,
+      price: 49.99,
+      thumbnail:
+        'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Flanding_page%2FCourse%20Images%20(2).png?alt=media&token=2f7217f9-3282-48c9-b238-256f9b953eda',
+      backgroundImage:
+        'https://cdn.builder.io/api/v1/image/assets/TEMP/dfb32da73c8310560baa7041ffee9d62e89ca8f3',
+      learningObjectives: [
+        'Understand REST APIs',
+        'Work with databases',
+        'Authentication & Authorization',
+      ],
+      requirements: ['Basic JavaScript knowledge', 'Git and terminal usage'],
+      targetAudience: [
+        'Aspiring backend developers',
+        'Frontend developers looking to go fullstack',
+      ],
+      status: CourseStatus.Approved,
+    });
+
+    const course2 = courseResponse2.data;
+    const courseId2 = course2.id;
+    console.log('Course created successfully with ID:', courseId2);
+
+    // Create a course
+    console.log('\nCreating course...');
+    const courseResponse3 = await api.post(ResourcePrefix.CourseManagement, {
+      name: 'Introduction to Frontend Development',
+      shortDescription: 'A comprehensive course on backend development using Node.js and Express.',
+      description:
+        'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL. This course covers REST APIs, database management, and authentication techniques. You will also learn how to deploy your applications and manage server environments. By the end of this course, you will have a solid understanding of backend development and be able to create your own web applications.',
+      category: CourseCategory.ITSoftware,
+      price: 49.99,
+      thumbnail:
+        'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Flanding_page%2FCourse%20Images%20(3).png?alt=media&token=294c21da-73ce-4678-83e1-351ac1947ed1',
+      backgroundImage:
+        'https://cdn.builder.io/api/v1/image/assets/TEMP/dfb32da73c8310560baa7041ffee9d62e89ca8f3',
+      learningObjectives: [
+        'Understand REST APIs',
+        'Work with databases',
+        'Authentication & Authorization',
+      ],
+      requirements: ['Basic JavaScript knowledge', 'Git and terminal usage'],
+      targetAudience: [
+        'Aspiring backend developers',
+        'Frontend developers looking to go fullstack',
+      ],
+      status: CourseStatus.Rejected,
+    });
+
+    const course3 = courseResponse3.data;
+    const courseId3 = course3.id;
+    console.log('Course created successfully with ID:', courseId3);
+
+    // Create a course
+    console.log('\nCreating course...');
+    const courseResponse4 = await api.post(ResourcePrefix.CourseManagement, {
+      name: 'Introduction to Frontend Development',
+      shortDescription: 'A comprehensive course on backend development using Node.js and Express.',
+      description:
+        'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL. This course covers REST APIs, database management, and authentication techniques. You will also learn how to deploy your applications and manage server environments. By the end of this course, you will have a solid understanding of backend development and be able to create your own web applications.',
+      category: CourseCategory.ITSoftware,
+      price: 49.99,
+      thumbnail:
+        'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Flanding_page%2FCourse%20Images%20(3).png?alt=media&token=294c21da-73ce-4678-83e1-351ac1947ed1',
+      backgroundImage:
+        'https://cdn.builder.io/api/v1/image/assets/TEMP/dfb32da73c8310560baa7041ffee9d62e89ca8f3',
+      learningObjectives: [
+        'Understand REST APIs',
+        'Work with databases',
+        'Authentication & Authorization',
+      ],
+      requirements: ['Basic JavaScript knowledge', 'Git and terminal usage'],
+      targetAudience: [
+        'Aspiring backend developers',
+        'Frontend developers looking to go fullstack',
+      ],
+      status: CourseStatus.Pending,
+    });
+
+    const course4 = courseResponse4.data;
+    const courseId4 = course4.id;
+    console.log('Course created successfully with ID:', courseId4);
+
+    // Create a course
+    console.log('\nCreating course...');
+    const courseResponse5 = await api.post(ResourcePrefix.CourseManagement, {
+      name: 'Introduction to Frontend Development',
+      shortDescription: 'A comprehensive course on backend development using Node.js and Express.',
+      description:
+        'Learn how to build robust backend systems using Node.js, Express, and PostgreSQL. This course covers REST APIs, database management, and authentication techniques. You will also learn how to deploy your applications and manage server environments. By the end of this course, you will have a solid understanding of backend development and be able to create your own web applications.',
+      category: CourseCategory.ITSoftware,
+      price: 49.99,
+      thumbnail:
+        'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Flanding_page%2FCourse%20Images%20(3).png?alt=media&token=294c21da-73ce-4678-83e1-351ac1947ed1',
+      backgroundImage:
+        'https://cdn.builder.io/api/v1/image/assets/TEMP/dfb32da73c8310560baa7041ffee9d62e89ca8f3',
+      learningObjectives: [
+        'Understand REST APIs',
+        'Work with databases',
+        'Authentication & Authorization',
+      ],
+      requirements: ['Basic JavaScript knowledge', 'Git and terminal usage'],
+      targetAudience: [
+        'Aspiring backend developers',
+        'Frontend developers looking to go fullstack',
+      ],
+      status: CourseStatus.Pending,
+    });
+
+    const course5 = courseResponse5.data;
+    const courseId5 = course5.id;
+    console.log('Course created successfully with ID:', courseId5);
 
     // Create islands
     console.log('\nCreating islands...');
