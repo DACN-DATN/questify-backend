@@ -26,7 +26,7 @@ interface SeedData {
  * - Creates 5 levels for each island
  */
 async function seedTeacherCourse() {
-  let courseId = '';
+  // const courseId = '';
   const islandIds: string[] = [];
 
   try {

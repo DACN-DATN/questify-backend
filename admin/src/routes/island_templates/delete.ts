@@ -9,10 +9,6 @@ import {
   requireAdmin,
 } from '@datn242/questify-common';
 import { IslandTemplate } from '../../models/island-template';
-import {
-  AdminIslandTemplate,
-  AdminIslandTemplateActionType,
-} from '../../models/admin-island-template';
 import { sequelize } from '../../config/db';
 import { natsWrapper } from '../../nats-wrapper';
 import { IslandTemplateUpdatedPublisher } from '../../events/publishers/island-template-updated-publisher';
@@ -32,8 +28,8 @@ router.delete(
   validateRequest,
   async (req: Request, res: Response) => {
     const { template_id } = req.params;
-    const { reason } = req.body;
-    const adminId = req.currentUser!.id;
+    // const { reason } = req.body;
+    // const adminId = req.currentUser!.id;
 
     const islandTemplate = await IslandTemplate.findByPk(template_id);
 

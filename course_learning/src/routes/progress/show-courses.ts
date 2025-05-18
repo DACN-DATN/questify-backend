@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { BadRequestError, ResourcePrefix, validateRequest } from '@datn242/questify-common';
 import { User } from '../../models/user';
-import { query, body } from 'express-validator';
+import { query } from 'express-validator';
 import { getUserCourseProgress } from '../../services/get-course-progress';
 
 const router = express.Router();

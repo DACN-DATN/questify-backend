@@ -9,17 +9,7 @@ export class CourseCreatedListener extends Listener<CourseCreatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: CourseCreatedEvent['data'], msg: Message) {
-    const {
-      id,
-      name,
-      shortDescription,
-      description,
-      category,
-      price,
-      thumbnail,
-      status,
-      teacherId,
-    } = data;
+    const { id, name, shortDescription, category, price, thumbnail, status, teacherId } = data;
 
     const existingTeacher = await User.findByPk(teacherId);
     if (!existingTeacher) {

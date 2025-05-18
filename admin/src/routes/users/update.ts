@@ -11,7 +11,7 @@ import {
   UserRole,
 } from '@datn242/questify-common';
 import { User } from '../../models/user';
-import { AdminUser, AdminActionType } from '../../models/admin-user';
+// import { AdminUser, AdminActionType } from '../../models/admin-user';
 import { sequelize } from '../../config/db';
 
 const router = express.Router();
@@ -32,8 +32,8 @@ router.patch(
   validateRequest,
   async (req: Request, res: Response) => {
     const { user_id } = req.params;
-    const { status, reason } = req.body;
-    const adminId = req.currentUser!.id;
+    const { status } = req.body;
+    // const adminId = req.currentUser!.id;
 
     const user = await User.findByPk(user_id);
 
