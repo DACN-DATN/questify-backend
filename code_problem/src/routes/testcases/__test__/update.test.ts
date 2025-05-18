@@ -117,7 +117,7 @@ it('returns a RequestValidationError if the user provides an invalid testcases',
     })
     .expect((res) => {
       expect(res.status).toEqual(RequestValidationError.statusCode);
-      expect(res.text).toContain('input must be a string');
+      expect(res.text).toContain('hidden must be a boolean');
     });
 });
 
