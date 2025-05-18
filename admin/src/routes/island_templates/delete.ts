@@ -52,25 +52,25 @@ router.delete(
       islandTemplate.deletedAt = new Date();
       await islandTemplate.save({ transaction });
 
-      const adminAction = await AdminIslandTemplate.create(
-        {
-          adminId,
-          islandTemplateId: template_id,
-          reason: reason || '',
-          actionType: AdminIslandTemplateActionType.Remove,
-        },
-        { transaction },
-      );
+      // const adminAction = await AdminIslandTemplate.create(
+      //   {
+      //     adminId,
+      //     islandTemplateId: template_id,
+      //     reason: reason || '',
+      //     actionType: AdminIslandTemplateActionType.Remove,
+      //   },
+      //   { transaction },
+      // );
 
-      await adminAction.reload({
-        transaction,
-        include: [
-          {
-            model: IslandTemplate,
-            as: 'islandTemplate',
-          },
-        ],
-      });
+      // await adminAction.reload({
+      //   transaction,
+      //   include: [
+      //     {
+      //       model: IslandTemplate,
+      //       as: 'islandTemplate',
+      //     },
+      //   ],
+      // });
 
       await transaction.commit();
 
@@ -83,7 +83,7 @@ router.delete(
 
       res.status(200).send({
         ...islandTemplate.toJSON(),
-        adminAction: adminAction.toJSON(),
+        // adminAction: adminAction.toJSON(),
       });
     } catch (error) {
       await transaction.rollback();
