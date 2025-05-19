@@ -4,6 +4,8 @@ import { natsWrapper } from './nats-wrapper';
 import { syncModels } from './scripts/sync';
 import { UserCourseCreatedListener } from './events/listeners/user-course-created-listener';
 import { UserCourseUpdatedListener } from './events/listeners/user-course-updated-listener';
+import { UserCourseInventoryCreationListener } from './events/listeners/user-course-inventory-creation-listener';
+
 import { LevelCreatedListener } from './events/listeners/level-created-listener';
 import { LevelUpdatedListener } from './events/listeners/level-updated-listener';
 import { UserCreatedListener } from './events/listeners/user-created-listener';
@@ -81,6 +83,7 @@ const start = async () => {
     // Initialize and start all listeners
     new UserCourseCreatedListener(natsWrapper.client).listen();
     new UserCourseUpdatedListener(natsWrapper.client).listen();
+    new UserCourseInventoryCreationListener(natsWrapper.client).listen();
     new LevelCreatedListener(natsWrapper.client).listen();
     new LevelUpdatedListener(natsWrapper.client).listen();
     new UserCreatedListener(natsWrapper.client).listen();
