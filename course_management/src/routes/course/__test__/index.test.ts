@@ -13,7 +13,7 @@ it('can fetch a list of tickets', async () => {
   await createTicket(`test2@gmail.com`);
   await createTicket(`test3@gmail.com`);
 
-  const response = await request(app).get('/api/course-mgmt').send().expect(200);
+  const response = await request(app).get('/api/course-mgmt/instructor').send().expect(200);
 
-  expect(response.body.length).toEqual(0);
+  expect(response.body.length).toEqual(3);
 });
