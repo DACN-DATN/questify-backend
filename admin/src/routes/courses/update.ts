@@ -13,6 +13,8 @@ import { Course } from '../../models/course';
 // import { AdminCourseActionType } from '../../models/admin-course';
 import { User } from '../../models/user';
 import { sequelize } from '../../config/db';
+import { CourseUpdatedPublisher } from '../../events/publishers/course-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -76,6 +78,15 @@ router.patch(
 
       await transaction.commit();
 
+      new CourseUpdatedPublisher(natsWrapper.client).publish({
+        id: course.id,
+        teacherId: course.teacherId,
+        status: course.status!,
+        name: course.name,
+        description: course.description,
+        thumbnail: course.thumbnail,
+        isDeleted: course.isDeleted,
+      });
       // Construct response without relying on associations
       res.status(200).send({
         ...course.toJSON(),
