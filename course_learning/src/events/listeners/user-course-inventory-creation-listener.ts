@@ -1,9 +1,5 @@
 import { Message } from 'node-nats-streaming';
-import { 
-  Subjects, 
-  Listener, 
-  UserCourseInventoryCreationEvent 
-} from '@datn242/questify-common';
+import { Subjects, Listener, UserCourseInventoryCreationEvent } from '@datn242/questify-common';
 import { queueGroupName } from './queue-group-name';
 import { Inventory } from '../../models/inventory';
 import { CourseItemTemplate } from '../../models/course-item-template';
@@ -37,11 +33,11 @@ export class UserCourseInventoryCreationListener extends Listener<UserCourseInve
           quantity: 0,
         });
       }
-      
+
       msg.ack();
     } catch (error) {
       console.error(`Error creating inventory: ${error}`);
-      msg.ack(); 
+      msg.ack();
     }
   }
 }

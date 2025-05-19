@@ -61,6 +61,8 @@ router.get(
       };
     });
 
+    itemsWithQuantity.sort((a, b) => a.itemTemplate.name.localeCompare(b.itemTemplate.name));
+
     const response = {
       id: inventory.id,
       userId: inventory.user_id,

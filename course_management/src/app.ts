@@ -39,7 +39,6 @@ import { updateCourseItemTemplateRouter } from './routes/item-template/course-up
 import { createItemTemplateRouter } from './routes/item-template/new';
 import { updateItemTemplateRouter } from './routes/item-template/update';
 
-
 import { createChallengeRouter } from './routes/challenge/new';
 // import { uploadChallengeRouter } from './routes/challenge/upload';
 import { showChallengeRouter } from './routes/challenge/show';
