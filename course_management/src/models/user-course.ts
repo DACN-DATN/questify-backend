@@ -3,7 +3,7 @@ import { sequelize } from '../config/db';
 import { User } from './user';
 import { Course } from './course';
 import { v4 as uuidv4 } from 'uuid';
-import { CompletionStatus } from '@datn242/questify-common';
+import { CompletionStatus, EffectType } from '@datn242/questify-common';
 
 const UserCourseDefinition = {
   id: {
@@ -50,6 +50,14 @@ const UserCourseDefinition = {
     allowNull: true,
     type: DataTypes.DATE,
   },
+  nextLevelEffect: {
+    allowNull: true,
+    type: DataTypes.STRING,
+    validate: {
+      isIn: [Object.values(EffectType)],
+    },
+    defaultValue: null,
+  },
 };
 
 interface UserCourseAttributes {
@@ -59,6 +67,7 @@ interface UserCourseAttributes {
   point: number;
   completionStatus: CompletionStatus;
   finishedDate?: Date;
+  nextLevelEffect?: EffectType;
 
   user?: User;
 }
@@ -75,6 +84,7 @@ class UserCourse
   public point!: number;
   public completionStatus!: CompletionStatus;
   public finishedDate?: Date;
+  public nextLevelEffect?: EffectType;
 
   public User?: User;
 }
