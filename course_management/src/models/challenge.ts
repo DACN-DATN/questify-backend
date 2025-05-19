@@ -35,11 +35,12 @@ type ChallengeCreationAttributes = Optional<ChallengeAttributes, 'id' | 'isDelet
 
 class Challenge
   extends Model<ChallengeAttributes, ChallengeCreationAttributes>
-  implements ChallengeAttributes
-{
+  implements ChallengeAttributes {
   public id!: string;
   public levelId!: string;
   public isDeleted!: boolean;
+
+  public Level?: Level;
 
   static readonly scopes: ModelScopeOptions = {};
 

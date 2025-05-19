@@ -37,6 +37,18 @@ router.get(
           as: 'Course',
           required: false,
         },
+        {
+          model: Level,
+          as: 'Levels',
+          required: false,
+          include: [
+            {
+              model: Island,
+              as: 'Island',
+              required: false,
+            }
+          ],
+        },
       ],
     });
     if (!island) {

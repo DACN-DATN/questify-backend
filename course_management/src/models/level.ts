@@ -69,6 +69,8 @@ class Level extends Model<LevelAttributes, LevelCreationAttributes> implements L
   public islandId!: string;
   public isDeleted!: boolean;
 
+  public Island?: Island;
+
   static readonly scopes: ModelScopeOptions = {};
 
   static readonly validations: ModelValidateOptions = {};
