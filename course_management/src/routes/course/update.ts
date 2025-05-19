@@ -66,6 +66,7 @@ router.patch(
       learningObjectives,
       requirements,
       targetAudience,
+      status,
     } = req.body;
 
     const updateFields: Partial<typeof course> = {};
@@ -80,6 +81,7 @@ router.patch(
     if (learningObjectives !== undefined) updateFields.learningObjectives = learningObjectives;
     if (requirements !== undefined) updateFields.requirements = requirements;
     if (targetAudience !== undefined) updateFields.targetAudience = targetAudience;
+    if (status !== undefined) updateFields.status = status;
 
     course.set(updateFields);
 

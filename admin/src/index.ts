@@ -5,6 +5,7 @@ import { natsWrapper } from './nats-wrapper';
 import { UserCreatedListener } from './events/listeners/user-created-listener';
 import { CourseCreatedListener } from './events/listeners/course-created-listener';
 import { UserUpdatedListener } from './events/listeners/user-updated-listener';
+import { CourseUpdatedListener } from './events/listeners/course-updated-listener';
 
 const start = async () => {
   await connectDb();
@@ -48,6 +49,7 @@ const start = async () => {
     new UserCreatedListener(natsWrapper.client).listen();
     new UserUpdatedListener(natsWrapper.client).listen();
     new CourseCreatedListener(natsWrapper.client).listen();
+    new CourseUpdatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
   }

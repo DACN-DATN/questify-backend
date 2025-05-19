@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
-import { requireAuth, ResourcePrefix, requireAdmin } from '@datn242/questify-common';
+import { requireAuth, ResourcePrefix, requireAdmin, CourseStatus } from '@datn242/questify-common';
 import { Course } from '../../models/course';
 import { User } from '../../models/user';
+import { Op } from 'sequelize';
 
 const router = express.Router();
 
@@ -13,6 +14,9 @@ router.get(
     const courses = await Course.findAll({
       where: {
         isDeleted: false,
+        status: {
+          [Op.ne]: CourseStatus.Draft,
+        },
       },
       order: [['createdAt', 'DESC']],
       attributes: {

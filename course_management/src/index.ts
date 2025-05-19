@@ -6,6 +6,7 @@ import { IslandTemplateCreatedListener } from './events/listeners/island-templat
 import { IslandTemplateUpdatedListener } from './events/listeners/island-template-updated-listener';
 import { natsWrapper } from './nats-wrapper';
 import { syncModels } from './scripts/sync';
+import { CourseUpdatedListener } from './events/listeners/course-updated-listener';
 
 const start = async () => {
   if (!process.env.NATS_CLIENT_ID) {
@@ -35,6 +36,7 @@ const start = async () => {
     new UserUpdatedListener(natsWrapper.client).listen();
     new IslandTemplateCreatedListener(natsWrapper.client).listen();
     new IslandTemplateUpdatedListener(natsWrapper.client).listen();
+    new CourseUpdatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
   }

@@ -83,7 +83,6 @@ router.post(
       id: course.id,
       name: course.name,
       description: course.description,
-      shortDescription: course.shortDescription,
       category: course.category,
       price: course.price,
       thumbnail: course.thumbnail,
