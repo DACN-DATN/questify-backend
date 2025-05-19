@@ -41,6 +41,8 @@ class Challenge
   public levelId!: string;
   public isDeleted!: boolean;
 
+  public Level?: Level;
+
   static readonly scopes: ModelScopeOptions = {};
 
   static readonly validations: ModelValidateOptions = {};
