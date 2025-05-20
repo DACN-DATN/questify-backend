@@ -24,6 +24,7 @@ function getRandom(min: number, max: number): number {
 }
 
 export async function submitLevel(userId: string, levelId: string) {
+  // Load the user's current progress for this level
   const progress = await UserLevel.findOne({
     where: {
       userId: userId,
@@ -98,12 +99,12 @@ export async function submitLevel(userId: string, levelId: string) {
   const bonusGold = randomBonus * goldMultiplier;
   const bonusExp = randomBonus * expMultiplier;
 
-  if (progress.completionStatus !== CompletionStatus.Completed) {
+  // Check if this is a new completion
+  const isNewCompletion = progress.completionStatus !== CompletionStatus.Completed;
+
+  if (isNewCompletion) {
     baseGold = 200;
     baseExp = 200;
-    progress.set({
-      completionStatus: CompletionStatus.Completed,
-    });
   }
 
   const attempt = await Attempt.findOne({
@@ -129,20 +130,31 @@ export async function submitLevel(userId: string, levelId: string) {
 
   await attempt.save();
 
+  // Update points if higher
+  let pointDifference = 0;
   if (point > progress.point) {
-    const pointDifference = point - progress.point;
-    progress.set({
-      point: point,
-    });
+    pointDifference = point - progress.point;
+    progress.point = point;
+  }
+
+  // Update completion status and finished date
+  if (isNewCompletion) {
+    progress.completionStatus = CompletionStatus.Completed;
+    if (!progress.finishedDate) {
+      progress.finishedDate = attempt.finishedAt;
+    }
+  }
+
+  // Save changes to progress BEFORE checking island status
+  await progress.save();
+
+  // Now that the level is saved as completed in the database, update island points
+  if (pointDifference > 0) {
     await updateIslandPoints(userId, level.islandId, pointDifference);
   }
 
-  if (progress.completionStatus === CompletionStatus.Completed) {
-    progress.set({
-      completionStatus: CompletionStatus.Completed,
-      createdAt: attempt.createdAt,
-      finishedDate: attempt.finishedAt,
-    });
+  // If this is a new completion, unlock next level and check island status
+  if (isNewCompletion) {
     await unlockNextLevel(userId, level.islandId, level.position);
     await checkAndUpdateIslandStatus(userId, level.islandId);
   }
@@ -170,8 +182,7 @@ export async function submitLevel(userId: string, levelId: string) {
     }
   }
 
-  // Save all changes
-  await progress.save();
+  // Save user changes
   await user!.save();
 
   // Publish events
