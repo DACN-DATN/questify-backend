@@ -7,6 +7,7 @@ import {
 import { UserLevel } from '../models/user-level';
 import { Attempt } from '../models/attempt';
 import { User } from '../models/user';
+import { Inventory } from '../models/inventory';
 import { natsWrapper } from '../nats-wrapper';
 import { UserUpdatedPublisher } from '../events/publishers/user-updated-publisher';
 import { calculateScore } from './calculate-point';
@@ -57,10 +58,14 @@ export async function submitLevel(userId: string, levelId: string) {
     },
   });
 
+  if (!user_course) {
+    throw new BadRequestError('User course not found');
+  }
+
   let goldMultiplier = 1;
   let expMultiplier = 1;
 
-  const effect = user_course?.nextLevelEffect;
+  const effect = user_course.nextLevelEffect;
 
   switch (effect) {
     case EffectType.ExpX2:
@@ -83,14 +88,19 @@ export async function submitLevel(userId: string, levelId: string) {
       break;
   }
 
-  let gold = 0;
-  let exp = 0;
-  const bonusGold = getRandom(10, 100) * goldMultiplier;
-  const bonusExp = getRandom(10, 100) * expMultiplier;
+  if (effect) {
+    await user_course.update({ nextLevelEffect: null });
+  }
+
+  let baseGold = 0;
+  let baseExp = 0;
+  const randomBonus = getRandom(10, 100);
+  const bonusGold = randomBonus * goldMultiplier;
+  const bonusExp = randomBonus * expMultiplier;
 
   if (progress.completionStatus !== CompletionStatus.Completed) {
-    gold = 200;
-    exp = 200;
+    baseGold = 200;
+    baseExp = 200;
     progress.set({
       completionStatus: CompletionStatus.Completed,
     });
@@ -117,6 +127,8 @@ export async function submitLevel(userId: string, levelId: string) {
     point: point,
   });
 
+  await attempt.save();
+
   if (point > progress.point) {
     const pointDifference = point - progress.point;
     progress.set({
@@ -128,6 +140,8 @@ export async function submitLevel(userId: string, levelId: string) {
   if (progress.completionStatus === CompletionStatus.Completed) {
     progress.set({
       completionStatus: CompletionStatus.Completed,
+      createdAt: attempt.createdAt,
+      finishedDate: attempt.finishedAt,
     });
     await unlockNextLevel(userId, level.islandId, level.position);
     await checkAndUpdateIslandStatus(userId, level.islandId);
@@ -136,23 +150,44 @@ export async function submitLevel(userId: string, levelId: string) {
   const user = await User.findByPk(userId);
   const currentExp = user!.exp || 0;
   user!.set({
-    exp: currentExp + exp + bonusExp,
+    exp: currentExp + baseExp + bonusExp,
   });
 
+  console.log('User exp:', user!.exp);
+
+  if (baseGold > 0 || bonusGold > 0) {
+    const totalGold = baseGold + bonusGold;
+    const inventory = await Inventory.findOne({
+      where: {
+        user_id: userId,
+        course_id: level.Island!.courseId,
+        isDeleted: false,
+      },
+    });
+
+    if (inventory) {
+      await inventory.increment('gold', { by: totalGold });
+    }
+  }
+
+  // Save all changes
   await progress.save();
-  await attempt.save();
   await user!.save();
 
+  // Publish events
   new AttemptUpdatedPublisher(natsWrapper.client).publish(attempt!);
   new UserUpdatedPublisher(natsWrapper.client).publish(user!);
 
   return {
     userId: userId,
     levelId: levelId,
-    gold: gold,
-    exp: exp,
+    gold: baseGold,
+    exp: baseExp,
     point: point,
     bonusGold: bonusGold,
     bonusExp: bonusExp,
+    totalGold: baseGold + bonusGold,
+    totalExp: baseExp + bonusExp,
+    appliedEffect: effect || undefined,
   };
 }

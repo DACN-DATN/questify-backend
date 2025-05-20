@@ -38,9 +38,6 @@ import { indexCourseItemTemplateRouter } from './routes/item-template/course-ind
 import { updateCourseItemTemplateRouter } from './routes/item-template/course-update';
 import { createItemTemplateRouter } from './routes/item-template/new';
 import { updateItemTemplateRouter } from './routes/item-template/update';
-import { inventoryBuyRouter } from './routes/inventory/buy';
-import { inventoryIndexRouter } from './routes/inventory/index';
-import { inventoryUseRouter } from './routes/inventory/use';
 
 import { createChallengeRouter } from './routes/challenge/new';
 // import { uploadChallengeRouter } from './routes/challenge/upload';
@@ -102,9 +99,6 @@ app.use(indexCourseItemTemplateRouter);
 app.use(updateCourseItemTemplateRouter);
 app.use(createItemTemplateRouter);
 app.use(updateItemTemplateRouter);
-app.use(inventoryBuyRouter);
-app.use(inventoryIndexRouter);
-app.use(inventoryUseRouter);
 
 app.use(createChallengeRouter);
 // app.use(uploadChallengeRouter);

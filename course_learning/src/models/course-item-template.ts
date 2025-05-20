@@ -43,7 +43,7 @@ interface CourseItemTemplateAttributes {
   course_id: string;
   item_template_id: string;
   isDeleted: boolean;
-  deletedAt?: Date;
+  deletedAt?: Date | null;
 }
 
 type CourseItemTemplateCreationAttributes = Optional<
@@ -59,7 +59,7 @@ class CourseItemTemplate
   public course_id!: string;
   public item_template_id!: string;
   public isDeleted!: boolean;
-  public deletedAt?: Date;
+  public deletedAt?: Date | null;
 
   static readonly scopes: ModelScopeOptions = {};
 

@@ -25,6 +25,10 @@ import { newAttemptRouter } from './routes/level/new-attempt';
 import { indexAttemptRouter } from './routes/level/index-attempt';
 import { showCourseProgressRouter } from './routes/progress/show-courses';
 import { submitLevelRouter } from './routes/level/submit';
+import { inventoryBuyRouter } from './routes/inventory/buy';
+import { inventoryIndexRouter } from './routes/inventory/index';
+import { inventoryUseRouter } from './routes/inventory/use';
+import { getUserCourseRouter } from './routes/inventory/get-user-course';
 
 import { deleteAllRouter } from './routes/dev-only/delete-all';
 
@@ -61,6 +65,10 @@ app.use(submitChallengeRouter);
 app.use(newAttemptRouter);
 app.use(indexAttemptRouter);
 app.use(showCourseProgressRouter);
+app.use(inventoryBuyRouter);
+app.use(inventoryIndexRouter);
+app.use(inventoryUseRouter);
+app.use(getUserCourseRouter);
 
 app.use(deleteAllRouter);
 
