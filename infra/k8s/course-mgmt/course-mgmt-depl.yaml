@@ -17,11 +17,11 @@ spec:
           image: questify/course-mgmt
           resources:
             requests:
-              memory: '128Mi'
-              cpu: '100m'
+              memory: '512Mi'
+              cpu: '200m'
             limits:
-              memory: '256Mi'
-              cpu: '250m'
+              memory: '1Gi'
+              cpu: '500m'
           env:
             - name: NATS_CLIENT_ID
               valueFrom:
@@ -58,6 +58,40 @@ spec:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_KEY
+            - name: NEXT_PUBLIC_IMG_FIREBASE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: firebase-secret
+                  key: NEXT_PUBLIC_IMG_FIREBASE_API_KEY
+            - name: NEXT_PUBLIC_IMG_FIREBASE_STORAGE_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: firebase-secret
+                  key: NEXT_PUBLIC_IMG_FIREBASE_STORAGE_BUCKET
+            - name: NEXT_PUBLIC_IMG_FIREBASE_AUTH_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: firebase-secret
+                  key: NEXT_PUBLIC_IMG_FIREBASE_AUTH_DOMAIN
+                  optional: true
+            - name: NEXT_PUBLIC_IMG_FIREBASE_PROJECT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: firebase-secret
+                  key: NEXT_PUBLIC_IMG_FIREBASE_PROJECT_ID
+                  optional: true
+            - name: NEXT_PUBLIC_IMG_FIREBASE_MESSAGE_SENDER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: firebase-secret
+                  key: NEXT_PUBLIC_IMG_FIREBASE_MESSAGE_SENDER_ID
+                  optional: true
+            - name: NEXT_PUBLIC_IMG_FIREBASE_APP_ID
+              valueFrom:
+                secretKeyRef:
+                  name: firebase-secret
+                  key: NEXT_PUBLIC_IMG_FIREBASE_APP_ID
+                  optional: true
 ---
 apiVersion: v1
 kind: Service

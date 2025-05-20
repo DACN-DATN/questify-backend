@@ -4,6 +4,7 @@ import { Challenge } from '../../models/challenge';
 import { Slide } from '../../models/slide';
 import { Level } from '../../models/level';
 import { UserLevel } from '../../models/user-level';
+import { Island } from '../../models/island';
 
 const router = express.Router();
 
@@ -30,6 +31,12 @@ router.get(
       throw new BadRequestError('Challenge not found');
     }
 
+    const island = await Island.findByPk(challenge.Level.islandId);
+
+    if (!island) {
+      throw new BadRequestError('Island not found');
+    }
+
     const userLevel = await UserLevel.findOne({
       where: {
         userId: req.currentUser!.id,
@@ -41,8 +48,12 @@ router.get(
       throw new BadRequestError('Student have not enrolled this course');
     }
     const challengeData = challenge.toJSON();
+    const responseData = {
+      ...challengeData,
+      courseId: island.courseId,
+    };
 
-    res.send(challengeData);
+    res.send(responseData);
   },
 );
 
