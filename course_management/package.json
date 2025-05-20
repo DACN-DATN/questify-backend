@@ -21,7 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@datn242/common": "^8.8.27",
-    "@datn242/questify-common": "^3.0.20",
+    "@datn242/questify-common": "^3.0.22",
     "@types/cookie-session": "^2.0.49",
     "@types/express": "^5.0.0",
     "@types/express-fileupload": "^1.5.1",

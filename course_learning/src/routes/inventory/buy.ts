@@ -3,6 +3,7 @@ import { body } from 'express-validator';
 import { Inventory } from '../../models/inventory';
 import { InventoryItemTemplate } from '../../models/inventory-item-template';
 import { ItemTemplate } from '../../models/item-template';
+import { CourseItemTemplate } from '../../models/course-item-template';
 import {
   ResourcePrefix,
   requireAuth,
@@ -14,7 +15,7 @@ import {
 const router = express.Router();
 
 router.post(
-  ResourcePrefix.CourseManagement + '/:course_id/inventory/use',
+  ResourcePrefix.CourseLearning + '/:course_id/inventory/buy',
   requireAuth,
   [
     body('itemTemplateId').notEmpty().withMessage('Item template ID is required'),
@@ -38,20 +39,16 @@ router.post(
       throw new NotFoundError();
     }
 
-    const inventoryItem = await InventoryItemTemplate.findOne({
+    const courseItemTemplate = await CourseItemTemplate.findOne({
       where: {
-        inventory_id: inventory.id,
+        course_id: courseId,
         item_template_id: itemTemplateId,
         isDeleted: false,
       },
     });
 
-    if (!inventoryItem) {
-      throw new NotFoundError();
-    }
-
-    if (inventoryItem.quantity < quantity) {
-      throw new BadRequestError('Not enough items to use');
+    if (!courseItemTemplate) {
+      throw new BadRequestError('Item is not available for this course');
     }
 
     const itemTemplate = await ItemTemplate.findOne({
@@ -65,14 +62,44 @@ router.post(
       throw new NotFoundError();
     }
 
+    const totalCost = itemTemplate.gold * quantity;
+
+    if (inventory.gold < totalCost) {
+      throw new BadRequestError('Not enough gold to purchase this item');
+    }
+
+    const inventoryItem = await InventoryItemTemplate.findOne({
+      where: {
+        inventory_id: inventory.id,
+        item_template_id: itemTemplateId,
+        isDeleted: false,
+      },
+    });
+
+    if (!inventoryItem) {
+      throw new NotFoundError();
+    }
+
     await InventoryItemTemplate.sequelize!.transaction(async (transaction) => {
-      await InventoryItemTemplate.update(
+      await Inventory.update(
         {
-          quantity: inventoryItem.quantity - quantity,
+          gold: inventory.gold - totalCost,
         },
         {
           where: {
-            id: inventoryItem.id,
+            id: inventory.id,
+          },
+          transaction,
+        },
+      );
+
+      await InventoryItemTemplate.update(
+        {
+          quantity: inventoryItem!.quantity + quantity,
+        },
+        {
+          where: {
+            id: inventoryItem!.id,
           },
           transaction,
         },
@@ -83,7 +110,7 @@ router.post(
     const updatedInventoryItem = await InventoryItemTemplate.findByPk(inventoryItem.id);
 
     res.status(200).send({
-      message: `Item ${itemTemplate.name} used successfully`,
+      message: 'Item purchased successfully',
       inventory: {
         id: updatedInventory!.id,
         gold: updatedInventory!.gold,
@@ -92,12 +119,8 @@ router.post(
         itemTemplateId: updatedInventoryItem!.item_template_id,
         quantity: updatedInventoryItem!.quantity,
       },
-      effect: {
-        type: itemTemplate.effect,
-        description: itemTemplate.effect_description,
-      },
     });
   },
 );
 
-export { router as inventoryUseRouter };
+export { router as inventoryBuyRouter };

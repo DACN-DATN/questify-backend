@@ -7,7 +7,7 @@ import { ResourcePrefix, requireAuth, NotFoundError } from '@datn242/questify-co
 const router = express.Router();
 
 router.get(
-  ResourcePrefix.CourseManagement + '/:course_id/inventory',
+  ResourcePrefix.CourseLearning + '/:course_id/inventory',
   requireAuth,
   async (req: Request, res: Response) => {
     const courseId = req.params.course_id;
@@ -60,6 +60,8 @@ router.get(
         },
       };
     });
+
+    itemsWithQuantity.sort((a, b) => a.itemTemplate.name.localeCompare(b.itemTemplate.name));
 
     const response = {
       id: inventory.id,

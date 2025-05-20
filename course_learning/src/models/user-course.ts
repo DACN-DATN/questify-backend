@@ -68,7 +68,7 @@ interface UserCourseAttributes {
   completionStatus: CompletionStatus;
   finishedDate?: Date;
   user?: User;
-  nextLevelEffect?: EffectType;
+  nextLevelEffect?: EffectType | null;
   createdAt?: Date;
   updatedAt?: Date;
 }
