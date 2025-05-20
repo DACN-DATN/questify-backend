@@ -52,7 +52,7 @@ interface InventoryItemTemplateAttributes {
   item_template_id: string;
   quantity: number;
   isDeleted: boolean;
-  deletedAt?: Date;
+  deletedAt?: Date | null;
 }
 
 type InventoryItemTemplateCreationAttributes = Optional<
@@ -69,7 +69,7 @@ class InventoryItemTemplate
   public item_template_id!: string;
   public quantity!: number;
   public isDeleted!: boolean;
-  public deletedAt?: Date;
+  public deletedAt?: Date | null;
 
   static readonly scopes: ModelScopeOptions = {};
 
