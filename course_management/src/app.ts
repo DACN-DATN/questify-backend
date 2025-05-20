@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
+import fileUpload from 'express-fileupload';
 import { errorHandler, NotFoundError, currentUser } from '@datn242/questify-common';
 
 import { deleteAllRouter } from './routes/dev-only/delete-all';
@@ -24,6 +25,7 @@ import { indexLevelRouter } from './routes/level';
 import { updateLevelRouter } from './routes/level/update';
 import { deleteLevelRouter } from './routes/level/delete';
 import { showLevelChallengeRouter } from './routes/level/show-challenge';
+import { uploadPdfLevelRouter } from './routes/level/upload-pdf';
 import { indexCurriculumRouter } from './routes/island/curriculum';
 
 import { createReviewRouter } from './routes/course/new-review';
@@ -43,7 +45,6 @@ import { inventoryIndexRouter } from './routes/inventory/index';
 import { inventoryUseRouter } from './routes/inventory/use';
 
 import { createChallengeRouter } from './routes/challenge/new';
-// import { uploadChallengeRouter } from './routes/challenge/upload';
 import { showChallengeRouter } from './routes/challenge/show';
 
 import { createSlideRouter } from './routes/slide/new';
@@ -64,6 +65,15 @@ app.use(
   cookieSession({
     signed: false, // disable encryption
     secure: false, // disable https
+  }),
+);
+app.use(
+  fileUpload({
+    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB max file size
+    abortOnLimit: true,
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
+    createParentPath: true,
   }),
 );
 app.use(currentUser);
@@ -89,6 +99,7 @@ app.use(indexLevelRouter);
 app.use(showLevelChallengeRouter);
 app.use(updateLevelRouter);
 app.use(deleteLevelRouter);
+app.use(uploadPdfLevelRouter);
 
 app.use(createReviewRouter);
 app.use(showReviewRouter);
@@ -107,7 +118,6 @@ app.use(inventoryIndexRouter);
 app.use(inventoryUseRouter);
 
 app.use(createChallengeRouter);
-// app.use(uploadChallengeRouter);
 app.use(showChallengeRouter);
 
 app.use(createSlideRouter);
