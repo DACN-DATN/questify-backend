@@ -24,21 +24,21 @@ interface StudentCredentials {
 
 // Sample review comments and ratings
 const reviewComments = [
-  "Great course! I learned a lot and the content was well-organized.",
-  "The instructor explains concepts clearly. Would recommend to others.",
-  "Very informative course with practical examples.",
-  "Excellent content, but some sections could be more detailed.",
-  "Good course overall, helped me understand the basics.",
-  "The assignments were challenging but helped reinforce the concepts.",
-  "I appreciated the real-world applications of the material.",
-  "The course was thorough and well-paced.",
+  'Great course! I learned a lot and the content was well-organized.',
+  'The instructor explains concepts clearly. Would recommend to others.',
+  'Very informative course with practical examples.',
+  'Excellent content, but some sections could be more detailed.',
+  'Good course overall, helped me understand the basics.',
+  'The assignments were challenging but helped reinforce the concepts.',
+  'I appreciated the real-world applications of the material.',
+  'The course was thorough and well-paced.',
   "The instructor's teaching style made complex topics easy to understand.",
-  "High-quality content with useful resources.",
-  "Some parts were too basic for me, but overall a good introduction.",
-  "Enjoyed the practical exercises and projects.",
-  "The course exceeded my expectations!",
-  "Very comprehensive and well-structured content.",
-  "Would have appreciated more advanced topics."
+  'High-quality content with useful resources.',
+  'Some parts were too basic for me, but overall a good introduction.',
+  'Enjoyed the practical exercises and projects.',
+  'The course exceeded my expectations!',
+  'Very comprehensive and well-structured content.',
+  'Would have appreciated more advanced topics.',
 ];
 
 // Ratings from 1-5 with 0.5 increments
@@ -53,19 +53,19 @@ const ratings = [3, 3.5, 4, 4, 4.5, 4.5, 5, 5, 5, 5];
 async function seedReviewFlow() {
   try {
     console.log('=== STARTING REVIEW SEEDING PROCESS ===');
-    
+
     // Step 1: Sign up 10 students
     console.log('\n[1/3] Creating 10 student accounts...');
     const students = await signupMultipleStudents();
-    
+
     // Step 2: Create a course with an island and level as a teacher
     console.log('\n[2/3] Creating course with one island and level...');
     const courseId = await createReviewCourse();
-    
+
     // Step 3: Have each student enroll and write a review
     console.log('\n[3/3] Students enrolling and writing reviews...');
     await enrollAndReview(courseId, students);
-    
+
     console.log('\n=== REVIEW SEEDING COMPLETED SUCCESSFULLY ===');
   } catch (error) {
     console.error('Error during review seeding process:', error);
@@ -106,10 +106,7 @@ async function createReviewCourse(): Promise<string> {
         'Add interactivity with JavaScript',
       ],
       requirements: ['Basic computer skills', 'No prior coding experience needed'],
-      targetAudience: [
-        'Aspiring web developers',
-        'Designers looking to code their designs',
-      ],
+      targetAudience: ['Aspiring web developers', 'Designers looking to code their designs'],
       status: CourseStatus.Approved, // Set to Approved so students can enroll immediately
     });
 
@@ -166,38 +163,41 @@ async function enrollAndReview(courseId: string, students: StudentCredentials[])
     const student = students[i];
     try {
       console.log(`\nProcessing student ${i + 1} of ${students.length}: ${student.userName}`);
-      
+
       // Login as student
       await api.post(ResourcePrefix.Auth + '/signin', {
         email: student.email,
         password: student.password,
       });
       console.log(`${student.userName} login successful`);
-      
+
       // Enroll in course
       console.log(`Enrolling in course...`);
       await api.post(ResourcePrefix.CourseManagement + `/${courseId}/enrollment`, {});
       console.log(`Enrollment successful`);
-      
+
       // Write a review with a random comment and rating
       const rating = ratings[i % ratings.length];
       const comment = reviewComments[i % reviewComments.length];
-      
+
       console.log(`Writing review (${rating} stars)...`);
       await api.post(ResourcePrefix.CourseManagement + `/${courseId}/reviews`, {
         comment,
         rating,
       });
       console.log(`Review submitted successfully`);
-      
+
       // Sign out
       await api.post(ResourcePrefix.Auth + '/signout', {});
       console.log(`${student.userName} signed out successfully`);
-      
+
       // Small delay between students
       await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
-      console.error(`Error with student ${student.userName}:`, error.response?.data || error.message);
+      console.error(
+        `Error with student ${student.userName}:`,
+        error.response?.data || error.message,
+      );
       // Continue with next student even if one fails
     }
   }

@@ -13,7 +13,7 @@ const STUDENT_IDS = [
   'a9b8c7d6-e5f4-3g2h-1i0j-k9l8m7n6o5p4',
   'b9c8d7e6-f5g4-3h2i-1j0k-l9m8n7o6p5q4',
   'c9d8e7f6-g5h4-3i2j-1k0l-m9n8o7p6q5r4',
-  'd9e8f7g6-h5i4-3j2k-1l0m-n9o8p7q6r5s4'
+  'd9e8f7g6-h5i4-3j2k-1l0m-n9o8p7q6r5s4',
 ];
 
 interface StudentCredentials {
@@ -25,7 +25,7 @@ interface StudentCredentials {
 
 async function signupMultipleStudents(): Promise<StudentCredentials[]> {
   console.log('Starting multiple student signup process...');
-  
+
   const students: StudentCredentials[] = [];
   const studentCount = 10;
   const password = '12345aB@';
@@ -34,37 +34,37 @@ async function signupMultipleStudents(): Promise<StudentCredentials[]> {
     for (let i = 1; i <= studentCount; i++) {
       const studentEmail = `user${i}@example.com`;
       const studentName = `User ${i}`;
-      const studentId = STUDENT_IDS[i-1];
+      const studentId = STUDENT_IDS[i - 1];
 
       console.log(`\n--- Creating user ${i} of ${studentCount} ---`);
-      
+
       await api.post(ResourcePrefix.Auth + '/validate-credentials', {
         email: studentEmail,
         userName: studentName,
-        id: studentId
+        id: studentId,
       });
       console.log(`Student ${i} validate credentials successful`);
 
       const signupResponse = await api.post(ResourcePrefix.Auth + '/complete-signup', {
         password: password,
         confirmedPassword: password,
-        id: studentId
+        id: studentId,
       });
       console.log(`Student ${i} complete signup successful`);
 
       const confirmedStudentId = signupResponse.data.id || studentId;
-      
+
       students.push({
         id: confirmedStudentId,
         email: studentEmail,
         userName: studentName,
-        password: password
+        password: password,
       });
 
       // Sign out before creating next student
       await api.post(ResourcePrefix.Auth + '/signout', {});
       console.log(`Student ${i} signout successful`);
-      
+
       // Small delay between students
       await new Promise((resolve) => setTimeout(resolve, 300));
     }

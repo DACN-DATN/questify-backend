@@ -15,7 +15,8 @@ const itemTemplates = [
     effect: EffectType.ExpX2,
     effect_description: 'Experience Gain\n×2',
     img: 'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Finventory_modal%2Fexp_2.png?alt=media&token=5eef2e36-f691-4797-b99d-9d6f04d038a2',
-    description: 'A mystical green tome that doubles your experience gain for the next lesson.',
+    description:
+      'A mystical green tome that doubles your bonus experience gain for the next lesson.',
   },
   {
     gold: 100,
@@ -23,7 +24,8 @@ const itemTemplates = [
     effect: EffectType.ExpX3,
     effect_description: 'Experience Gain\n×3',
     img: 'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Finventory_modal%2Fexp_3.png?alt=media&token=154cfc84-7bba-43da-a5ff-2f33eff878e4',
-    description: 'An ancient green spellbook that triples your experience gain for the next lesson.',
+    description:
+      'An ancient green spellbook that triples your bonus experience gain for the next lesson.',
   },
   {
     gold: 150,
@@ -31,7 +33,8 @@ const itemTemplates = [
     effect: EffectType.ExpX4,
     effect_description: 'Experience Gain\n×4',
     img: 'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Finventory_modal%2Fexp_4.png?alt=media&token=2e1648d8-e0b8-4992-bff0-0f45ce9468aa',
-    description: 'A powerful green grimoire that quadruples your experience gain for the next lesson.',
+    description:
+      'A powerful green grimoire that quadruples your bonus experience gain for the next lesson.',
   },
   {
     gold: 75,
@@ -39,7 +42,8 @@ const itemTemplates = [
     effect: EffectType.ExpRandom,
     effect_description: 'Experience Gain\n1-5×',
     img: 'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Finventory_modal%2Fitem-icon-eyeglass.png?alt=media&token=bff6b605-b810-41f5-9b8d-dd5aed2d3ea4',
-    description: 'A mysterious magical lens that gives a random XP multiplier (between 1× and 5×) for the next lesson.',
+    description:
+      'A mysterious magical lens that gives a random XP multiplier (between 1× and 5×) for the next lesson.',
   },
   {
     gold: 60,
@@ -55,7 +59,8 @@ const itemTemplates = [
     effect: EffectType.GoldX3,
     effect_description: 'Bonus Gem Gain\n×3',
     img: 'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Finventory_modal%2Fgem_3.png?alt=media&token=e68d0f60-1ad0-45db-807c-ac79364e4f0d',
-    description: 'An ancient tome with red gemstones that triples your bonus gem gain for the next lesson.',
+    description:
+      'An ancient tome with red gemstones that triples your bonus gem gain for the next lesson.',
   },
   {
     gold: 180,
@@ -63,7 +68,8 @@ const itemTemplates = [
     effect: EffectType.GoldX4,
     effect_description: 'Bonus Gem Gain\n×4',
     img: 'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Finventory_modal%2Fgem_4.png?alt=media&token=edfa5d29-9cb8-4b99-a0ec-3d43c90179bb',
-    description: 'A powerful ring with multiple gemstones that quadruples your bonus gem gain for the next lesson.',
+    description:
+      'A powerful ring with multiple gemstones that quadruples your bonus gem gain for the next lesson.',
   },
   {
     gold: 90,
@@ -71,7 +77,8 @@ const itemTemplates = [
     effect: EffectType.GoldRandom,
     effect_description: 'Gem Gain\n1-5×',
     img: 'https://firebasestorage.googleapis.com/v0/b/questify-a190e.firebasestorage.app/o/images%2Finventory_modal%2Fgem_random.png?alt=media&token=4d413d8f-9f28-4b5c-87ab-571ff401b562',
-    description: 'A mysterious enchanted bracelet with a turquoise stone that gives a random bonus gem multiplier (between 1× and 5×) for the next lesson.',
+    description:
+      'A mysterious enchanted bracelet with a turquoise stone that gives a random bonus gem multiplier (between 1× and 5×) for the next lesson.',
   },
 ];
 
